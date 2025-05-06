@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Ajloun Cultural Gallery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header>
+    <div class="header-content">
+        <h1>Ajloun Cultural Gallery</h1>
+        <p class="subtitle">Explore the beauty and heritage of Ajloun through our visual journey</p>
+    </div>
+</header>
+
+<main class="gallery-container">
+    <div class="gallery-nav">
+        <button class="active">All</button>
+        <button>Nature</button>
+        <button>History</button>
+        <button>Culture</button>
+        <button>People</button>
+        <button>مهرجان</button>
+    </div>
+
+    <div class="gallery-grid">
+        <!-- مهرجان Facebook Video -->
+        <div class="gallery-item" data-category="مهرجان" style="aspect-ratio: auto;">
+            <div style="position: relative; width: 100%; padding-bottom: 83%; height: 0; overflow: hidden; border-radius: 8px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);">
+                <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAjloun.thaqafa%2Fposts%2Fpfbid0hU9xhS4MXejz9GTuKtiUrs2TPN86a318voNZLjakhXuQiW6VYRUkcjRPgAFLjhVCl&amp;show_text=true&amp;width=500"
+                        width="100%"
+                        height="100%"
+                        style="border:none;overflow:hidden;position: absolute;top: 0;left: 0;"
+                        scrolling="no"
+                        frameborder="0"
+                        allowfullscreen="true"
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+                </iframe>
+            </div>
+            <div class="item-overlay">
+                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
+                <span class="item-category">مهرجان</span>
+            </div>
+        </div>
+
+        <!-- مهرجان Images -->
+        <div class="gallery-item" data-category="مهرجان">
+            <img src="https://scontent.famm10-1.fna.fbcdn.net/v/t39.30808-6/492491123_10222445213157918_2045584363207905135_n.jpg?...&oe=681FE80D"
+                 alt="مهرجان ربيع عجلون الثامن - صورة 1" loading="lazy" />
+            <div class="item-overlay">
+                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
+                <span class="item-category">مهرجان</span>
+            </div>
+        </div>
+
+        <div class="gallery-item" data-category="مهرجان">
+            <img src="https://scontent.famm10-1.fna.fbcdn.net/v/t39.30808-6/493103277_10222445215277971_2860980352386468009_n.jpg?...&oe=681FE614"
+                 alt="مهرجان ربيع عجلون الثامن - صورة 2" loading="lazy" />
+            <div class="item-overlay">
+                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
+                <span class="item-category">مهرجان</span>
+            </div>
+        </div>
+
+        <div class="gallery-item" data-category="مهرجان">
+            <img src="https://scontent.famm10-1.fna.fbcdn.net/v/t39.30808-6/493790938_10222445220918112_2814471022881420345_n.jpg?...&oe=68201D60"
+                 alt="مهرجان ربيع عجلون الثامن - صورة 3" loading="lazy" />
+            <div class="item-overlay">
+                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
+                <span class="item-category">مهرجان</span>
+            </div>
+        </div>
+
+        <div class="gallery-item" data-category="مهرجان">
+            <img src="https://scontent.famm10-1.fna.fbcdn.net/v/t39.30808-6/492255318_10222445223238170_8817524608782306503_n.jpg?...&oe=6820187F"
+                 alt="مهرجان ربيع عجلون الثامن - صورة 4" loading="lazy" />
+            <div class="item-overlay">
+                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
+                <span class="item-category">مهرجان</span>
+            </div>
+        </div>
+    </div>
+
+    <button class="load-more">Load More</button>
+</main>
+
+<footer>
+    <p>&copy; 2023 Ajloun Cultural Heritage. All rights reserved.</p>
+</footer>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        // Filter gallery by category
+        document.querySelectorAll('.gallery-nav button').forEach(button => {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('.gallery-nav button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                const category = this.textContent.toLowerCase();
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    const itemCategory = item.getAttribute('data-category')?.toLowerCase() || '';
+                    item.style.display = (category === 'all' || itemCategory === category) ? 'block' : 'none';
+                });
+            });
+        });
+
+        // Load More
+        document.querySelector('.load-more').addEventListener('click', function () {
+            alert('In a real site, more items would be loaded.');
+        });
+    </script>
+}
