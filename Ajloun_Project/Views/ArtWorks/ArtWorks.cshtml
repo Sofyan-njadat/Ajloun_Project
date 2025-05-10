@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Ajloun_Project.Models.Artwork>
+@{
+    ViewData["Title"] = "معرض الأعمال الفنية الرقمية";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ArtWorks.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet">
+
+ 
+ 
+}
+<header class="modern-header">
+    <div class="overlay">
+        <div class="header-content">
+            <h1>مديرية ثقافة عجلون</h1>
+            <p class="subtitle">معرض الأعمال الفنية الرقمية</p>
+        </div>
+    </div>
+</header>
+
+@* <h1 style="text-align: center; color: var(--primary); margin-top: 2rem;">معرض الأعمال الفنية الرقمية</h1> *@
+
+<table>
+    <thead>
+        <tr>
+			<th>نوع العمل الفني</th>
+            <th>وصف العمل</th>
+            <th>اسم الفنان</th>
+            <th>الصورة</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var art in Model)
+        {
+            <tr>
+                <td>@art.Type</td>
+                <td>@art.Description</td>
+                <td>@art.ArtistName</td>
+                @* <td><img class="art-image" src="@art.ImageUrl" alt="صورة رقمية" /></td> *@
+                <td>
+                <div class="zoom-wrapper">
+                    <img class="art-image" src="@art.ImageUrl" alt="صورة رقمية" />
+                    <div class="zoom-modal">
+                        <img src="@art.ImageUrl" />
+                    </div>
+                </div>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="form-section">
+    <h2> أضف عملك الفني </h2>
+    <form asp-action="SubmitArtwork" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>الاسم الكامل</label>
+            <input name="ArtistName" required />
+        </div>
+        <div class="form-group">
+            <label>البريد الإلكتروني</label>
+            <input name="ArtistEmail" type="email" required />
+        </div>
+        <div class="form-group">
+            <label>اسم العمل الفني</label>
+            <input name="Title" required />
+        </div>
+        <div class="form-group">
+            <label>وصف مختصر</label>
+            <textarea name="Description" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>رابط معرض الفنان الشخصي (اختياري)</label>
+            <input name="PortfolioUrl" />
+        </div>
+        <div class="form-group">
+            <label>نوع العمل (مثلاً: صورة رقمية، لوحة...)</label>
+            <input name="Type" required />
+        </div>
+        <div class="form-group">
+            <label>رفع صورة العمل الفني</label>
+            <input name="ImageFile" type="file" accept="image/*" required />
+        </div>
+        <input type="submit" value="إرسال " />
+    </form>
+</div>
+
+            @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        @if (TempData["Success"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'نجاح',
+                        text: '@Html.Raw(TempData["Success"])'
+                    });
+            </text>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطأ',
+                        text: '@Html.Raw(TempData["Error"])'
+                    });
+            </text>
+        }
+    </script>
+
+   
+            
+            } 

@@ -4,7 +4,7 @@ namespace Ajloun_Project.Controllers
 {
     public class GalleryController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Gallery()
         {
             return View();
         }
