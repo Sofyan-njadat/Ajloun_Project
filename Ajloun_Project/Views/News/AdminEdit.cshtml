@@ -1,0 +1,150 @@
+﻿@model Ajloun_Project.Models.News
+@{
+    ViewData["Title"] = "تعديل خبر";
+    Layout = "_Layout";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+    :root {
+        --primary: #355E3B;
+        --secondary: #A9BA9D;
+        --accent: #E3D26F;
+        --dark: #1E2F23;
+        --light: #EFF5EC;
+        --text: #2D2D2D;
+        --text-light: #6B6B6B;
+        --white: #FFFFFF;
+        --transition: all 0.4s ease;
+    }
+
+    body {
+        font-family: 'Tajawal', sans-serif;
+        background-color: var(--light);
+        color: var(--text);
+    }
+
+    .edit-container {
+        background: var(--white);
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        max-width: 800px;
+        margin: 40px auto;
+    }
+
+    .edit-title {
+        text-align: center;
+        color: var(--primary);
+        margin-bottom: 30px;
+    }
+
+    label {
+        font-weight: bold;
+        color: var(--text-light);
+    }
+
+    input, textarea, select {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 8px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 150px;
+    }
+
+    .btn-submit {
+        background-color: var(--primary);
+        color: var(--white);
+        padding: 10px 25px;
+        border: none;
+        border-radius: 8px;
+        transition: var(--transition);
+    }
+
+        .btn-submit:hover {
+            background-color: var(--accent);
+            color: var(--dark);
+        }
+
+    .btn-back {
+        background-color: var(--secondary);
+        color: var(--dark);
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-right: 10px;
+        transition: var(--transition);
+    }
+
+        .btn-back:hover {
+            background-color: var(--accent);
+        }
+
+    .image-preview {
+        display: block;
+        margin-bottom: 15px;
+        max-height: 150px;
+    }
+</style>
+
+<div class="edit-container">
+    <h2 class="edit-title">✏️ تعديل خبر</h2>
+
+    <form asp-action="AdminEdit" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="NewsId" />
+        <input type="hidden" asp-for="PublishDate" />
+
+        <div class="form-group">
+            <label>عنوان الخبر</label>
+            <input asp-for="Title" class="form-control" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label>محتوى الخبر</label>
+            <textarea asp-for="Content" class="form-control" required></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="form-group">
+                <label>الصورة الحالية:</label><br />
+                <img src="@Model.ImageUrl" class="image-preview" />
+            </div>
+        }
+
+        <div class="form-group">
+            <label>رفع صورة جديدة</label>
+            <input type="file" name="imageFile" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>التصنيف</label>
+            <input asp-for="Category" class="form-control" />
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label>الحالة</label>
+            <select asp-for="Status" class="form-control">
+                <option value="Published">منشور</option>
+                <option value="Pending">قيد الانتظار</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-submit">💾 حفظ التعديلات</button>
+        <a asp-action="AdminList" class="btn-back">🔙 رجوع</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
