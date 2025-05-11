@@ -1,0 +1,35 @@
+﻿@model Ajloun_Project.Models.Handicraft
+
+@{
+    ViewData["Title"] = "إضافة منتج جديد";
+}
+
+<h2>إضافة منتج جديد</h2>
+
+<form asp-action="CreateHandicrafts" method="post">
+    <div class="form-group">
+        <label for="Title">العنوان</label>
+        <input type="text" class="form-control" id="Title" name="Title" required />
+    </div>
+    <div class="form-group">
+        <label for="Description">الوصف</label>
+        <textarea class="form-control" id="Description" name="Description" rows="4"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="Price">السعر</label>
+        <input type="number" step="0.01" class="form-control" id="Price" name="Price" required />
+    </div>
+    <div class="form-group">
+        <label for="Stock">المخزون</label>
+        <input type="number" class="form-control" id="Stock" name="Stock" required />
+    </div>
+    <div class="form-group">
+        <label for="Category">الفئة</label>
+        <input type="text" class="form-control" id="Category" name="Category" />
+    </div>
+    <div class="form-group">
+        <label for="ImageUrl">رابط الصورة</label>
+        <input type="text" class="form-control" id="ImageUrl" name="ImageUrl" />
+    </div>
+    <button type="submit" class="btn btn-primary">إضافة المنتج</button>
+</form>
