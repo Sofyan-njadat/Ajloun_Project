@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Ajloun_Project.Models.Book>
+@{
+    ViewData["Title"] = "إدارة الكتب";
+    var categories = ViewBag.Categories as List<Ajloun_Project.Models.BookCategory>;
+}
+
+@section Styles {
+    <style>
+        .book-admin-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2C6E49;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2C6E49;
+            color: white;
+        }
+
+        .form-add-book {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            align-items: center;
+        }
+
+            .form-add-book input,
+            .form-add-book select {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                width: 100%;
+            }
+
+            .form-add-book button {
+                grid-column: span 2;
+                padding: 10px;
+                background-color: #2C6E49;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+            }
+
+        .delete-btn {
+            background-color: #E53935;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+        }
+
+            .delete-btn:hover {
+                background-color: #c62828;
+            }
+    </style>
+}
+
+<div class="book-admin-container">
+    <h2>📘 إدارة الكتب</h2>
+
+    <!-- جدول عرض الكتب -->
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>الغلاف</th>
+                <th>العنوان</th>
+                <th>المؤلف</th>
+                <th>التصنيف</th>
+                <th>النسخ</th>
+                <th>الحالة</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.BookId</td>
+                    <td>
+                        <img src="@book.CoverImageUrl" alt="غلاف" style="width: 50px; height: 60px; object-fit: cover;" />
+                    </td>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Category?.Name</td>
+                    <td>@book.AvailableCopies</td>
+                    <td>@(book.IsAvailable ? "متاح" : "غير متاح")</td>
+                    <td>
+                        <form asp-action="DeleteBook" method="post">
+                            <input type="hidden" name="id" value="@book.BookId" />
+                            <button type="submit" class="delete-btn">🗑️ حذف</button>
+                            <a asp-action="EditBook" asp-route-id="@book.BookId" class="edit-btn">✏️ تعديل</a>
+
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- نموذج إضافة كتاب -->
+    <form asp-action="AddBook" method="post" class="form-add-book">
+        <input type="text" name="Title" placeholder="عنوان الكتاب" required />
+        <input type="text" name="Author" placeholder="اسم المؤلف" />
+        <input type="text" name="CoverImageUrl" placeholder="رابط صورة الغلاف" />
+        <input type="number" name="PublishedYear" placeholder="سنة النشر" />
+        <input type="number" name="AvailableCopies" placeholder="عدد النسخ" required min="1" />
+
+        <select name="CategoryId" required>
+            <option value="">اختر التصنيف</option>
+            @foreach (var cat in categories)
+            {
+                <option value="@cat.CategoryId">@cat.Name</option>
+            }
+        </select>
+
+        <input type="text" name="Description" placeholder="وصف الكتاب" />
+
+        <button type="submit">➕ إضافة كتاب</button>
+    </form>
+</div>

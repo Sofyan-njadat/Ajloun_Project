@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "تم الحجز بنجاح";
+}
+
+@section Styles {
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: 100px auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+            .success-container h2 {
+                color: #2C6E49;
+                margin-bottom: 20px;
+            }
+
+            .success-container p {
+                color: #444;
+                font-size: 16px;
+            }
+
+            .success-container a {
+                display: inline-block;
+                margin-top: 30px;
+                background-color: #2C6E49;
+                color: white;
+                padding: 12px 24px;
+                text-decoration: none;
+                border-radius: 6px;
+                font-size: 15px;
+            }
+
+                .success-container a:hover {
+                    background-color: #24553a;
+                }
+    </style>
+}
+
+<div class="success-container">
+    <h2>🎉 تم الحجز بنجاح!</h2>
+    <p>شكراً لك على استخدام نظام مكتبة مركز عجلون الثقافي.</p>
+    <p>سوف يتم مراجعة الحجز والتواصل معك لتأكيد الاستلام.</p>
+
+    <a asp-action="Index">⬅️ العودة إلى صفحة الكتب</a>
+</div>

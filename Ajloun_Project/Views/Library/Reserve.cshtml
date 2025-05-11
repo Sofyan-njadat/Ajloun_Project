@@ -1,0 +1,295 @@
+﻿@model Ajloun_Project.Models.BookReservation
+@{
+    ViewData["Title"] = "نموذج حجز كتاب";
+}
+
+@section Styles {
+    <style>
+        :root {
+            --primary: #2C6E49;
+            --secondary: #F2E8CF;
+            --accent: #C7AD8F;
+            --background: #FAFAF7;
+            --text-dark: #1B1B2F;
+            --text-muted: #777;
+            --success: #4CAF50;
+            --danger: #E53935;
+        }
+
+        body {
+            background-color: var(--background);
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .reserve-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            position: relative;
+            border-top: 5px solid var(--accent);
+        }
+
+            .reserve-container:before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 5px;
+                background: linear-gradient(90deg, var(--accent), var(--primary));
+            }
+
+        .reserve-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+            .reserve-header h2 {
+                color: var(--primary);
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .reserve-header p {
+                color: var(--text-muted);
+                font-size: 0.95rem;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .date-input-container {
+            position: relative;
+        }
+
+        .date-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+            .date-input:focus {
+                outline: none;
+                border-color: var(--accent);
+                box-shadow: 0 2px 12px rgba(199, 173, 143, 0.2);
+            }
+
+        .date-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            pointer-events: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), #24553a);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(44, 110, 73, 0.2);
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(44, 110, 73, 0.3);
+            }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .alert-danger {
+            background-color: rgba(229, 57, 53, 0.1);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .text-danger {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* تنسيق التقويم */
+        .ui-datepicker {
+            font-family: 'Cairo', sans-serif;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .ui-datepicker-header {
+            background: var(--primary);
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .ui-datepicker-calendar th {
+            color: var(--primary);
+        }
+
+        .ui-datepicker-calendar a.ui-state-active {
+            background: var(--primary);
+            color: white;
+        }
+
+       
+    </style>
+}
+
+<div class="reserve-container">
+    <div class="reserve-header">
+        <h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+            حجز كتاب
+        </h2>
+        <p>املأ النموذج التالي لتأكيد حجز الكتاب</p>
+    </div>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <form asp-action="Reserve" method="post" id="reservationForm">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="BookId" />
+
+        <div class="form-group">
+            <label asp-for="PickupDate">تاريخ الاستلام</label>
+            <div class="date-input-container">
+                <input asp-for="PickupDate" type="text" class="date-input" id="pickupDate" autocomplete="off" />
+                <span class="date-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </span>
+            </div>
+            <span asp-validation-for="PickupDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ReturnDate">تاريخ الإرجاع</label>
+            <div class="date-input-container">
+                <input asp-for="ReturnDate" type="text" class="date-input" id="returnDate" autocomplete="off" />
+                <span class="date-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </span>
+            </div>
+            <span asp-validation-for="ReturnDate" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            تأكيد الحجز
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(function() {
+            // تهيئة التقويم مع تنسيق التاريخ يوم/شهر/سنة
+            $.datepicker.setDefaults({
+                dateFormat: 'dd/mm/yy',
+                showAnim: 'fadeIn',
+                firstDay: 6, // السبت أول أيام الأسبوع
+                monthNames: ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'],
+                dayNamesMin: ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
+                prevText: 'السابق',
+                nextText: 'التالي',
+                currentText: 'اليوم'
+            });
+
+            $("#pickupDate").datepicker({
+                minDate: 1, // لا يمكن اختيار تاريخ قبل غد
+                onSelect: function(selectedDate) {
+                    // عند اختيار تاريخ الاستلام، يتم تحديد الحد الأدنى لتاريخ الإرجاع
+                    $("#returnDate").datepicker("option", "minDate", selectedDate);
+                }
+            });
+
+            $("#returnDate").datepicker({
+                minDate: "+1d" // الحد الأدنى هو غد (يوم بعد تاريخ الاستلام)
+            });
+
+            // التحقق من التواريخ عند إرسال النموذج
+            $("#reservationForm").submit(function(e) {
+                var pickupDate = $("#pickupDate").datepicker("getDate");
+                var returnDate = $("#returnDate").datepicker("getDate");
+                var today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (pickupDate <= today) {
+                    alert("يجب أن يكون تاريخ الاستلام بعد تاريخ اليوم");
+                    return false;
+                }
+
+                if (returnDate <= pickupDate) {
+                    alert("يجب أن يكون تاريخ الإرجاع بعد تاريخ الاستلام");
+                    return false;
+                }
+
+                return true;
+            });
+        });
+    </script>
+}

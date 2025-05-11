@@ -1,0 +1,98 @@
+﻿@model Ajloun_Project.Models.Book
+
+@{
+    ViewData["Title"] = "تعديل الكتاب";
+    var categories = ViewBag.Categories as List<Ajloun_Project.Models.BookCategory>;
+}
+
+@section Styles {
+    <style>
+        .edit-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .edit-container h2 {
+                text-align: center;
+                color: #2C6E49;
+                margin-bottom: 25px;
+            }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background-color: #2C6E49;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+            .submit-btn:hover {
+                background-color: #24563c;
+            }
+    </style>
+}
+
+<div class="edit-container">
+    <h2>✏️ تعديل الكتاب</h2>
+
+    <form asp-action="EditBook" method="post">
+        <input type="hidden" asp-for="BookId" />
+
+        <label asp-for="Title">اسم الكتاب</label>
+        <input asp-for="Title" type="text" />
+
+        <label asp-for="Author">المؤلف</label>
+        <input asp-for="Author" type="text" />
+
+        <label asp-for="PublishedYear">سنة النشر</label>
+        <input asp-for="PublishedYear" type="number" />
+
+        <label asp-for="CoverImageUrl">رابط الصورة</label>
+        <input asp-for="CoverImageUrl" type="url" />
+
+        <label asp-for="Description">الوصف</label>
+        <textarea asp-for="Description" rows="4"></textarea>
+
+        <label asp-for="AvailableCopies">عدد النسخ المتاحة</label>
+        <input asp-for="AvailableCopies" type="number" />
+
+        <label asp-for="CategoryId">التصنيف</label>
+        <select asp-for="CategoryId">
+            @if (categories != null)
+            {
+                foreach (var cat in categories)
+                {
+                    <option value="@cat.CategoryId" selected="@(Model.CategoryId == cat.CategoryId)">
+                        @cat.Name
+                    </option>
+                }
+            }
+        </select>
+
+        <button type="submit" class="submit-btn">💾 حفظ التعديلات</button>
+    </form>
+</div>

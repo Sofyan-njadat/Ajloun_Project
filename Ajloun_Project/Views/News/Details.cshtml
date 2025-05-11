@@ -1,0 +1,260 @@
+﻿@model Ajloun_Project.Models.News
+
+@{
+    ViewData["Title"] = "تفاصيل الخبر";
+    Layout = "_Layout";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<style>
+    :root {
+        --primary: #355E3B;
+        --primary-dark: #1E2F23;
+        --primary-light: #A9BA9D;
+        --accent: #E3D26F;
+        --accent-dark: #D4C25A;
+        --light: #EFF5EC;
+        --light-2: #F8FAF7;
+        --text: #2D2D2D;
+        --text-light: #6B6B6B;
+        --white: #FFFFFF;
+        --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.16);
+    }
+
+    body {
+        font-family: 'Tajawal', sans-serif;
+        direction: rtl;
+        background-color: var(--light);
+        color: var(--text);
+        line-height: 1.7;
+    }
+
+    .news-details-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: var(--white);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        transform: translateY(0);
+        transition: var(--transition);
+    }
+
+    .news-details-header {
+        padding: 40px 40px 20px;
+        background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .news-details-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+
+    .news-title {
+        font-size: 32px;
+        font-weight: 900;
+        margin-bottom: 15px;
+        position: relative;
+        line-height: 1.4;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .news-meta {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 15px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .news-category {
+        background-color: var(--accent);
+        color: var(--primary-dark);
+        padding: 6px 16px;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 14px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .news-date {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .news-image-container {
+        margin: 0 auto;
+        max-width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        position: relative;
+        height: 400px;
+    }
+
+    .news-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+    }
+
+    .news-content-container {
+        padding: 40px;
+    }
+
+    .news-content {
+        font-size: 18px;
+        line-height: 1.9;
+        color: var(--text);
+        white-space: pre-wrap;
+    }
+
+        .news-content p {
+            margin-bottom: 25px;
+        }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to right, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 12px 25px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 30px;
+        transition: var(--transition);
+        box-shadow: 0 4px 15px rgba(53, 94, 59, 0.3);
+        border: none;
+        cursor: pointer;
+    }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(53, 94, 59, 0.4);
+            color: var(--accent);
+        }
+
+        .back-button svg {
+            margin-left: 8px;
+            transition: var(--transition);
+        }
+
+        .back-button:hover svg {
+            transform: translateX(-5px);
+        }
+
+    /* Responsive Design */
+    @@media (max-width: 992px) {
+        .news-details-container {
+            max-width: 95%;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .news-title {
+            font-size: 28px;
+        }
+
+        .news-content-container {
+            padding: 30px;
+        }
+
+        .news-image-container {
+            height: 350px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .news-details-header {
+            padding: 30px 20px 15px;
+        }
+
+        .news-title {
+            font-size: 24px;
+        }
+
+        .news-meta {
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .news-content {
+            font-size: 16px;
+        }
+
+        .news-image-container {
+            height: 250px;
+        }
+
+        .news-content-container {
+            padding: 25px 20px;
+        }
+    }
+</style>
+
+<div class="news-details-container animate__animated animate__fadeIn">
+    <div class="news-details-header">
+        <h1 class="news-title animate__animated animate__fadeInDown">@Model.Title</h1>
+        <div class="news-meta animate__animated animate__fadeIn animate__delay-1s">
+            <span class="news-category">@Model.Category</span>
+            <span class="news-date">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                </svg>
+                @Model.PublishDate?.ToString("yyyy/MM/dd - HH:mm")
+            </span>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <div class="news-image-container animate__animated animate__fadeIn animate__delay-2s">
+            <img src="@Model.ImageUrl" alt="صورة الخبر" class="news-image" />
+        </div>
+    }
+
+    <div class="news-content-container animate__animated animate__fadeIn animate__delay-3s">
+        <div class="news-content">
+            @Html.Raw(Model.Content.Replace("\n", "<br />"))
+        </div>
+
+        <a href="javascript:history.back()" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+            </svg>
+            العودة للأخبار
+        </a>
+    </div>
+</div>
+
+<script>
+    // Add image zoom effect on click
+    document.addEventListener('DOMContentLoaded', function() {
+        const newsImage = document.querySelector('.news-image');
+        if (newsImage) {
+            newsImage.addEventListener('click', function() {
+                this.classList.toggle('zoom');
+            });
+        }
+    });
+</script>
