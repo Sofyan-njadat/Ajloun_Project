@@ -1,0 +1,54 @@
+﻿@model IEnumerable<AjlounProjecttt.ViewModels.CraftOrderViewModel>
+
+@{
+    ViewData["Title"] = "HandicraftPurchaseOrders";
+}
+
+
+
+<div class="container my-4">
+    <h2 class="mb-4">Handicraft Purchase Orders</h2>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Craft Name</th>
+                <th>User Name</th>
+                <th>Quantity</th>
+                <th>Order Date</th>
+                <th>Status</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.CraftTitle</td>
+                    <td>@order.UserName</td>
+                    <td>@order.Quantity</td>
+                    <td>
+                        @order.OrderDate?.ToString("yyyy-MM-dd hh:mm tt")</td>
+                    <td>
+                        @if (order.Status == "Approved")
+                        {
+                            <span class="badge bg-success">Approved</span>
+                        }
+                        else if (order.Status == "Rejected")
+                        {
+                            <span class="badge bg-danger">Rejected</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

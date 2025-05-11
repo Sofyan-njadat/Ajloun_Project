@@ -1,0 +1,89 @@
+﻿@* @model IEnumerable<AjlounProjecttt.ViewModels.PendingArtworkViewModel> *@
+
+@* @{ *@
+@*     ViewData["Title"] = "Pending Artworks"; *@
+@* } *@
+
+@* <div class="container my-4"> *@
+@*     <h2>Pending Artworks</h2> *@
+
+@*     <table class="table table-bordered table-striped mt-3"> *@
+@*         <thead class="table-dark"> *@
+@*             <tr> *@
+@*                 <th>#</th> *@
+@*                 <th>Title</th> *@
+@*                 <th>Artist Name</th> *@
+@*                 <th>Type</th> *@
+@*                 <th>Description</th> *@
+@*                 <th>Image</th> *@
+@*                 <th>Actions</th> *@
+@*             </tr> *@
+@*         </thead> *@
+@*         <tbody> *@
+@*             @foreach (var art in Model) *@
+@*             { *@
+@*                 <tr> *@
+@*                     <td>@art.ArtworkId</td> *@
+@*                     <td>@art.Title</td> *@
+@*                     <td>@art.ArtistName</td> *@
+@*                     <td>@art.Type</td> *@
+@*                     <td>@art.Description</td> *@
+@*                     <td> *@
+@*                         <img src="@Url.Content(art.ImageUrl)" style="width:100px;" /> *@
+@*                     </td> *@
+@*                     <td> *@
+@*                         <a class="btn btn-success btn-sm" href="@Url.Action("Approve", "Artworks", new { id = art.ArtworkId })">Approve</a> *@
+@*                         <a class="btn btn-danger btn-sm" href="@Url.Action("Reject", "Artworks", new { id = art.ArtworkId })">Reject</a> *@
+@*                     </td> *@
+@*                 </tr> *@
+@*             } *@
+@*         </tbody> *@
+@*     </table> *@
+@* </div> *@
+
+
+
+
+
+@model IEnumerable<AjlounProjecttt.ViewModels.PendingArtworkViewModel>
+
+@{
+    ViewData["Title"] = "الأعمال الفنية قيد المراجعة";
+}
+
+<div class="container my-4">
+    <h2>الأعمال الفنية قيد المراجعة</h2>
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>عنوان العمل</th>
+                <th>اسم الفنان</th>
+                <th>نوع العمل</th>
+                <th>الوصف</th>
+                <th>الصورة</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var art in Model)
+            {
+                <tr>
+                    <td>@art.ArtworkId</td>
+                    <td>@art.Title</td>
+                    <td>@art.ArtistName</td>
+                    <td>@art.Type</td>
+                    <td>@art.Description</td>
+                    <td>
+                        <img src="@Url.Content(art.ImageUrl)" style="width:100px;" />
+                    </td>
+                    <td>
+                        <a class="btn btn-success btn-sm" href="@Url.Action("Approve", "Artworks", new { id = art.ArtworkId })">موافقة</a>
+                        <a class="btn btn-danger btn-sm" href="@Url.Action("Reject", "Artworks", new { id = art.ArtworkId })">رفض</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
