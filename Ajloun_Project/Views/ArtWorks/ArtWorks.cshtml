@@ -24,10 +24,10 @@
 <table>
     <thead>
         <tr>
-			<th>نوع العمل الفني</th>
-            <th>وصف العمل</th>
-            <th>اسم الفنان</th>
             <th>الصورة</th>
+            <th>اسم الفنان</th>
+            <th>وصف العمل</th>
+			<th>نوع العمل الفني</th>
 
         </tr>
     </thead>
@@ -35,17 +35,19 @@
         @foreach (var art in Model)
         {
             <tr>
-                <td>@art.Type</td>
-                <td>@art.Description</td>
-                <td>@art.ArtistName</td>
                 <td>
-                <div class="zoom-wrapper">
-                    <img class="art-image" src="@art.ImageUrl" alt="صورة رقمية" />
-                    <div class="zoom-modal">
-                        <img src="@art.ImageUrl" />
+                    <div class="zoom-wrapper">
+                        <img class="art-image" src="@art.ImageUrl" alt="صورة رقمية" />
+                        <div class="zoom-modal">
+                            <img src="@art.ImageUrl" />
+                        </div>
                     </div>
-                </div>
                 </td>
+                <td>@art.ArtistName</td>
+                <td>@art.Description</td>
+                <td>@art.Type</td>
+               
+                
 
             </tr>
         }
