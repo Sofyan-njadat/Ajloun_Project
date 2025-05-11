@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Ajloun_Project.Models.BookCategory>
+@{
+    ViewData["Title"] = "إدارة التصنيفات";
+}
+
+@section Styles {
+    <style>
+        .category-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2C6E49;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2C6E49;
+            color: white;
+        }
+
+        .add-category-form {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+            .add-category-form input[type="text"] {
+                padding: 8px;
+                width: 60%;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+            }
+
+            .add-category-form button {
+                background-color: #2C6E49;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 6px;
+            }
+    </style>
+}
+
+<div class="category-container">
+    <h2>📂 إدارة تصنيفات الكتب</h2>
+
+    <!-- عرض التصنيفات -->
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم التصنيف</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.CategoryId</td>
+                    <td>@category.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- إضافة تصنيف جديد -->
+    <form asp-action="AddCategory" method="post" class="add-category-form">
+        <input type="text" name="name" placeholder="اسم التصنيف الجديد" required />
+        <button type="submit">➕ إضافة</button>
+    </form>
+</div>
