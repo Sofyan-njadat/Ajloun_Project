@@ -1,0 +1,265 @@
+:root {
+    --primary: #2C6E49;
+    --primary-light: #4c956c;
+    --primary-dark: #1a4d32;
+    --secondary: #F2E8CF;
+    --accent: #D4AF37;
+    --accent-light: #f5d76e;
+    --text-dark: #1B1B2F;
+    --text-light: #4a4a6a;
+    --background: #FAFAF7;
+    --white: #FFFFFF;
+    --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+body.user-profile-layout {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #f9f9f7 0%, #f0ede5 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+/* ???? ?????? - ????? ???? */
+.user-profile-mobile-nav {
+    display: none;
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+    color: var(--white);
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1050;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+    .user-profile-mobile-nav .user-profile-menu-toggle {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: var(--white);
+        font-size: 1.5rem;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+        .user-profile-mobile-nav .user-profile-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+/* ?????? ??????? - ????? ???? */
+.user-profile-sidebar {
+    background: linear-gradient(180deg, var(--primary-dark), var(--primary));
+    color: var(--white);
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+    position: fixed;
+    width: 280px;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: var(--shadow-lg);
+    z-index: 1040;
+    display: flex;
+    flex-direction: column;
+    border-left: 4px solid var(--accent);
+}
+
+    .user-profile-sidebar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.05"><circle cx="50" cy="50" r="40" fill="%23ffffff"/></svg>');
+        z-index: -1;
+    }
+
+    .user-profile-sidebar h5 {
+        font-weight: 700;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--accent);
+        position: relative;
+        text-align: center;
+        font-size: 1.4rem;
+    }
+
+        .user-profile-sidebar h5::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 40%;
+            height: 3px;
+            background: var(--accent-light);
+            border-radius: 3px;
+        }
+
+    .user-profile-sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem 1.2rem;
+        color: var(--white);
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        transition: var(--transition);
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+
+        .user-profile-sidebar a i {
+            margin-left: 10px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .user-profile-sidebar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: var(--transition);
+        }
+
+        .user-profile-sidebar a:hover {
+            background: rgba(212, 175, 55, 0.25);
+            transform: translateX(-5px);
+        }
+
+            .user-profile-sidebar a:hover::before {
+                right: 100%;
+            }
+
+            .user-profile-sidebar a:hover i {
+                transform: scale(1.2);
+            }
+
+        .user-profile-sidebar a.active {
+            background: var(--accent);
+            color: var(--text-dark);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+            .user-profile-sidebar a.active i {
+                color: var(--text-dark);
+            }
+
+/* ????? ??????? - ????? ???? */
+.user-profile-content {
+    padding: 3rem;
+    margin-right: 280px;
+    min-height: 100vh;
+    transition: var(--transition);
+    background-color: var(--white);
+    border-radius: 12px 0 0 12px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+}
+
+    .user-profile-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(to bottom, var(--accent), var(--primary));
+    }
+
+/* ???? ??????? - ????? ???? */
+.user-profile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1030;
+    display: none;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* ????? ???? ?????? */
+.user-profile-sidebar-mobile-active {
+    transform: translateX(0) !important;
+}
+
+.user-profile-body-sidebar-open {
+    overflow: hidden;
+}
+
+    .user-profile-body-sidebar-open .user-profile-overlay {
+        display: block;
+        opacity: 1;
+    }
+
+/* ????? ?????? */
+@media (max-width: 992px) {
+    .user-profile-mobile-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .user-profile-sidebar {
+        transform: translateX(280px);
+    }
+
+    .user-profile-content {
+        margin-right: 0;
+        padding: 1.5rem;
+        padding-top: 5rem;
+        border-radius: 0;
+    }
+}
+
+@media (min-width: 993px) {
+    .user-profile-mobile-nav {
+        display: none !important;
+    }
+
+    .user-profile-overlay {
+        display: none !important;
+    }
+}
+
+/* ??????? ?????? */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-profile-content > * {
+    animation: fadeIn 0.5s ease forwards;
+}

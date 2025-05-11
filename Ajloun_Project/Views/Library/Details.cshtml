@@ -1,0 +1,195 @@
+﻿@model Ajloun_Project.Models.Book
+@{
+    ViewData["Title"] = "تفاصيل الكتاب";
+}
+
+@section Styles {
+    <style>
+        :root {
+            --primary: #2C6E49;
+            --accent: #C7AD8F;
+            --background: #FAFAF7;
+            --text-dark: #1B1B2F;
+            --text-muted: #777;
+            --success: #4CAF50;
+            --danger: #E53935;
+        }
+
+        body {
+            background-color: var(--background);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .details-container {
+            max-width: 1000px;
+            margin: 60px auto;
+            background: white;
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .book-image {
+            flex: 1 1 45%;
+            min-height: 420px;
+            background: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .book-image img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+        .book-info {
+            flex: 1 1 55%;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .book-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .book-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .meta-value {
+            color: var(--text-muted);
+        }
+
+        .book-description {
+            margin-top: 25px;
+            background: #f1f1f1;
+            padding: 15px;
+            border-left: 4px solid var(--accent);
+            line-height: 1.8;
+        }
+
+        .availability {
+            margin: 20px 0;
+            padding: 12px;
+            background-color: #e8f5e9;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+            font-weight: 600;
+        }
+
+            .availability.unavailable {
+                background-color: #ffebee;
+                color: var(--danger);
+                border-left-color: var(--danger);
+            }
+
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+    </style>
+}
+
+<div class="details-container">
+    <div class="book-image">
+        <img style="width:100%" src="@Model.CoverImageUrl" alt="غلاف الكتاب @Model.Title" />
+    </div>
+    <div class="book-info">
+        <div class="book-title">@Model.Title</div>
+        <div class="book-subtitle">@Model.Author</div>
+
+        <div class="meta-grid">
+            <div class="meta-item">
+                <span class="meta-label">سنة النشر:</span>
+                <span class="meta-value">@Model.PublishedYear</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">الحالة:</span>
+                <span class="meta-value">@(Model.AvailableCopies > 0 ? "متاح" : "غير متاح")</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">التصنيف:</span>
+                <span class="meta-value">@Model.Category?.Name</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">عدد النسخ:</span>
+                <span class="meta-value">@Model.AvailableCopies</span>
+            </div>
+        </div>
+
+        <div class="book-description">
+            @Model.Description
+        </div>
+
+        <div class="@(Model.AvailableCopies > 0 ? "availability" : "availability unavailable")">
+            @if (Model.AvailableCopies > 0)
+            {
+                @:هذا الكتاب متاح للاستعارة (@Model.AvailableCopies نسخة متاحة)
+            }
+            else
+            {
+                @:هذا الكتاب غير متاح حالياً للاستعارة
+            }
+        </div>
+
+        <div class="action-buttons">
+            @if (Model.AvailableCopies > 0)
+            {
+                <a asp-action="Reserve" asp-route-id="@Model.BookId" class="btn btn-primary">احجز الآن</a>
+            }
+            <a href="javascript:history.back();" class="btn btn-secondary">العودة</a>
+        </div>
+    </div>
+</div>
