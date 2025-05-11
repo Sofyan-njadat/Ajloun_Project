@@ -48,13 +48,6 @@ th {
     transition: transform 0.3s ease;
 }
 
-/*    .art-image:hover {
-        transform: scale(3.5);
-        z-index: 10;
-        
-        position: relative;
-    }
-*/
 
 .zoom-wrapper {
     position: relative;
@@ -82,7 +75,7 @@ th {
         box-shadow: 0 0 20px black;
     }
 
-/* ✅ CSS-Only Trigger */
+
 .zoom-wrapper:hover .zoom-modal {
     display: flex;
 }
