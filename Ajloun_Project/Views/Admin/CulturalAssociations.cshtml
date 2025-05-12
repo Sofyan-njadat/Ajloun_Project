@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewData["Title"] = "CulturalAssociations";
+}
+
+@model List<CulturalAssociation>
+
+<h2 class="text-center mb-4">الهيئات الثقافية</h2>
+
+<table class="table table-striped text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>الاسم</th>
+            <th>رئيس الهيئة</th>
+            <th>الهاتف</th>
+            <th>المنطقة</th>
+            <th>سنة التأسيس</th>
+            <th>عدد الأعضاء</th>
+            <th>الوصف</th>
+            <th>الحالة</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var assoc in Model)
+        {
+            <tr>
+                <td>@assoc.Name</td>
+                <td>@assoc.PresidentName</td>
+                <td>@assoc.Phone</td>
+                <td>@assoc.Region</td>
+                <td>@assoc.FoundedYear</td>
+                <td>@assoc.MembersCount</td>
+                <td>@assoc.Description</td>
+                <td>
+                    @switch (assoc.Status)
+                    {
+                        case "Pending":
+                            <span class="badge bg-warning text-dark">بانتظار الموافقة</span>
+                            break;
+                        case "Approved":
+                            <span class="badge bg-success">تمت الموافقة</span>
+                            break;
+                        case "Rejected":
+                            <span class="badge bg-danger">مرفوض</span>
+                            break;
+                        default:
+                            <span class="badge bg-secondary">غير معروف</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @if (assoc.Status == "Pending")
+                    {
+                        <form asp-action="UpdateStatus" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@assoc.AssociationId" />
+                            <input type="hidden" name="status" value="Approved" />
+                            <button type="submit" class="btn btn-success btn-sm">موافقة</button>
+                        </form>
+                        <form asp-action="UpdateStatus" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@assoc.AssociationId" />
+                            <input type="hidden" name="status" value="Rejected" />
+                            <button type="submit" class="btn btn-danger btn-sm">رفض</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

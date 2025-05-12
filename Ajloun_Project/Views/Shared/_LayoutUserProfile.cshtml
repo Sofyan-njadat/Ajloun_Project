@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - حسابي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="~/css/userProfileLayout.css" />
+    @RenderSection("Styles", required: false)
+
+  
+</head>
+<body class="user-profile-layout">
+    <!-- شريط الهاتف -->
+    <div class="user-profile-mobile-nav">
+        <button class="user-profile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h5 class="mb-0">قائمة الحساب</h5>
+        <div style="width: 45px;"></div> <!-- عنصر فارغ للمحاذاة -->
+    </div>
+
+    <!-- طبقة التعتيم -->
+    <div class="user-profile-overlay"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 user-profile-sidebar">
+                <h5 class="mb-4">قائمة الحساب</h5>
+
+                <a href="@Url.Action("UserInfo", "UserProfile")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "UserInfo" ? "active" : "")">
+                    <i class="fas fa-user"></i> بياناتي
+                </a>
+                <a href="@Url.Action("EditUserInfo", "UserProfile")">
+                    <i class="fas fa-edit"></i> تعديل بيانات الحساب
+                </a>
+                <a href="@Url.Action("UserCourseApplications", "UserProfile")">
+                    <i class="fas fa-book-open"></i> طلبات الدورات
+                </a>
+                <a href="@Url.Action("UserAssociationJoinRequests", "UserProfile")">
+                    <i class="fas fa-users"></i> طلبات الجمعيات
+                </a>
+                <a href="@Url.Action("UserEventRegistrations", "UserProfile")">
+                    <i class="fas fa-calendar-check"></i> حضور الفعاليات
+                </a>
+                <a href="@Url.Action("UserBookReservations", "UserProfile")">
+                    <i class="fas fa-book"></i> حجوزات الكتب
+                </a>
+                <a href="@Url.Action("UserCraftOrders", "UserProfile")">
+                    <i class="fas fa-paint-brush"></i> طلبات الحرف
+                </a>
+                <a href="@Url.Action("UserFestivalReservations", "UserProfile")">
+                    <i class="fas fa-music"></i> المهرجانات
+                </a>
+                <a href="@Url.Action("UserCulturalEventReservations", "UserProfile")">
+                    <i class="fas fa-theater-masks"></i> الفعاليات الثقافية
+                </a>
+                <a href="@Url.Action("ChangeUserPassword", "UserProfile")">
+                    <i class="fas fa-key"></i> تغيير كلمة المرور
+                </a>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-md-9 user-profile-content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تحكم متطور مع تأثيرات
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.querySelector('.user-profile-menu-toggle');
+            const sidebar = document.querySelector('.user-profile-sidebar');
+            const overlay = document.querySelector('.user-profile-overlay');
+            const body = document.body;
+
+            if (toggleBtn && sidebar && overlay) {
+                toggleBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('user-profile-sidebar-mobile-active');
+                    body.classList.toggle('user-profile-body-sidebar-open');
+
+                    // تأثير اهتزاز بسيط عند النقر
+                    this.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 300);
+                });
+
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('user-profile-sidebar-mobile-active');
+                    body.classList.remove('user-profile-body-sidebar-open');
+                });
+            }
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

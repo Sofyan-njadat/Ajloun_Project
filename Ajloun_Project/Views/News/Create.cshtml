@@ -1,0 +1,43 @@
+﻿@model Ajloun_Project.Models.News
+@{
+    ViewData["Title"] = "إضافة خبر جديد";
+    Layout = "_Layout";
+}
+
+<div class="form-container" data-aos="fade-up">
+    <h2 class="form-title">📰 إضافة خبر جديد</h2>
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+        <div>
+            <label asp-for="Title">العنوان</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Content">المحتوى</label>
+            <textarea asp-for="Content" class="form-control"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        <!-- ✅ فقط رفع صورة جديدة -->
+        <div>
+            <label>رفع صورة الخبر</label>
+            <input type="file" name="imageFile" class="form-control" />
+        </div>
+
+        <div>
+            <label asp-for="Category">التصنيف</label>
+            <input asp-for="Category" class="form-control" />
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-submit">نشر الخبر</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
+}

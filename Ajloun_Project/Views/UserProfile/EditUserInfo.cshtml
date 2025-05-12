@@ -1,0 +1,225 @@
+﻿@model Ajloun_Project.Models.User
+
+@{
+    Layout = "~/Views/Shared/_LayoutUserProfile.cshtml";
+    ViewData["Title"] = "تعديل بيانات الحساب";
+}
+
+@section Styles {
+    <style>
+        :root {
+            --form-padding: clamp(20px, 5vw, 40px);
+            --form-radius: clamp(12px, 3vw, 16px);
+            --input-padding: clamp(10px, 3vw, 14px);
+            --font-size: clamp(14px, 4vw, 16px);
+            --heading-size: clamp(1.5rem, 6vw, 2rem);
+            --img-size: clamp(80px, 20vw, 120px);
+        }
+
+        .form-wrapper {
+            background-color: white;
+            padding: var(--form-padding);
+            border-radius: var(--form-radius);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            width: min(700px, 90vw);
+            margin: 2rem auto;
+            transition: all 0.3s ease;
+        }
+
+            .form-wrapper h2 {
+                color: var(--primary);
+                margin-bottom: 1.5rem;
+                font-size: var(--heading-size);
+                text-align: center;
+                position: relative;
+                padding-bottom: 0.5rem;
+            }
+
+                .form-wrapper h2::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    right: 50%;
+                    transform: translateX(50%);
+                    width: 80px;
+                    height: 3px;
+                    background: var(--accent);
+                    border-radius: 3px;
+                }
+
+            .form-wrapper label {
+                font-weight: bold;
+                color: var(--text-dark);
+                font-size: var(--font-size);
+                margin-bottom: 0.5rem;
+                display: block;
+            }
+
+            .form-wrapper .form-control,
+            .form-wrapper .form-select {
+                padding: var(--input-padding);
+                font-size: var(--font-size);
+                border-radius: 8px;
+                border: 1px solid #ddd;
+                transition: all 0.3s ease;
+                width: 100%;
+            }
+
+                .form-wrapper .form-control:focus,
+                .form-wrapper .form-select:focus {
+                    border-color: var(--primary);
+                    box-shadow: 0 0 0 3px rgba(44, 110, 73, 0.2);
+                }
+
+            .form-wrapper .btn-primary {
+                background-color: var(--primary);
+                border: none;
+                padding: var(--input-padding) 2rem;
+                font-size: var(--font-size);
+                font-weight: 600;
+                border-radius: 8px;
+                width: 100%;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+                .form-wrapper .btn-primary:hover {
+                    background-color: var(--primary-dark);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(44, 110, 73, 0.3);
+                }
+
+                .form-wrapper .btn-primary::after {
+                    content: '';
+                    position: absolute;
+                    top: -50%;
+                    right: -50%;
+                    width: 40px;
+                    height: 200%;
+                    background: rgba(255, 255, 255, 0.2);
+                    transform: rotate(30deg);
+                    transition: all 0.3s ease;
+                }
+
+                .form-wrapper .btn-primary:hover::after {
+                    right: 120%;
+                }
+
+        .current-img {
+            width: var(--img-size);
+            height: var(--img-size);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+            .current-img:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+        .image-upload-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+            .image-upload-container:hover .upload-icon {
+                opacity: 1;
+            }
+
+        .upload-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: var(--text-dark);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+}
+
+<div class="form-wrapper">
+    <h2>تعديل بيانات الحساب</h2>
+
+    <form asp-action="EditUserInfo" asp-controller="UserProfile" method="post" enctype="multipart/form-data">
+        <div class="text-center mb-4">
+            <div class="image-upload-container">
+                <img src="~/images/users/@Model.ProfileImage" class="current-img" id="profileImagePreview" />
+                <label for="ProfileImageFile" class="upload-icon">
+                    <i class="fas fa-camera"></i>
+                </label>
+                <input type="file" id="ProfileImageFile" name="ProfileImageFile" class="file-input" accept="image/*" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FullName">الاسم الكامل</label>
+            <input asp-for="FullName" class="form-control" required />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Phone">رقم الهاتف</label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Gender">الجنس</label>
+            <select asp-for="Gender" class="form-select">
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Address">العنوان</label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">
+            <i class="fas fa-save me-2"></i> حفظ التعديلات
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        // عرض صورة معاينة عند اختيار صورة جديدة
+        document.getElementById('ProfileImageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('profileImagePreview').src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // فتح نافذة اختيار الصورة عند النقر على الصورة
+        document.getElementById('profileImagePreview').addEventListener('click', function() {
+            document.getElementById('ProfileImageFile').click();
+        });
+    </script>
+}

@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Ajloun_Project.Models.BookReservation>
+
+@{
+    ViewData["Title"] = "إدارة الحجوزات";
+}
+
+@section Styles {
+    <style>
+        .reservations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+        }
+
+            .reservations-table th,
+            .reservations-table td {
+                padding: 12px 15px;
+                border-bottom: 1px solid #ccc;
+                text-align: center;
+            }
+
+            .reservations-table th {
+                background-color: #2C6E49;
+                color: white;
+            }
+
+            .reservations-table tr:hover {
+                background-color: #f9f9f9;
+            }
+
+        .status-select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .update-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+            .update-btn:hover {
+                background-color: #3e8e41;
+            }
+
+        h2 {
+            text-align: center;
+            color: #2C6E49;
+            margin-bottom: 20px;
+        }
+    </style>
+}
+
+<h2>📋 إدارة الحجوزات</h2>
+
+<table class="reservations-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الكتاب</th>
+            <th>الاسم الكامل</th>
+            <th>الهاتف</th>
+            <th>تاريخ الحجز</th>
+            <th>الاستلام</th>
+            <th>الإرجاع</th>
+            <th>الحالة</th>
+            <th>تعديل الحالة</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var res in Model)
+        {
+            <tr>
+                <td>@res.ReservationId</td>
+                <td>@res.Book?.Title</td>
+                <td>@res.User?.FullName</td>
+                <td>@res.User?.Phone</td>
+                <td>@res.ReservationDate?.ToString("yyyy-MM-dd")</td>
+                <td>@res.PickupDate?.ToString("yyyy-MM-dd")</td>
+                <td>@res.ReturnDate?.ToString("yyyy-MM-dd")</td>
+                <td>@res.Status</td>
+                <td>
+                    <form asp-action="UpdateStatus" method="post" style="display: flex; gap: 8px; justify-content: center;">
+                        <input type="hidden" name="id" value="@res.ReservationId" />
+                        <select name="status" class="status-select">
+                            <option value="Pending" selected="@(res.Status == "Pending")">Pending</option>
+                            <option value="Approved" selected="@(res.Status == "Approved")">Approved</option>
+                            <option value="Collected" selected="@(res.Status == "Collected")">Collected</option>
+                            <option value="Returned" selected="@(res.Status == "Returned")">Returned</option>
+                            <option value="Rejected" selected="@(res.Status == "Rejected")">Rejected</option>
+                        </select>
+                        <button type="submit" class="update-btn">تحديث</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
