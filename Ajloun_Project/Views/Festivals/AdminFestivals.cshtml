@@ -1,0 +1,225 @@
+﻿@model IEnumerable<Ajloun_Project.Models.Festival>
+
+@{
+	ViewData["Title"] = "Festivals";
+}
+
+<!-- إضافة مكتبة SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
+<div class="container-fluid">
+	<h2 class="text-center mb-4">إدارة المهرجانات</h2>
+
+	<div class="row mb-3">
+		<div class="col">
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#festivalModal">
+				<i class="fas fa-plus"></i> إضافة مهرجان جديد
+			</button>
+		</div>
+	</div>
+
+	<div class="table-responsive">
+		<table class="table table-striped table-bordered">
+			<thead class="table-dark">
+				<tr>
+					<th>العنوان</th>
+					<th>الوصف</th>
+					<th>نوع المهرجان</th>
+					<th>تاريخ البداية</th>
+					<th>تاريخ النهاية</th>
+					<th>الموقع</th>
+					<th>الصورة</th>
+					<th>الإجراءات</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var festival in Model)
+				{
+					<tr>
+						<td>@festival.Title</td>
+						<td>@festival.Description</td>
+						<td>@festival.FestivalType</td>
+						<td>@(festival.StartDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+						<td>@(festival.EndDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+						<td>@festival.Location</td>
+						<td>
+							@if (!string.IsNullOrEmpty(festival.BannerImageUrl))
+							{
+								<img src="@festival.BannerImageUrl" alt="@festival.Title" style="max-width: 100px; max-height: 100px;" />
+							}
+							else
+							{
+								<span>لا توجد صورة</span>
+							}
+						</td>
+						<td>
+							<button class="btn btn-sm btn-primary edit-festival" data-id="@festival.FestivalId">
+								<i class="fas fa-edit"></i> تعديل
+							</button>
+							<button class="btn btn-sm btn-danger delete-festival" data-id="@festival.FestivalId">
+								<i class="fas fa-trash"></i> حذف
+							</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="festivalModal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">مهرجان جديد</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+			<div class="modal-body">
+				<form id="festivalForm" enctype="multipart/form-data">
+					<input type="hidden" id="FestivalId" name="FestivalId" value="0">
+					<div class="mb-3">
+						<label for="Title" class="form-label">العنوان</label>
+						<input type="text" class="form-control" id="Title" name="Title" required>
+					</div>
+					<div class="mb-3">
+						<label for="Description" class="form-label">الوصف</label>
+						<textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
+					</div>
+					<div class="mb-3">
+						<label for="FestivalType" class="form-label">نوع المهرجان</label>
+						<input type="text" class="form-control" id="FestivalType" name="FestivalType">
+					</div>
+					<div class="mb-3">
+						<label for="StartDate" class="form-label">تاريخ البداية</label>
+						<input type="date" class="form-control" id="StartDate" name="StartDate" required>
+					</div>
+					<div class="mb-3">
+						<label for="EndDate" class="form-label">تاريخ النهاية</label>
+						<input type="date" class="form-control" id="EndDate" name="EndDate" required>
+					</div>
+					<div class="mb-3">
+						<label for="Location" class="form-label">الموقع</label>
+						<input type="text" class="form-control" id="Location" name="Location" required>
+					</div>
+					<div class="mb-3">
+						<label for="bannerImage" class="form-label">صورة المهرجان</label>
+						<input type="file" class="form-control" id="bannerImage" name="bannerImage" accept="image/*">
+						<div id="currentImage" class="mt-2" style="display: none;">
+							<img src="" alt="الصورة الحالية" style="max-width: 200px; max-height: 200px;" />
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+				<button type="button" class="btn btn-primary" id="saveFestival">حفظ</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			// تحميل بيانات المهرجان للتعديل
+			$('.edit-festival').click(function () {
+				var id = $(this).data('id');
+				$.get('/Admin/Festivals/Get/' + id, function (data) {
+					$('#FestivalId').val(data.festivalId);
+					$('#Title').val(data.title);
+					$('#Description').val(data.description);
+					$('#FestivalType').val(data.festivalType);
+					$('#StartDate').val(data.startDate);
+					$('#EndDate').val(data.endDate);
+					$('#Location').val(data.location);
+
+					if (data.bannerImageUrl) {
+						$('#currentImage').show();
+						$('#currentImage img').attr('src', data.bannerImageUrl);
+					} else {
+						$('#currentImage').hide();
+					}
+
+					$('#festivalModal').modal('show');
+				});
+			});
+
+			// حذف مهرجان مع SweetAlert2
+			$('.delete-festival').click(function () {
+				var id = $(this).data('id');
+				Swal.fire({
+					title: 'هل أنت متأكد؟',
+					text: "لا يمكن التراجع عن عملية الحذف!",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#d33',
+					cancelButtonColor: '#3085d6',
+					confirmButtonText: 'نعم، احذف!',
+					cancelButtonText: 'إلغاء'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url: '/Admin/Festivals/Delete/' + id,
+							type: 'DELETE',
+							success: function () {
+								Swal.fire(
+									'تم الحذف!',
+									'تم حذف المهرجان بنجاح.',
+									'success'
+								).then(() => {
+									location.reload();
+								});
+							},
+							error: function () {
+								Swal.fire(
+									'خطأ!',
+									'حدث خطأ أثناء حذف المهرجان.',
+									'error'
+								);
+							}
+						});
+					}
+				});
+			});
+
+			// حفظ المهرجان
+			$('#saveFestival').click(function () {
+				var formData = new FormData($('#festivalForm')[0]);
+
+				$.ajax({
+					url: '/Admin/Festivals/Create',
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (response) {
+						if (response.success) {
+							Swal.fire({
+								title: 'تم الحفظ!',
+								text: 'تم حفظ المهرجان بنجاح.',
+								icon: 'success'
+							}).then(() => {
+								location.reload();
+							});
+						} else {
+							Swal.fire({
+								title: 'خطأ!',
+								text: response.message || 'حدث خطأ أثناء حفظ المهرجان.',
+								icon: 'error'
+							});
+						}
+					},
+					error: function (xhr) {
+						Swal.fire({
+							title: 'خطأ!',
+							text: 'حدث خطأ أثناء حفظ المهرجان.',
+							icon: 'error'
+						});
+					}
+				});
+			});
+		});
+	</script>
+}

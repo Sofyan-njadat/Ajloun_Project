@@ -1,0 +1,212 @@
+﻿@model IEnumerable<Ajloun_Project.Models.CulturalEvent>
+
+@{
+    ViewData["Title"] = "AdminEvents";
+}
+
+
+<!-- إضافة مكتبة SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
+<div class="container-fluid">
+    <h2 class="text-center mb-4">إدارة الفعاليات</h2>
+
+    <div class="row mb-3">
+        <div class="col">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">
+                <i class="fas fa-plus"></i> إضافة فعالية جديدة
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>العنوان</th>
+                    <th>الوصف</th>
+                    <th>تاريخ الفعالية</th>
+                    <th>الموقع</th>
+                    <th>الصورة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var culturalEvent in Model)
+                {
+                    <tr>
+                        <td>@culturalEvent.Title</td>
+                        <td>@culturalEvent.Description</td>
+                        <td>@(culturalEvent.Date?.ToString("yyyy-MM-dd") ?? "-")</td>
+                        <td>@culturalEvent.Location</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(culturalEvent.PosterUrl))
+                            {
+                                <img src="@culturalEvent.PosterUrl" alt="@culturalEvent.Title" style="max-width: 100px; max-height: 100px;" />
+                            }
+                            else
+                            {
+                                <span>لا توجد صورة</span>
+                            }
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary edit-event" data-id="@culturalEvent.EventId">
+                                <i class="fas fa-edit"></i> تعديل
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-event" data-id="@culturalEvent.EventId">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="eventModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">فعالية جديدة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm" enctype="multipart/form-data">
+                    <input type="hidden" id="EventId" name="EventId" value="0">
+                    <div class="mb-3">
+                        <label for="Title" class="form-label">العنوان</label>
+                        <input type="text" class="form-control" id="Title" name="Title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">الوصف</label>
+                        <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Date" class="form-label">تاريخ الفعالية</label>
+                        <input type="date" class="form-control" id="Date" name="Date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Location" class="form-label">الموقع</label>
+                        <input type="text" class="form-control" id="Location" name="Location" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">صورة الفعالية</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        <div id="currentImage" class="mt-2" style="display: none;">
+                            <img src="" alt="الصورة الحالية" style="max-width: 200px; max-height: 200px;" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="saveEvent">حفظ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // تحميل بيانات الفعالية للتعديل
+            $('.edit-event').click(function () {
+                var id = $(this).data('id');
+                $.get('/Admin/Events/Get/' + id, function (data) {
+                    $('#EventId').val(data.eventId);
+                    $('#Title').val(data.title);
+                    $('#Description').val(data.description);
+                    $('#Date').val(data.eventDate);
+                    $('#Location').val(data.location);
+
+                    if (data.imageUrl) {
+                        $('#currentImage').show();
+                        $('#currentImage img').attr('src', data.imageUrl);
+                    } else {
+                        $('#currentImage').hide();
+                    }
+
+                    $('#eventModal').modal('show');
+                });
+            });
+
+            // حذف فعالية مع SweetAlert2
+            $('.delete-event').click(function () {
+                var id = $(this).data('id');
+                Swal.fire({
+                    title: 'هل أنت متأكد؟',
+                    text: "لا يمكن التراجع عن عملية الحذف!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'نعم، احذف!',
+                    cancelButtonText: 'إلغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/Admin/Events/Delete/' + id,
+                            type: 'DELETE',
+                            success: function () {
+                                Swal.fire(
+                                    'تم الحذف!',
+                                    'تم حذف الفعالية بنجاح.',
+                                    'success'
+                                ).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function () {
+                                Swal.fire(
+                                    'خطأ!',
+                                    'حدث خطأ أثناء حذف الفعالية.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            // حفظ الفعالية
+            $('#saveEvent').click(function () {
+                var formData = new FormData($('#eventForm')[0]);
+
+                $.ajax({
+                    url: '/Admin/Events/Create',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: 'تم الحفظ!',
+                                text: 'تم حفظ الفعالية بنجاح.',
+                                icon: 'success'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'خطأ!',
+                                text: response.message || 'حدث خطأ أثناء حفظ الفعالية.',
+                                icon: 'error'
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            title: 'خطأ!',
+                            text: 'حدث خطأ أثناء حفظ الفعالية.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+} 
