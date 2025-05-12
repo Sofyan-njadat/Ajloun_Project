@@ -1,0 +1,120 @@
+﻿@model dynamic
+@{
+    var course = ViewBag.Course as Ajloun_Project.Models.Course;
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقديم طلب لـ @course?.Name - معهد الفنون الجميلة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #355E3B;
+            --secondary: #A9BA9D;
+            --accent: #E3D26F;
+            --dark: #1E2F23;
+            --light: #EFF5EC;
+            --text: #2D2D2D;
+            --text-light: #6B6B6B;
+            --white: #FFFFFF;
+            --black: #000000;
+            --overlay: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-[var(--light)] font-sans text-[var(--text)]">
+    <div class="container mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold text-[var(--primary)] mb-8 text-center">تقديم طلب لـ @course?.Name</h1>
+        <div class="bg-[var(--white)] rounded-lg shadow-lg p-8 max-w-md mx-auto">
+            <form asp-action="Apply" asp-controller="Category" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="courseId" value="@course?.CourseId" />
+                <div class="mb-6">
+                    <p class="text-[var(--text-light)]">الفئة العمرية المطلوبة: @course?.AgeRange سنة</p>
+                </div>
+                <div class="mb-6">
+                    <label for="birthDate" class="block text-[var(--text)] font-medium mb-2">تاريخ الميلاد (للتحقق)</label>
+                    <input type="date" id="birthDate" name="birthDate" class="w-full p-2 border border-[var(--text-light)] rounded-lg" />
+                    <p id="ageWarning" class="text-red-500 text-sm mt-1 hidden">عمرك غير مناسب لهذا البرنامج.</p>
+                </div>
+                <div class="mb-6">
+                    <label for="birthCertificateImage" class="block text-[var(--text)] font-medium mb-2">صورة شهادة الميلاد</label>
+                    <input type="file" id="birthCertificateImage" name="birthCertificateImage" accept="image/*" class="w-full p-2 border border-[var(--text-light)] rounded-lg" required />
+                </div>
+                <div class="mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="agreement" value="true" class="mr-2" required />
+                        <span class="text-[var(--text)]">أوافق على الشروط والأحكام</span>
+                    </label>
+                    <input type="hidden" name="agreement" value="false" />
+                </div>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="text-red-500 mb-6">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+                <button type="submit" id="submitButton" class="w-full bg-[var(--primary)] text-[var(--white)] py-2 rounded-lg hover:bg-[var(--dark)] transition-colors" disabled>إرسال الطلب</button>
+                <a href="@Url.Action("Index", "Category")" class="block text-center mt-4 text-[var(--primary)] hover:underline">العودة إلى البرامج</a>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const ageRange = '@course?.AgeRange';
+        const submitButton = document.getElementById('submitButton');
+        const birthDateInput = document.getElementById('birthDate');
+        const ageWarning = document.getElementById('ageWarning');
+
+        function validateAge() {
+            const birthDateValue = birthDateInput.value;
+            if (!birthDateValue) {
+                ageWarning.classList.add('hidden');
+                submitButton.disabled = true;
+                return;
+            }
+
+            const birthDate = new Date(birthDateValue);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            if (new Date(today.getFullYear(), today.getMonth(), today.getDate()) < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate())) {
+                age--;
+            }
+
+            const ranges = ageRange.split(', ');
+            let isValid = false;
+            for (let range of ranges) {
+                const [min, max] = range.split('-').map(Number);
+                if (age >= min && age <= max) {
+                    isValid = true;
+                    break;
+                }
+            }
+
+            if (isValid) {
+                ageWarning.classList.add('hidden');
+                submitButton.disabled = false;
+            } else {
+                ageWarning.textContent = `عمرك (${age} سنة) غير مناسب. العمر المطلوب: ${ageRange} سنة.`;
+                ageWarning.classList.remove('hidden');
+                submitButton.disabled = true;
+            }
+        }
+
+        birthDateInput.addEventListener('change', validateAge);
+
+        // Ensure the form handles the checkbox correctly
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const agreementCheckbox = document.querySelector('input[name="agreement"][type="checkbox"]');
+            if (!agreementCheckbox.checked) {
+                e.preventDefault();
+                alert('يجب الموافقة على الشروط والأحكام.');
+            }
+        });
+    </script>
+</body>
+</html>

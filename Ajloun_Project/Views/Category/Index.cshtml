@@ -1,0 +1,366 @@
+﻿@model List<Ajloun_Project.Models.Course>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدورات المتاحة في مديرية الثقافة - عجلون</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #355E3B;
+            --secondary: #A9BA9D;
+            --accent: #E3D26F;
+            --dark: #1E2F23;
+            --light: #EFF5EC;
+            --text: #2D2D2D;
+            --text-light: #6B6B6B;
+            --white: #FFFFFF;
+            --black: #000000;
+            --overlay: rgba(0, 0, 0, 0.75);
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #e7ece6 100%);
+            color: var(--text);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+            /* خلفية ديكورية خفيفة */
+            body::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('https://www.transparenttextures.com/patterns/canvas.png');
+                opacity: 0.05;
+                z-index: -1;
+            }
+
+        /* تحسين البطاقات */
+        .course-card {
+            background-color: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+        }
+
+            .course-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            }
+
+            .course-card img {
+                width: 100%;
+                height: 220px;
+                object-fit: cover;
+                transition: transform 0.4s ease;
+            }
+
+            .course-card:hover img {
+                transform: scale(1.1);
+            }
+
+            /* تأثير Overlay على الصور */
+            .course-card .image-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 220px;
+                background: rgba(0, 0, 0, 0.4);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .course-card:hover .image-overlay {
+                opacity: 1;
+            }
+
+            .course-card .image-overlay span {
+                color: var(--white);
+                font-size: 1.2rem;
+                font-weight: 500;
+            }
+
+            .course-card h2 {
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: var(--primary);
+                margin-bottom: 0.75rem;
+                position: relative;
+            }
+
+                .course-card h2::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -4px;
+                    right: 0;
+                    width: 50px;
+                    height: 3px;
+                    background-color: var(--accent);
+                }
+
+            .course-card p {
+                font-size: 1rem;
+                color: var(--text-light);
+                margin-bottom: 1.25rem;
+            }
+
+            .course-card button {
+                background: linear-gradient(90deg, var(--primary), var(--accent));
+                color: var(--white);
+                font-weight: 600;
+                padding: 0.85rem;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+                .course-card button:hover {
+                    background: var(--dark);
+                    transform: translateY(-2px);
+                }
+
+                .course-card button::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 0;
+                    height: 0;
+                    background: rgba(255, 255, 255, 0.2);
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    transition: width 0.6s ease, height 0.6s ease;
+                }
+
+                .course-card button:hover::before {
+                    width: 300px;
+                    height: 300px;
+                }
+
+        /* تحسين النموذج (Modal) */
+        #applyModal {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay);
+            z-index: 100;
+        }
+
+            #applyModal.show {
+                display: flex;
+            }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.4s ease;
+            position: relative;
+        }
+
+         fadeIn {
+            from
+
+        {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        }
+
+        .modal-content h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-content label {
+            font-size: 1rem;
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-content input[type="file"] {
+            padding: 0.5rem;
+            border: 1px solid var(--text-light);
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .modal-content input[type="checkbox"] {
+            accent-color: var(--primary);
+        }
+
+        .modal-content button {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: var(--white);
+            padding: 0.85rem;
+            border-radius: 10px;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+            .modal-content button:hover {
+                background: var(--dark);
+                transform: translateY(-2px);
+            }
+
+            .modal-content button[type="button"] {
+                background: var(--text-light);
+                margin-top: 0.75rem;
+            }
+
+                .modal-content button[type="button"]:hover {
+                    background: var(--dark);
+                }
+
+            /* تأثير التحميل */
+            .modal-content button[type="submit"]:disabled {
+                background: var(--text-light);
+                cursor: not-allowed;
+                position: relative;
+            }
+
+                .modal-content button[type="submit"]:disabled::after {
+                    content: '';
+                    position: absolute;
+                    width: 20px;
+                    height: 20px;
+                    border: 2px solid var(--white);
+                    border-top: 2px solid transparent;
+                    border-radius: 50%;
+                    animation: spin 0.8s linear infinite;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+
+         spin {
+            to
+
+        {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-center text-[var(--primary)] mb-12 relative">
+            الدورات المتاحة في مديرية الثقافة - عجلون
+            <span class="block w-24 h-1 bg-[var(--accent)] mx-auto mt-2"></span>
+        </h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            @foreach (var course in Model)
+            {
+                <div class="course-card">
+                    <div class="relative">
+                        <img src="@course.Courseimg" alt="@course.Name">
+                        <div class="image-overlay">
+                            <span>اكتشف @course.Name</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h2>@course.Name</h2>
+                        <p>@course.Description</p>
+                        <p class="font-medium">الفئة العمرية: @course.AgeRange سنة</p>
+                        <button onclick="openModal(@course.CourseId, '@course.Name')">تقدم بطلب</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="applyModal" class="hidden">
+        <div class="modal-content">
+            <h2 id="modalCourseName"></h2>
+            <form id="applyForm" asp-action="Apply" asp-controller="Category" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="courseId" id="courseId">
+
+                <div class="mb-6">
+                    <label for="birthCertificateImage">
+                        <i class="fas fa-file-image text-[var(--primary)]"></i>
+                        صورة شهادة الميلاد
+                    </label>
+                    <input type="file" id="birthCertificateImage" name="birthCertificateImage" accept="image/*" required>
+                </div>
+
+                <div class="mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="agreement" class="mr-2" required>
+                        <span><i class="fas fa-check-circle text-[var(--primary)] mr-1"></i>أوافق على الشروط والأحكام</span>
+                    </label>
+                </div>
+
+                <button type="submit" id="submitBtn">إرسال الطلب</button>
+                <button type="button" onclick="closeModal()">إغلاق</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal(courseId, courseName) {
+            document.getElementById('applyModal').classList.add('show');
+            document.getElementById('modalCourseName').textContent = courseName;
+            document.getElementById('courseId').value = courseId;
+        }
+
+        function closeModal() {
+            document.getElementById('applyModal').classList.remove('show');
+            document.getElementById('applyForm').reset();
+        }
+
+        // تأثير التحميل عند إرسال النموذج
+        document.getElementById('applyForm').addEventListener('submit', function (e) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الإرسال...';
+        });
+    </script>
+
+    @if (TempData["Success"] != null)
+    {
+        <script>
+            alert('@TempData["Success"]');
+        </script>
+    }
+</body>
+</html>
