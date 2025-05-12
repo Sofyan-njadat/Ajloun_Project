@@ -1,0 +1,173 @@
+﻿@model IEnumerable<Ajloun_Project.Models.CulturalEventReservation>
+@inject Ajloun_Project.Models.MyDbContext _context
+
+@{
+    Layout = "~/Views/Shared/_LayoutUserProfile.cshtml";
+    ViewData["Title"] = "حجوزات الفعاليات الثقافية";
+
+    int userId = Context.Session.GetInt32("userId") ?? 1;
+    var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+}
+
+@section Styles {
+    <style>
+        .events-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .event-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 16px;
+            border-right: 4px solid var(--accent);
+            transition: all 0.2s ease;
+        }
+
+            .event-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .event-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+
+            .status-badge i {
+                margin-left: 6px;
+            }
+
+        .status-pending {
+            background-color: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-approved {
+            background-color: #D4EDDA;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background-color: #F8D7DA;
+            color: #721c24;
+        }
+
+        .event-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+            .meta-item i {
+                margin-left: 6px;
+                color: var(--primary-light);
+            }
+
+        .empty-state {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: var(--primary-light);
+            margin-bottom: 12px;
+        }
+    </style>
+}
+
+<h2 class="page-title">حجوزاتي في الفعاليات الثقافية</h2>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-calendar-alt"></i>
+        </div>
+        <p>لا يوجد أي حجوزات حالياً</p>
+    </div>
+}
+else
+{
+    foreach (var item in Model)
+    {
+        <div class="event-card">
+            <div class="event-header">
+                <h3 class="event-title">@item.Event?.Title ?? "فعالية غير معروفة"</h3>
+                <div class="status-badge @(item.Status switch {
+                    "Approved" => "status-approved",
+                    "Rejected" => "status-rejected",
+                    _ => "status-pending"
+                })">
+                    @switch (item.Status)
+                    {
+                        case "Pending":
+                            <i class="fas fa-clock"></i>
+                            break;
+                        case "Approved":
+                            <i class="fas fa-check-circle"></i>
+                            break;
+                        case "Rejected":
+                            <i class="fas fa-times-circle"></i>
+                            break;
+                    }
+                    @item.Status
+                </div>
+            </div>
+            <div class="event-meta">
+                <div class="meta-item">
+                    <i class="fas fa-tag"></i>
+                    <span>النوع: @item.Event?.EventType ?? "-"</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>تاريخ الفعالية: @(item.Event?.Date?.ToString("dd/MM/yyyy") ?? "-")</span>
+                </div>
+                <div class="meta-item">
+                    <i class="far fa-calendar-check"></i>
+                    <span>تاريخ الحجز: @(item.ReservationDate?.ToString("dd/MM/yyyy") ?? "-")</span>
+                </div>
+            </div>
+        </div>
+    }
+}

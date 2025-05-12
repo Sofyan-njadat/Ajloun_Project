@@ -1,0 +1,131 @@
+﻿@model IEnumerable<Ajloun_Project.Models.AssocEventRegistration>
+@inject Ajloun_Project.Models.MyDbContext _context
+
+@{
+    Layout = "~/Views/Shared/_LayoutUserProfile.cshtml";
+    ViewData["Title"] = "مشاركتي في فعاليات الجمعيات";
+
+    int userId = Context.Session.GetInt32("userId") ?? 1;
+    var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+}
+
+@section Styles {
+    <style>
+        :root {
+            --primary: #2C6E49;
+            --primary-light: #4c956c;
+            --accent: #D4AF37;
+            --accent-light: #f5d76e;
+            --text-dark: #1B1B2F;
+            --text-light: #4a4a6a;
+        }
+
+        .assoc-events-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .assoc-event-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 16px;
+            border-right: 4px solid var(--accent);
+            transition: all 0.2s ease;
+        }
+
+            .assoc-event-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            }
+
+        .assoc-event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .assoc-event-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .assoc-event-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+            .meta-item i {
+                margin-left: 6px;
+                color: var(--primary-light);
+            }
+
+        .empty-state {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: var(--primary-light);
+            margin-bottom: 12px;
+        }
+    </style>
+}
+
+<h2 class="page-title">مشاركتي في فعاليات الجمعيات</h2>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <p>لا يوجد أي مشاركات حالياً</p>
+    </div>
+}
+else
+{
+    foreach (var item in Model)
+    {
+        <div class="assoc-event-card">
+            <div class="assoc-event-header">
+                <h3 class="assoc-event-title">@item.AssocEvent?.Title ?? "فعالية غير معروفة"</h3>
+            </div>
+            <div class="assoc-event-meta">
+                <div class="meta-item">
+                    <i class="far fa-calendar-check"></i>
+                    <span>تاريخ الحجز: @(item.RegisteredAt?.ToString("dd/MM/yyyy") ?? "-")</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>تاريخ الفعالية: @(item.AssocEvent?.Date.ToString("dd/MM/yyyy") ?? "-")</span>
+                </div>
+            </div>
+        </div>
+    }
+}

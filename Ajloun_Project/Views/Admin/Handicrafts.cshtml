@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Ajloun_Project.Models.Handicraft>
+
+@{
+    ViewData["Title"] = "المنتجات";
+}
+<form id="deleteForm" method="post" asp-controller="Admin" asp-action="Delete">
+    @Html.AntiForgeryToken()
+</form>
+
+<h2>المنتجات</h2>
+
+<p>
+    <a href="@Url.Action("CreateHandicrafts", "Admin")" class="btn btn-primary">إضافة منتج جديد</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>العنوان</th>
+            <th>السعر</th>
+            <th>المخزون</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var handicraft in Model)
+        {
+            <tr>
+                <td>@handicraft.Title</td>
+                <td>@handicraft.Price</td>
+                <td>@handicraft.Stock</td>
+                <td>@handicraft.Category</td>
+                <td>@handicraft.ImageUrl</td>
+                <td>@handicraft.Description</td>
+            <td>
+                <a href="@Url.Action("Details", "Handicrafts", new { id = handicraft.CraftId })" class="btn btn-info">تفاصيل</a>
+                    <button onclick="confirmDelete(@handicraft.CraftId)" class="btn btn-danger">حذف</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: "لن تتمكن من التراجع عن هذا!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'نعم، احذف!',
+            cancelButtonText: 'إلغاء'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('deleteForm');
+
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'id';
+                input.value = id;
+
+                form.appendChild(input);
+                form.submit();
+            }
+        });
+    }
+</script>

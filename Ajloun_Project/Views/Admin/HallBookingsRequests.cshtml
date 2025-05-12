@@ -1,0 +1,72 @@
+﻿@model List<HallBooking>
+
+@{
+    ViewData["Title"] = "طلبات حجز القاعات";
+}
+
+<h2 class="text-center mb-4">طلبات حجز القاعات</h2>
+
+<table class="table table-bordered text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>رقم الطلب</th>
+            <th>نوع القاعة</th>
+            <th>الجهة الطالبة</th>
+            <th>تاريخ المناسبة</th>
+            <th>من</th>
+            <th>إلى</th>
+            <th>نوع المناسبة</th>
+            <th>عنوان المناسبة</th>
+            <th>اسم المسؤول</th>
+            <th>التاريخ</th>
+            <th>الحالة</th>
+            <th>إدارة</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BookingId</td>
+                <td>@item.HallType</td>
+                <td>@item.RequestingParty</td>
+                <td>@item.EventDate?.ToString("yyyy-MM-dd")</td>
+                <td>@item.StartTime</td>
+                <td>@item.EndTime</td>
+                <td>@item.EventType</td>
+                <td>@item.EventTitle</td>
+                <td>@item.ResponsibleName</td>
+                <td>@item.RequestDate?.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @switch (item.Status)
+                    {
+                        case "Pending":
+                            <span class="badge bg-warning text-dark">بانتظار الموافقة</span>
+                            break;
+                        case "Approved":
+                            <span class="badge bg-success">تمت الموافقة</span>
+                            break;
+                        case "Rejected":
+                            <span class="badge bg-danger">مرفوض</span>
+                            break;
+                        default:
+                            <span class="badge bg-secondary">غير معروف</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    <form asp-action="UpdateHallBookingStatus" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@item.BookingId" />
+                        <input type="hidden" name="status" value="Approved" />
+                        <button type="submit" class="btn btn-success btn-sm">موافقة</button>
+                    </form>
+                    <form asp-action="UpdateHallBookingStatus" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@item.BookingId" />
+                        <input type="hidden" name="status" value="Rejected" />
+                        <button type="submit" class="btn btn-danger btn-sm">رفض</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

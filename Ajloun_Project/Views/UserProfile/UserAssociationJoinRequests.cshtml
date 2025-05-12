@@ -1,0 +1,215 @@
+﻿@model IEnumerable<Ajloun_Project.Models.AssociationJoinRequest>
+@inject Ajloun_Project.Models.MyDbContext _context
+
+@{
+    Layout = "~/Views/Shared/_LayoutUserProfile.cshtml";
+    ViewData["Title"] = "طلبات الانضمام للجمعيات";
+
+    int userId = Context.Session.GetInt32("userId") ?? 1;
+    var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+}
+
+@section Styles {
+    <style>
+        :root {
+            --primary: #2C6E49;
+            --primary-light: #4c956c;
+            --accent: #D4AF37;
+            --accent-light: #f5d76e;
+            --text-dark: #1B1B2F;
+            --text-light: #4a4a6a;
+            --transition: all 0.3s ease;
+        }
+
+        .requests-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .empty-state {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+
+        .request-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .request-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .request-title {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            transition: var(--transition);
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .request-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .meta-item i {
+            margin-left: 0.5rem;
+            color: var(--primary-light);
+        }
+
+        .request-date {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            background: var(--accent-light);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+       
+    </style>
+}
+
+<div class="requests-container">
+    <h1 class="page-title">طلبات الانضمام للجمعيات</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-inbox"></i>
+            </div>
+            <h3>لا يوجد أي طلبات حالياً</h3>
+            <p class="text-muted">لم تقم بتقديم أي طلبات انضمام للجمعيات حتى الآن</p>
+        </div>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <div class="request-card">
+               
+                <div class="request-header">
+                    <h3 class="request-title">
+                        <i class="fas fa-users"></i> @(item.Association?.Name ?? "جمعية غير معروفة")
+                    </h3>
+                    <div class="status-badge @(item.Status switch {
+                        "Approved" => "status-approved",
+                        "Rejected" => "status-rejected",
+                        _ => "status-pending"
+                    })">
+                        @switch(item.Status)
+                        {
+                            case "Pending":
+                                <i class="fas fa-clock"></i>
+                                break;
+                            case "Approved":
+                                <i class="fas fa-check-circle"></i>
+                                break;
+                            case "Rejected":
+                                <i class="fas fa-times-circle"></i>
+                                break;
+                        }
+                        @item.Status
+                    </div>
+                </div>
+                
+                <div class="request-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>المنطقة: @(item.Association?.Region ?? "-")</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-phone"></i>
+                        <span>رقم الهاتف: @(item.Association?.Phone ?? "-")</span>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
