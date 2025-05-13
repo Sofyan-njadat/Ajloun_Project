@@ -1,0 +1,600 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>سردية عجلون - رحلة عبر الزمن</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/hazem/TimeLine.css">
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="loader"></div>
+        <div class="loading-text">جارِ تحميل رحلة عجلون عبر الزمن...</div>
+    </div>
+
+    <div id="scene-container"></div>
+    <div class="overlay"></div>
+
+    <div id="timeline-progress"></div>
+
+    <div class="hero" id="hero">
+        <h1 class="hero-title">عجلون عبر الزمن</h1>
+        <h2 class="hero-subtitle">رحلة تاريخية في أعماق الحضارة</h2>
+        <div class="scroll-indicator" id="scrollIndicator">
+            <div class="scroll-text">اكتشف الرحلة</div>
+            <div class="scroll-arrow"></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="timeline">
+            <div class="timeline-center"></div>
+
+            <div class="era theme-era-1" id="era-1">
+                <div class="era-point"></div>
+                <div class="era-date">العصر الحجري - 3000 ق.م</div>
+                <div class="era-content theme-era-1">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRibgODqMFNZ4Tsl-J0O78zaZnvdx_mVAvSwhxFb6uc9tIdOQFNX6hmFQYM24mXzzQ_oY8&usqp=CAU" alt="البدايات الأولى في عجلون" class="era-image">
+                    <h2 class="era-title">البدايات الأولى</h2>
+                    <div class="era-period">العصر الحجري - 3000 ق.م</div>
+                    <p class="era-text">تأسست عجلون في العصور القديمة كحصن طبيعي بفضل موقعها الجبلي المميز. تشير الأدلة الأثرية إلى وجود استيطان بشري في المنطقة يعود إلى العصر الحجري الحديث. كانت الحياة تعتمد على الصيد وجمع الثمار قبل أن تتحول إلى الزراعة البدائية في السهول المحيطة بالمنطقة.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">الموقع الاستراتيجي</h4>
+                            <p class="detail-text">الطبيعة الجبلية والارتفاع الكبير جعل من عجلون موقعاً دفاعياً محصناً بشكل طبيعي</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">الحياة البدائية</h4>
+                            <p class="detail-text">اعتمد السكان على الصيد والحرف اليدوية البسيطة وزراعة المحاصيل في الأودية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-2" id="era-2">
+                <div class="era-point"></div>
+                <div class="era-date">63 ق.م - 324 م</div>
+                <div class="era-content theme-era-2">
+                    <img src="https://www.ajlounnews.net/wp-content/uploads/2021/02/33333333-1024x682.jpg" alt="العصر الروماني في عجلون" class="era-image">
+                    <h2 class="era-title">العصر الروماني</h2>
+                    <div class="era-period">63 ق.م - 324 م</div>
+                    <p class="era-text">خلال الحكم الروماني، أصبحت عجلون جزءًا من مقاطعة العربية البترائية. تم بناء العديد من المعابد والطرق التي لا تزال آثارها ظاهرة حتى اليوم. كانت المنطقة محطة مهمة على طريق التجارة بين الشام والجزيرة العربية، وشهدت ازدهاراً اقتصادياً وثقافياً كبيراً.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">الطرق الرومانية</h4>
+                            <p class="detail-text">تم شق شبكة من الطرق المعبدة التي ربطت عجلون بباقي أنحاء الإمبراطورية</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">الهندسة المعمارية</h4>
+                            <p class="detail-text">شيدت المعابد والأعمدة والمدرجات وفق الطراز الروماني الكلاسيكي</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-3" id="era-3">
+                <div class="era-point"></div>
+                <div class="era-date">636 م - 1099 م</div>
+                <div class="era-content theme-era-3">
+                    <img src="https://marayana.com/wp-content/uploads/2020/10/f_edited.jpg" alt="الفتح الإسلامي في عجلون" class="era-image">
+                    <h2 class="era-title">الفتح الإسلامي</h2>
+                    <div class="era-period">636 م - 1099 م</div>
+                    <p class="era-text">مع الفتح الإسلامي في القرن السابع الميلادي، دخلت عجلون في نطاق الدولة الإسلامية. أصبحت المنطقة مركزًا للعلم والثقافة في العصر الأموي. تم بناء المساجد والمدارس وازدهرت الزراعة بفضل نظم الري المتطورة التي أدخلها العرب المسلمون، وتطورت الحرف اليدوية.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">المراكز العلمية</h4>
+                            <p class="detail-text">أصبحت عجلون مركزاً للعلم والثقافة مع إنشاء الكتاتيب والمدارس</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">تطور الزراعة</h4>
+                            <p class="detail-text">تم إدخال نظم الري المتطورة وزراعة محاصيل جديدة كالزيتون والعنب</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-4" id="era-4">
+                <div class="era-point"></div>
+                <div class="era-date">1099 م - 1187 م</div>
+                <div class="era-content theme-era-4">
+                    <img src="https://hikayatajloun.com/wp-content/uploads/2023/10/%D9%82%D9%84%D8%B9%D8%A9-%D8%B5%D9%84%D8%A7%D8%AD-%D8%A7%D9%84%D8%AF%D9%8A%D9%86-%D8%A7%D9%84%D8%A3%D9%8A%D9%88%D8%A8%D9%8A.jpg" alt="حقبة الصليبيين في عجلون" class="era-image">
+                    <h2 class="era-title">حقبة الصليبيين</h2>
+                    <div class="era-period">1099 م - 1187 م</div>
+                    <p class="era-text">خلال القرن الثاني عشر، شهدت عجلون صراعات بين القوات الصليبية والجيوش الإسلامية. تم بناء قلعة عجلون الشهيرة في هذه الفترة بأمر من صلاح الدين الأيوبي لتكون حصنًا ضد الصليبيين ونقطة مراقبة على طرق المواصلات. لعبت القلعة دوراً محورياً في صد الهجمات وحماية المنطقة.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">قلعة عجلون</h4>
+                            <p class="detail-text">شُيدت قلعة الربض عام 1184م بأمر من عز الدين أسامة، أحد قادة صلاح الدين</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">أهمية استراتيجية</h4>
+                            <p class="detail-text">كانت القلعة مركزاً للدفاع ومراقبة طرق المواصلات ووادي الأردن</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-5" id="era-5">
+                <div class="era-point"></div>
+                <div class="era-date">1250 م - 1517 م</div>
+                <div class="era-content theme-era-5">
+                    <img src="https://www.ich.gov.jo/sites/default/files/styles/large/public/left1.jpg?itok=R97IB14C" alt="العصر المملوكي في عجلون" class="era-image">
+                    <h2 class="era-title">العصر المملوكي</h2>
+                    <div class="era-period">1250 م - 1517 م</div>
+                    <p class="era-text">ازدهرت عجلون في العصر المملوكي حيث أصبحت محطة مهمة على طريق الحج الشامي. تم بناء المدارس والخانات وازدهرت التجارة في المنطقة. كانت عجلون مركزًا إداريًا مهمًا يشرف على القرى والبلدات المجاورة، وتميزت العمارة في هذه الفترة بالزخارف الإسلامية الجميلة.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">الحركة التجارية</h4>
+                            <p class="detail-text">أصبحت عجلون محطة على طريق التجارة وقوافل الحج بين دمشق والحرمين</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">فن العمارة</h4>
+                            <p class="detail-text">تميزت العمارة المملوكية بالأقواس والقباب والزخارف الهندسية والنباتية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-6" id="era-6">
+                <div class="era-point"></div>
+                <div class="era-date">1517 م - 1918 م</div>
+                <div class="era-content theme-era-6">
+                    <img src="http://www.jordanhistory.com/jhlibrary_thumb/cb0450ed-31f7-11e5-9088-005056a87fe8.jpg" alt="الحكم العثماني في عجلون" class="era-image">
+                    <h2 class="era-title">الحكم العثماني</h2>
+                    <div class="era-period">1517 م - 1918 م</div>
+                    <p class="era-text">دخلت عجلون تحت الحكم العثماني في القرن السادس عشر. أصبحت مركزًا إداريًا مهمًا وشهدت تطورًا في الزراعة وخاصة زراعة الزيتون. تم بناء السرايا الحكومية والمساجد العثمانية التي تميزت بالمآذن الرشيقة. عرفت الفترة أيضاً ببناء القناطر المائية وتطوير أنظمة الري.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">النظام الإداري</h4>
+                            <p class="detail-text">أصبحت عجلون مركزاً لناحية تابعة لولاية دمشق ثم سنجق عجلون</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">الزراعة والحرف</h4>
+                            <p class="detail-text">اشتهرت بزراعة الزيتون وإنتاج زيت الزيتون والصناعات اليدوية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-7" id="era-7">
+                <div class="era-point"></div>
+                <div class="era-date">1921 م - 1946 م</div>
+                <div class="era-content theme-era-7">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Ajloun_Great_Mosque_05.jpg/960px-Ajloun_Great_Mosque_05.jpg" alt="عهد الإمارة فيVenda أجلون" class="era-image">
+                    <h2 class="era-title">عهد الإمارة</h2>
+                    <div class="era-period">1921 م - 1946 م</div>
+                    <p class="era-text">بعد تأسيس إمارة شرق الأردن عام 1921، أصبحت عجلون جزءًا من الإمارة الناشئة. شهدت هذه الفترة بداية تأسيس المؤسسات الحكومية الحديثة وإنشاء المدارس الحديثة. كان لسكان عجلون دور بارز في حركة النهضة العربية ومقاومة الاستعمار البريطاني.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">التعليم الحديث</h4>
+                            <p class="detail-text">تأسست المدارس النظامية الحديثة وازداد الإقبال على التعليم</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">البنية التحتية</h4>
+                            <p class="detail-text">بدأت مشاريع شق الطرق الحديثة وإدخال الخدمات الأساسية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-8" id="era-8">
+                <div class="era-point"></div>
+                <div class="era-date">1946 م - 1999 م</div>
+                <div class="era-content theme-era-8">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk8QiNsaw1AqG-T8uToDIcHriODKjoGrs-IA&s" alt="المملكة الأردنية الهاشمية في عجلون" class="era-image">
+                    <h2 class="era-title">المملكة الأردنية الهاشمية</h2>
+                    <div class="era-period">1946 م - 1999 م</div>
+                    <p class="era-text">مع استقلال الأردن عام 1946، شهدت عجلون طفرة تنموية كبيرة خلال النصف الثاني من القرن العشرين. تم إنشاء المدارس والمستشفيات والبنية التحتية الحديثة. تم تصنيف قلعة عجلون كموقع تراثي وثقافي مهم وبدأت جهود ترميمها وتطويرها كوجهة سياحية.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">التنمية الحديثة</h4>
+                            <p class="detail-text">تم إنشاء شبكات الكهرباء والماء والاتصالات والطرق المعبدة</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">التراث والسياحة</h4>
+                            <p class="detail-text">بدأت مشاريع ترميم قلعة عجلون والمواقع الأثرية وتطوير السياحة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-9" id="era-9">
+                <div class="era-point"></div>
+                <div class="era-date">1999 م - 2020 م</div>
+                <div class="era-content theme-era-9">
+                    <img src="https://i0.wp.com/hikayatajloun.com/wp-content/uploads/2023/07/%D8%BA%D8%A7%D8%A8%D8%A7%D8%AA-%D8%B9%D8%AC%D9%84%D9%88%D9%86-%D8%A7%D9%84%D8%AC%D9%85%D9%8A%D9%84%D8%A9.jpg?fit=1000%2C631&ssl=1" alt="عهد الملك عبدالله الثاني في عجلون" class="era-image">
+                    <h2 class="era-title">عهد الملك عبدالله الثاني</h2>
+                    <div class="era-period">1999 م - 2020 م</div>
+                    <p class="era-text">في عهد الملك عبدالله الثاني، شهدت عجلون نهضة سياحية وثقافية كبيرة. تم إنشاء محمية غابات عجلون وتطوير المرافق السياحية. أصبحت وجهة مهمة للسياحة البيئية والثقافية. تم افتتاح جامعة عجلون الوطنية كصرح علمي يخدم المنطقة بأكملها.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">السياحة المستدامة</h4>
+                            <p class="detail-text">تأسست محمية غابات عجلون ومسارات السياحة البيئية والتنزه</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">التعليم العالي</h4>
+                            <p class="detail-text">افتتاح جامعة عجلون الوطنية ومؤسسات التعليم العالي المختلفة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era theme-era-10" id="era-10">
+                <div class="era-point"></div>
+                <div class="era-date">2020 م - الحاضر</div>
+                <div class="era-content theme-era-10">
+                    <img src="https://nebrasnews.com/news/wp-content/uploads/2024/12/new_245001_9654_800.webp" alt="عجلون الآن" class="era-image">
+                    <h2 class="era-title">عجلون الآن</h2>
+                    <div class="era-period">2020 م - الحاضر</div>
+                    <p class="era-text">اليوم، تجمع عجلون بين الأصالة والحداثة، تتميز باقتصاد متنوع يعتمد على السياحة والزراعة والخدمات. تشهد المحافظة مشاريع تنموية مهمة تهدف إلى تحسين جودة الحياة للسكان المحليين وتعزيز جاذبيتها كوجهة سياحية. يستمر الاهتمام بالتراث والثقافة مع التطلع إلى المستقبل.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">التنمية المستدامة</h4>
+                            <p class="detail-text">مشاريع للطاقة المتجددة والسياحة المستدامة والحفاظ على البيئة</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">مستقبل واعد</h4>
+                            <p class="detail-text">خطط لتعزيز البنية التحتية وجذب الاستثمارات والحفاظ على الهوية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <div class="nav-dot" data-era="hero">
+            <div class="nav-tooltip">البداية</div>
+        </div>
+        <div class="nav-dot" data-era="era-1">
+            <div class="nav-tooltip">البدايات الأولى</div>
+        </div>
+        <div class="nav-dot" data-era="era-2">
+            <div class="nav-tooltip">العصر الروماني</div>
+        </div>
+        <div class="nav-dot" data-era="era-3">
+            <div class="nav-tooltip">الفتح الإسلامي</div>
+        </div>
+        <div class="nav-dot" data-era="era-4">
+            <div class="nav-tooltip">حقبة الصليبيين</div>
+        </div>
+        <div class="nav-dot" data-era="era-5">
+            <div class="nav-tooltip">العصر المملوكي</div>
+        </div>
+        <div*g class="nav-dot" data-era="era-6">
+            <div class="nav-tooltip">الحكم العثماني</div>
+    </div>
+    <div class="nav-dot" data-era="era-7">
+        <div class="nav-tooltip">عهد الإمارة</div>
+    </div>
+    <div class="nav-dot" data-era="era-8">
+        <div class="nav-tooltip">المملكة الأردنية</div>
+    </div>
+    <div class="nav-dot" data-era="era-9">
+        <div class="nav-tooltip">عهد الملك عبدالله</div>
+    </div>
+    <div class="nav-dot" data-era="era-10">
+        <div class="nav-tooltip">عجلون الآن</div>
+    </div>
+    </div>
+
+    <div class="info-toggle" id="infoToggle">
+        <span>؟</span>
+    </div>
+    <div class="info-panel" id="infoPanel">
+        <div>
+            <h3 style="color: var(--gold-primary); margin-bottom: 10px;">عن هذه الرحلة</h3>
+            <p>رحلة "عجلون عبر الزمن" هي تجربة تفاعلية تأخذك في جولة تاريخية عبر أهم العصور والحقب التي مرت بها منطقة عجلون منذ العصور القديمة وحتى يومنا هذا.</p>
+        </div>
+    </div>
+
+    <script>
+        // إعدادات الصفحة
+        let currentEra = 'hero';
+        let isLoading = true;
+        let timelineHeight;
+        let eraPositions = {};
+        let markers = [];
+        let currentScroll = 0;
+        let scrolling = false;
+
+        // المشهد الثلاثي الأبعاد
+        let scene, camera, renderer, stars = [];
+        let canvas;
+
+        // تهيئة المشهد
+        function initScene() {
+            canvas = document.getElementById('scene-container');
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 50;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            canvas.appendChild(renderer.domElement);
+
+            const starGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+            const starMaterial = new THREE.MeshBasicMaterial({ color: 0xd4af37 });
+
+            for(let i = 0; i < 1000; i++) {
+                const star = new THREE.Mesh(starGeometry, starMaterial);
+                const x = (Math.random() - 0.5) * 2000;
+                const y = (Math.random() - 0.5) * 2000;
+                const z = (Math.random() - 0.5) * 2000;
+                star.position.set(x, y, z);
+                star.scale.set(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+                stars.push({
+                    mesh: star,
+                    rotation: Math.random() * 0.01,
+                    pulsate: Math.random() * 0.01,
+                    size: Math.random() * 0.3 + 0.1
+                });
+                scene.add(star);
+            }
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0xd4af37, 1);
+            pointLight.position.set(10, 10, 10);
+            scene.add(pointLight);
+
+            window.addEventListener('resize', onWindowResize);
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            stars.forEach(star => {
+                star.mesh.rotation.x += star.rotation;
+                star.mesh.rotation.y += star.rotation;
+                star.mesh.scale.x = star.size + Math.sin(Date.now() * star.pulsate) * 0.2;
+                star.mesh.scale.y = star.size + Math.sin(Date.now() * star.pulsate) * 0.2;
+                star.mesh.scale.z = star.size + Math.sin(Date.now() * star.pulsate) * 0.2;
+            });
+            camera.position.x = Math.sin(Date.now() * 0.0001) * 3;
+            camera.position.y = Math.cos(Date.now() * 0.0001) * 3;
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function initWebsite() {
+            setTimeout(() => {
+                document.getElementById('loading').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                    isLoading = false;
+
+                    const titleWords = document.querySelector('.hero-title').textContent.split(' ');
+                    document.querySelector('.hero-title').innerHTML = '';
+                    titleWords.forEach((word, index) => {
+                        const wordSpan = document.createElement('span');
+                        wordSpan.className = 'title-animation';
+                        wordSpan.textContent = word + ' ';
+                        document.querySelector('.hero-title').appendChild(wordSpan);
+                        gsap.to(wordSpan, {
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.8,
+                            delay: 0.2 * index
+                        });
+                    });
+
+                    gsap.to('.hero-subtitle', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        delay: 0.8
+                    });
+
+                    gsap.to('.scroll-indicator', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        delay: 1.2
+                    });
+
+                    setupScrollObserver();
+                    setupClickEvents();
+                    createEraMarkers();
+                }, 500);
+            }, 2000);
+        }
+
+        function setupScrollObserver() {
+            timelineHeight = document.querySelector('.timeline').offsetHeight;
+            const eras = document.querySelectorAll('.era');
+            eras.forEach(era => {
+                const rect = era.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                eraPositions[era.id] = rect.top + scrollTop - window.innerHeight / 2;
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.querySelector('.era-content').classList.add('visible');
+                        currentEra = entry.target.id;
+                        updateNavigation();
+                        updateEraMarker();
+                        updateEraTheme();
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            eras.forEach(era => observer.observe(era));
+
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY;
+                currentScroll = scrollPosition;
+
+                if (scrollPosition > window.innerHeight / 2) {
+                    document.getElementById('hero').classList.add('hidden');
+                } else {
+                    document.getElementById('hero').classList.remove('hidden');
+                }
+
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (scrollPosition / docHeight) * 100;
+                document.getElementById('timeline-progress').style.width = scrolled + '%';
+
+                for (const [id, position] of Object.entries(eraPositions)) {
+                    if (scrollPosition >= position) {
+                        if (currentEra !== id) {
+                            currentEra = id;
+                            updateNavigation();
+                            updateEraMarker();
+                            updateEraTheme();
+                        }
+                    }
+                }
+            });
+        }
+
+        function setupClickEvents() {
+            document.getElementById('scrollIndicator').addEventListener('click', () => {
+                window.scrollTo({
+                    top: eraPositions['era-1'],
+                    behavior: 'smooth'
+                });
+            });
+
+            const navDots = document.querySelectorAll('.nav-dot');
+            navDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const targetEra = dot.getAttribute('data-era');
+                    if (targetEra === 'hero') {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        window.scrollTo({
+                            top: eraPositions[targetEra],
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            document.getElementById('infoToggle').addEventListener('click', () => {
+                const infoPanel = document.getElementById('infoPanel');
+                infoPanel.classList.toggle('active');
+            });
+        }
+
+        function updateNavigation() {
+            const navDots = document.querySelectorAll('.nav-dot');
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-era') === currentEra) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        function createEraMarkers() {
+            const eras = document.querySelectorAll('.era');
+            eras.forEach((era, index) => {
+                const marker = document.createElement('div');
+                marker.className = `era-marker theme-era-${index + 1}`;
+                marker.id = `marker-${era.id}`;
+                const markerInner = document.createElement('div');
+                markerInner.className = 'era-marker-inner';
+                marker.appendChild(markerInner);
+                document.body.appendChild(marker);
+                markers.push({
+                    element: marker,
+                    eraId: era.id
+                });
+            });
+        }
+
+        function updateEraMarker() {
+            markers.forEach(marker => {
+                if (marker.eraId === currentEra) {
+                    const era = document.getElementById(currentEra);
+                    const eraPoint = era.querySelector('.era-point');
+                    const rect = eraPoint.getBoundingClientRect();
+                    marker.element.style.top = `${rect.top + rect.height / 2}px`;
+                    marker.element.style.left = `${rect.left + rect.width / 2}px`;
+                    marker.element.classList.add('active');
+                } else {
+                    marker.element.classList.remove('active');
+                }
+            });
+        }
+
+        function updateEraTheme() {
+            const eras = document.querySelectorAll('.era');
+            eras.forEach(era => {
+                const eraContent = era.querySelector('.era-content');
+                for (let i = 1; i <= 10; i++) {
+                    era.classList.remove(`theme-era-${i}`);
+                    eraContent.classList.remove(`theme-era-${i}`);
+                }
+                const eraNumber = parseInt(era.id.split('-')[1]);
+                if (era.id === currentEra) {
+                    era.classList.add(`theme-era-${eraNumber}`);
+                    eraContent.classList.add(`theme-era-${eraNumber}`);
+                }
+            });
+        }
+
+        function createParticles() {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.className = 'particles';
+            document.body.appendChild(particlesContainer);
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particlesContainer.appendChild(particle);
+                const size = Math.random() * 5 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                animateParticle(particle);
+            }
+        }
+
+        function animateParticle(particle) {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            const size = Math.random() * 5 + 2;
+            const duration = Math.random() * 20 + 10;
+            const delay = Math.random() * 5;
+            gsap.set(particle, {
+                x: x,
+                y: y,
+                opacity: 0
+            });
+            gsap.to(particle, {
+                duration: duration,
+                x: '+=' + (Math.random() * 100 - 50),
+                y: '-=' + Math.random() * 200,
+                opacity: Math.random() * 0.6,
+                scale: Math.random() + 0.5,
+                delay: delay,
+                ease: 'power1.inOut',
+                onComplete: () => {
+                    animateParticle(particle);
+                }
+            });
+        }
+
+        window.addEventListener('load', () => {
+            initScene();
+            initWebsite();
+            createParticles();
+        });
+    </script>
+</body>
+</html>
