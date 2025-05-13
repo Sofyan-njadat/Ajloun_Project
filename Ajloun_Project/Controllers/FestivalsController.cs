@@ -174,5 +174,85 @@ namespace Ajloun_Project.Areas.Admin.Controllers
         {
             return _context.Festivals.Any(e => e.FestivalId == id);
         }
+
+
+        //User
+        public IActionResult Festivals(string? festivalType, string? dateFilter, string? festivalLocation)
+        {
+            //HttpContext.Session.SetInt32("userId", 1);
+
+            var query = _context.Festivals.AsQueryable();
+
+            // تطبيق فلتر النوع
+            if (!string.IsNullOrEmpty(festivalType))
+            {
+                query = query.Where(f => f.FestivalType == festivalType);
+            }
+
+            // تطبيق فلتر التاريخ
+            if (!string.IsNullOrEmpty(dateFilter))
+            {
+                if (dateFilter == "upcoming")
+                {
+                    query = query.Where(f => f.EndDate >= DateTime.Today);
+                }
+                else if (dateFilter == "past")
+                {
+                    query = query.Where(f => f.EndDate < DateTime.Today);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(festivalLocation))
+            {
+                query = query.Where(f => f.Location == festivalLocation);
+            }
+
+            var festivals = query.ToList();
+
+            var types = _context.Festivals
+                .Select(f => f.FestivalType)
+                .Distinct()
+                .ToList();
+
+            var locations = _context.Festivals
+                .Select(f => f.Location)
+                .Distinct()
+                .ToList();
+
+            ViewBag.Types = types;
+            ViewBag.Locations = locations;
+            ViewBag.SelectedType = festivalType;
+            ViewBag.SelectedDate = dateFilter;
+            ViewBag.SelectedLocation = festivalLocation;
+
+            return View(festivals);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> createFestivalBooking(FestivalReservation reservation)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            var userId = HttpContext.Session.GetInt32("userId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            reservation.UserId = userId.Value;
+
+            _context.FestivalReservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            ViewBag.UserId = HttpContext.Session.GetInt32("userId");
+
+            TempData["SuccessMessage"] = "تم تسجيل مشاركتك بنجاح في المهرجان!";
+
+            return RedirectToAction("Festivals");
+        }
     }
 } 

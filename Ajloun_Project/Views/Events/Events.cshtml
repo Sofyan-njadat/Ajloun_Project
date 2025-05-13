@@ -1,0 +1,175 @@
+﻿@model Ajloun_Project.Models.EventsViewModel
+@{
+    ViewData["Title"] = "الفعاليات الثقافية";
+    var today = DateTime.Today;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Events.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+}
+<div class="Event-hero">
+    <div>
+        <h1>فعاليات ثقافية في عجلون</h1>
+        <p>اكتشف أجمل المهرجانات والفعاليات الثقافية في محافظة عجلون</p>
+    </div>
+</div>
+<div class="events-container">
+    <div class="events-header">
+        
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>نوع الفعالية:</label>
+                <select id="eventType" class="filter-select">
+                    <option value="">الكل</option>
+                    @foreach (var type in Model.EventTypes)
+                    {
+                        <option value="@type.ToLower()">@type</option>
+                    }
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>التاريخ:</label>
+                <select id="dateFilter" class="filter-select">
+                    <option value="">الكل</option>
+                    <option value="upcoming">القادمة</option>
+                    <option value="past">السابقة</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>الجهة المنظمة:</label>
+                <select id="organizerFilter" class="filter-select">
+                    <option value="">الكل</option>
+                    <option value="culture">مديرية ثقافة عجلون</option>
+                    @foreach (var association in Model.Associations)
+                    {
+                        <option value="association-@association.AssociationId">@association.Name</option>
+                    }
+
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="events-grid">
+        @foreach (var item in Model.CulturalEvents)
+        {
+            <div class="event-card"
+                 data-event-type="@item.EventType.ToLower()"
+                 data-event-date="@item.Date"
+                 data-organizer="culture">
+                <div class="card-image">
+                    <img src="@Url.Content("~/images/"+item.PosterUrl)" alt="@item.Title">
+                    <div class="event-type-badge">@item.EventType</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="event-title">@item.Title</h3>
+                    <div class="event-details">
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>@(item.Date.HasValue ? item.Date.Value.ToString("d MMMM yyyy", new System.Globalization.CultureInfo("ar-JO")) : "")</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>@DateTime.Parse(item.Time.ToString()).ToString("hh:mm tt", new System.Globalization.CultureInfo("ar-JO"))</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>@item.Location</span>
+                        </div>
+                    </div>
+                    <p class="event-description">@item.Description</p>
+                    <div class="card-footer">
+                        <span class="organizer">مديرية ثقافة عجلون</span>
+                        <a href="@Url.Action("EventDetails", "Events", new { id = item.EventId, type = "cultural" })" class="read-more-btn">قراءة المزيد</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        @foreach (var item in Model.AssociationEvents)
+        {
+            <div class="event-card"
+                 data-event-type="@item.EventType.ToLower()"
+                 data-event-date="@item.Date.ToString("yyyy-MM-dd")"
+                 data-organizer="association-@item.Association.AssociationId">
+                <div class="card-image">
+                    <img src="@Url.Content("~/images/"+item.PosterUrl)" alt="@item.Title">
+                    <div class="event-type-badge">@item.EventType</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="event-title">@item.Title</h3>
+                    <div class="event-details">
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>@item.Date.ToString("d MMMM yyyy", new System.Globalization.CultureInfo("ar-JO"))</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>@DateTime.Parse(item.StartTime.ToString()).ToString("hh:mm tt", new System.Globalization.CultureInfo("ar-JO"))</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>@item.Location</span>
+                        </div>
+                    </div>
+                    <p class="event-description">@item.Description</p>
+                    <div class="card-footer">
+                        <span class="organizer">@item.Association.Name</span>
+                        <a href="@Url.Action("EventDetails", "Events", new { id = item.EventId, type = "association" })" class="read-more-btn">قراءة المزيد</a>
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+        </div>
+        @section Scripts {
+            <script>
+                $(document).ready(function () {
+                    $('#eventType, #dateFilter, #organizerFilter').change(function () {
+                        filterEvents();
+                    });
+
+                    function filterEvents() {
+                        const selectedType = $('#eventType').val();
+                        const selectedDateFilter = $('#dateFilter').val();
+                        const selectedOrganizer = $('#organizerFilter').val();
+                        const today = new Date();
+
+                        $('.event-card').each(function () {
+                            const card = $(this);
+                            const cardType = card.data('event-type');
+                            const cardDateStr = card.data('event-date');
+                            const cardOrganizer = card.data('organizer');
+
+                            const cardDate = new Date(cardDateStr);
+                            let showCard = true;
+
+                            // فلترة حسب النوع
+                            if (selectedType && cardType !== selectedType) {
+                                showCard = false;
+                            }
+
+                            // فلترة حسب التاريخ
+                            if (selectedDateFilter === 'upcoming' && cardDate < today) {
+                                showCard = false;
+                            } else if (selectedDateFilter === 'past' && cardDate >= today) {
+                                showCard = false;
+                            }
+
+                            // فلترة حسب الجهة المنظمة
+                            if (selectedOrganizer && cardOrganizer !== selectedOrganizer) {
+                                showCard = false;
+                            }
+
+                            card.toggle(showCard);
+                        });
+                    }
+                });
+            </script>
+        }
+
