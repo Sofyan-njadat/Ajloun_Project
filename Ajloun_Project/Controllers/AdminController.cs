@@ -266,43 +266,55 @@ namespace Ajloun_Project.Controllers
         }
 
         // تحديث بيانات المشرف
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Admin admin)
-        {
-            if (id != admin.AdminId)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, Admin admin)
+        //{
+        //    if (id != admin.AdminId)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // التحقق من عدم تكرار اسم المستخدم والبريد الإلكتروني
-                    var existingAdmin = await _context.Admins
-                        .FirstOrDefaultAsync(a => (a.Username == admin.Username || a.Email == admin.Email) && a.AdminId != id);
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            // التحقق من عدم تكرار اسم المستخدم والبريد الإلكتروني
+        //            var existingAdmin = await _context.Admins
+        //                .FirstOrDefaultAsync(a => (a.Username == admin.Username || a.Email == admin.Email) && a.AdminId != id);
 
-                    if (existingAdmin != null)
-                    {
-                        if (existingAdmin.Username == admin.Username)
-                            ModelState.AddModelError("Username", "اسم المستخدم مستخدم بالفعل");
-                        if (existingAdmin.Email == admin.Email)
-                            ModelState.AddModelError("Email", "البريد الإلكتروني مستخدم بالفعل");
-                        return View(admin);
-                    }
+        //            if (existingAdmin != null)
+        //            {
+        //                if (existingAdmin.Username == admin.Username)
+        //                    ModelState.AddModelError("Username", "اسم المستخدم مستخدم بالفعل");
+        //                if (existingAdmin.Email == admin.Email)
+        //                    ModelState.AddModelError("Email", "البريد الإلكتروني مستخدم بالفعل");
+        //                return View(admin);
+        //            }
 
-                    // إذا تم تغيير كلمة المرور، قم بتشفيرها
-                    if (!string.IsNullOrEmpty(admin.PasswordHash))
-                    {
-                        admin.PasswordHash = HashPassword(admin.PasswordHash);
-                    }
-                    else
-                    {
-                        // إذا لم يتم تغيير كلمة المرور، احتفظ بالقيمة القديمة
-                        var oldAdmin = await _context.Admins.AsNoTracking().FirstOrDefaultAsync(a => a.AdminId == id);
-                        admin.PasswordHash = oldAdmin.PasswordHash;
-                    }
+        //            // إذا تم تغيير كلمة المرور، قم بتشفيرها
+        //            if (!string.IsNullOrEmpty(admin.PasswordHash))
+        //            {
+        //                admin.PasswordHash = HashPassword(admin.PasswordHash);
+        //            }
+        //            else
+        //            {
+        //                // إذا لم يتم تغيير كلمة المرور، احتفظ بالقيمة القديمة
+        //                var oldAdmin = await _context.Admins.AsNoTracking().FirstOrDefaultAsync(a => a.AdminId == id);
+        //                admin.PasswordHash = oldAdmin.PasswordHash;
+        //            }
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!AdminExists(admin.AdminId))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
 
 
 
@@ -352,24 +364,6 @@ namespace Ajloun_Project.Controllers
                 _context.SaveChanges();
             }
 
-                    _context.Update(admin);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AdminExists(admin.AdminId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(admin);
-        }
             return RedirectToAction("PendingArtworks");
         }
 
