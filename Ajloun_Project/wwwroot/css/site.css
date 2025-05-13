@@ -1,22 +1,196 @@
-html {
-  font-size: 14px;
+@ {
+    Layout = null;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+<!DOCTYPE html >
+<html lang="ar" dir="rtl" >
+<head >
+<meta charset="utf-8" / >
+<title > @ViewData["Title"]</title >
+<meta name="viewport" content="width=device-width, initial-scale=1" / >
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+<link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" / >
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" / >
 
-html {
-  position: relative;
-  min-height: 100%;
-}
+@RenderSection("Styles", required: false)
 
+<style >
 body {
-  margin-bottom: 60px;
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+    direction: rtl;
+    top: 0 !important;
+}
+
+header {
+    background-color: #1B5E20;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 5px 10px;
+    }
+
+        nav a:hover {
+            background-color: #66BB6A;
+            border-radius: 5px;
+        }
+
+.burger {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: white;
+}
+
+.translate-box select {
+    padding: 8px 12px;
+    border-radius: 25px;
+    border: 2px solid #FFD600;
+    background: white;
+    color: #1B5E20;
+    font-weight: bold;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+    appearance: none;
+}
+
+.auth-buttons a, .auth-buttons form button {
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+}
+
+    .auth-buttons a.login {
+        background: #FFD600;
+        color: #1B5E20;
+    }
+
+    .auth-buttons a.profile {
+        background: #ffffff;
+        color: #1B5E20;
+        margin-left: 10px;
+    }
+
+    .auth-buttons form button.logout {
+        background: #c62828;
+        color: white;
+        border: none;
+        margin-left: 10px;
+    }
+
+.translate-auth {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.container {
+    padding: 2rem;
+    min-height: calc(100vh - 200px);
+}
+
+footer {
+    background-color: #1B5E20;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.footer-columns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.footer-col {
+    min-width: 200px;
+}
+
+    .footer-col h4 {
+        border-bottom: 2px solid #FFD600;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+
+    .footer-col a, .footer-col p {
+        color: white;
+        text-decoration: none;
+        margin: 4px 0;
+        display: block;
+    }
+
+/* Google Translate hide */
+.goog-logo-link,
+.goog-te-gadget span,
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+body > .skiptranslate {
+    display: none !important;
+    height: 0 !important;
+    visibility: hidden;
+}
+
+html {
+    margin-top: 0px !important;
+}
+
+#google_translate_element {
+    display: inline-block;
+}
+
+/* Responsive Burger */
+@media (max-width: 768px) {
+    .burger {
+        display: block;
+    }
+
+    nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #1B5E20;
+        padding: 1rem 0;
+    }
+
+        nav a {
+            padding: 10px 20px;
+            border-top: 1px solid #ffffff22;
+        }
+
+        nav.show {
+            display: flex;
+        }
+
+    .translate-auth {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 1rem;
+        width: 100%;
+    }
 }

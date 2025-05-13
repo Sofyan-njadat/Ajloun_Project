@@ -1,54 +1,112 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Ajloun_Project</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Ajloun_Project.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pVfN8Jr8A8NwKw3H+XtRZ9UzSgFx3eD9ynmBhfRt+YbtdQgo/2q2akI7E4xLryE2z2ZwbyXhbiRJvMJKAw7Lsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
     @RenderSection("Styles", required: false)
 
 </head>
 <body>
-    @* <header> *@
-    @*     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> *@
-    @*         <div class="container-fluid"> *@
-    @*             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ajloun_Project</a> *@
-    @*             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" *@
-    @*                     aria-expanded="false" aria-label="Toggle navigation"> *@
-    @*                 <span class="navbar-toggler-icon"></span> *@
-    @*             </button> *@
-    @*             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between"> *@
-    @*                 <ul class="navbar-nav flex-grow-1"> *@
-    @*                     <li class="nav-item"> *@
-    @*                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
-    @*                     </li> *@
-    @*                     <li class="nav-item"> *@
-    @*                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
-    @*                     </li> *@
-    @*                 </ul> *@
-    @*             </div> *@
-    @*         </div> *@
-    @*     </nav> *@
-    @* </header> *@
+    <header>
+        <div class="logo">مديرية الثقافة</div>
+
+        <!-- Burger Menu -->
+        <div class="burger" onclick="toggleMenu()">☰</div>
+
+        <nav id="main-nav">
+            <a asp-controller="Home" asp-action="Index">الرئيسية</a>
+            <a asp-controller="Library" asp-action="Index">المكتبة</a>
+            <a asp-controller="News" asp-action="Index">الأخبار</a>
+            <a asp-controller="UserProfile" asp-action="EditUserInfo">الملف الشخصي</a>
+            <a asp-controller="Home" asp-action="Privacy">سياسة الخصوصية</a>
+            <a asp-controller="TimeLine" asp-action="TimeLine">الجدول الزمني</a>
+            <a asp-controller="Home" asp-action="Articles">المقالات</a>
+            <a asp-controller="ArtWorks" asp-action="ArtWorks">الاعمال الفنية </a>
+            <a asp-controller="Gallery" asp-action="Gallery"> معرض الصور  </a>
+            <a asp-controller="Category" asp-action="Index">   الدورات </a>
+
+
+        </nav>
+
+
+        <!-- Translate + Auth -->
+        <div class="translate-auth">
+            <div class="translate-box" id="google_translate_element"></div>
+
+            <div class="auth-buttons">
+                @{
+                    var userId = Context.Session.GetInt32("UserId");
+                }
+
+                @if (userId == null)
+                {
+                    <a href="/Account/Login" class="login">تسجيل الدخول</a>
+                }
+                else
+                {
+                    <a href="/Account/Profile" class="profile">الملف الشخصي</a>
+                    <form method="post" action="/Account/Logout" style="display:inline;">
+                        <button type="submit" class="logout">تسجيل الخروج</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </header>
+
     <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Ajloun_Project - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div class="footer-columns">
+            <div class="footer-col">
+                <h4>روابط سريعة</h4>
+                <a href="/">الرئيسية</a>
+                <a href="/About">عنّا</a>
+            </div>
+            <div class="footer-col">
+                <h4>تواصل معنا</h4>
+                <p>عمان - الأردن</p>
+                <p>06-1234567</p>
+                <p>info@culture.gov.jo</p>
+            </div>
+            <div class="footer-col">
+                <h4>تابعنا</h4>
+                <p><i class="fab fa-facebook"></i> Facebook</p>
+                <p><i class="fab fa-twitter"></i> Twitter</p>
+                <p><i class="fab fa-youtube"></i> YouTube</p>
+            </div>
         </div>
+        <p style="margin-top: 1rem;">© 2025 مديرية الثقافة - جميع الحقوق محفوظة</p>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Google Translate -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({
+            pageLanguage: 'ar',
+            includedLanguages: 'ar,en,fr',
+            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+          }, 'google_translate_element');
+        }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Burger Menu Toggle -->
+    <script>
+        function toggleMenu() {
+          document.getElementById("main-nav").classList.toggle("show");
+        }
+    </script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
