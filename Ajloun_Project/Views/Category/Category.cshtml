@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Ajloun_Project.Models.Course>
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Available Courses</h1>
+        <div class="row">
+            @foreach (var course in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(course.Courseimg))
+                        {
+                            <img src="@course.Courseimg" class="card-img-top" alt="@course.Name" style="height: 200px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;" />
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@course.Name</h5>
+                            <p class="card-text">@course.Description</p>
+                            <p class="card-text"><strong>Age Range:</strong> @course.AgeRange</p>
+                            <a href="@Url.Action("Register", new { courseId = course.CourseId })" class="btn btn-primary btn-block">Register</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
