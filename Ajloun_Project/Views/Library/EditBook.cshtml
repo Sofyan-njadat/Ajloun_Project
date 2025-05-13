@@ -2,97 +2,192 @@
 
 @{
     ViewData["Title"] = "تعديل الكتاب";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
     var categories = ViewBag.Categories as List<Ajloun_Project.Models.BookCategory>;
 }
 
-@section Styles {
-    <style>
-        .edit-container {
-            max-width: 700px;
-            margin: 40px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
 
-            .edit-container h2 {
-                text-align: center;
-                color: #2C6E49;
-                margin-bottom: 25px;
-            }
+<style>
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
 
-        label {
-            margin-top: 10px;
-            font-weight: bold;
-        }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
 
-        input[type="text"],
-        input[type="number"],
-        input[type="url"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
 
-        .submit-btn {
-            margin-top: 20px;
-            width: 100%;
-            padding: 12px;
-            background-color: #2C6E49;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-        }
+    .form-control {
+        border-radius: 8px;
+        padding: 0.75rem;
+    }
 
-            .submit-btn:hover {
-                background-color: #24563c;
-            }
-    </style>
-}
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        border-color: #80bdff;
+    }
 
-<div class="edit-container">
-    <h2>✏️ تعديل الكتاب</h2>
+    .validation-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
 
-    <form asp-action="EditBook" method="post">
-        <input type="hidden" asp-for="BookId" />
+    .image-preview {
+        max-width: 200px;
+        max-height: 200px;
+        margin-top: 10px;
+        border-radius: 8px;
+    }
 
-        <label asp-for="Title">اسم الكتاب</label>
-        <input asp-for="Title" type="text" />
+    .custom-file-upload {
+        display: inline-block;
+        padding: 8px 16px;
+        cursor: pointer;
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
 
-        <label asp-for="Author">المؤلف</label>
-        <input asp-for="Author" type="text" />
+    .custom-file-upload:hover {
+        background-color: #e9ecef;
+    }
 
-        <label asp-for="PublishedYear">سنة النشر</label>
-        <input asp-for="PublishedYear" type="number" />
+    #fileName {
+        margin-top: 5px;
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
 
-        <label asp-for="CoverImageUrl">رابط الصورة</label>
-        <input asp-for="CoverImageUrl" type="url" />
+    .current-image {
+        margin-bottom: 1rem;
+    }
+</style>
 
-        <label asp-for="Description">الوصف</label>
-        <textarea asp-for="Description" rows="4"></textarea>
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">تعديل الكتاب</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+        </div>
+    </div>
 
-        <label asp-for="AvailableCopies">عدد النسخ المتاحة</label>
-        <input asp-for="AvailableCopies" type="number" />
+    <div class="card">
+        <div class="card-body">
+            <div class="form-container">
+                <form asp-action="EditBook" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="BookId" />
+                    <input type="hidden" asp-for="CoverImageUrl" />
+                    <input type="hidden" asp-for="IsAvailable" />
+                    <input type="hidden" asp-for="CreatedAt" />
 
-        <label asp-for="CategoryId">التصنيف</label>
-        <select asp-for="CategoryId">
-            @if (categories != null)
-            {
-                foreach (var cat in categories)
-                {
-                    <option value="@cat.CategoryId" selected="@(Model.CategoryId == cat.CategoryId)">
-                        @cat.Name
-                    </option>
-                }
-            }
-        </select>
+                    <div class="form-group">
+                        <label asp-for="Title" class="form-label">عنوان الكتاب</label>
+                        <input asp-for="Title" class="form-control" required />
+                        <span asp-validation-for="Title" class="validation-message"></span>
+                    </div>
 
-        <button type="submit" class="submit-btn">💾 حفظ التعديلات</button>
-    </form>
+                    <div class="form-group">
+                        <label asp-for="Author" class="form-label">اسم المؤلف</label>
+                        <input asp-for="Author" class="form-control" />
+                        <span asp-validation-for="Author" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PublishedYear" class="form-label">سنة النشر</label>
+                        <input asp-for="PublishedYear" type="number" class="form-control" />
+                        <span asp-validation-for="PublishedYear" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">صورة الغلاف</label>
+                        @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+                        {
+                            <div class="current-image">
+                                <p>الصورة الحالية:</p>
+                                <img src="@Model.CoverImageUrl" alt="صورة الغلاف الحالية" class="image-preview" />
+                            </div>
+                        }
+                        <div>
+                            <label for="coverImage" class="custom-file-upload">
+                                <i class="fas fa-upload"></i> اختر صورة جديدة
+                            </label>
+                            <input type="file" id="coverImage" name="coverImage" accept="image/*" class="d-none" onchange="previewImage(this)" />
+                            <div id="fileName"></div>
+                            <img id="imagePreview" class="image-preview" style="display: none;" />
+                        </div>
+                        <span asp-validation-for="CoverImageUrl" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="form-label">وصف الكتاب</label>
+                        <textarea asp-for="Description" rows="4" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AvailableCopies" class="form-label">عدد النسخ المتاحة</label>
+                        <input asp-for="AvailableCopies" type="number" class="form-control" required min="0" />
+                        <span asp-validation-for="AvailableCopies" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="form-label">التصنيف</label>
+                        <select asp-for="CategoryId" class="form-control" required>
+                            <option value="">اختر التصنيف</option>
+                            @foreach (var cat in categories)
+                            {
+                                <option value="@cat.CategoryId">@cat.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="CategoryId" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> حفظ التغييرات
+                        </button>
+                        <a href="@Url.Action("ManageBooks", "Library")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> العودة للقائمة
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            const fileName = document.getElementById('fileName');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+                fileName.textContent = input.files[0].name;
+            } else {
+                preview.style.display = 'none';
+                fileName.textContent = '';
+            }
+        }
+    </script>
+}

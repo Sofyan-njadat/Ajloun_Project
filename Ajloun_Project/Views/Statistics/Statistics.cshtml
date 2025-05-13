@@ -1,88 +1,15 @@
 ﻿@model dynamic
-
 @{
-    ViewData["Title"] = "Statistics";
+    ViewData["Title"] = "الإحصائيات";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
-
 
 <!-- إضافة المكتبات المطلوبة -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.css">
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<style>
-    .stat-card {
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-    }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-    .stat-icon {
-        font-size: 2.5rem;
-        opacity: 0.8;
-    }
-
-    .stat-value {
-        font-size: 2rem;
-        font-weight: bold;
-    }
-
-    .stat-label {
-        font-size: 1.1rem;
-        color: #6c757d;
-    }
-
-    .chart-container {
-        position: relative;
-        height: 300px;
-        margin-bottom: 1rem;
-    }
-
-    .recent-news-item {
-        padding: 1rem;
-        border-bottom: 1px solid #eee;
-        transition: background-color 0.3s ease;
-    }
-
-        .recent-news-item:hover {
-            background-color: #f8f9fa;
-        }
-
-    .news-date {
-        font-size: 0.9rem;
-        color: #6c757d;
-    }
-
-    .dashboard-header {
-        background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        margin-bottom: 2rem;
-    }
-
-    .trend-indicator {
-        font-size: 0.9rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 20px;
-    }
-
-    .trend-up {
-        background-color: rgba(40, 167, 69, 0.1);
-        color: #28a745;
-    }
-
-    .trend-down {
-        background-color: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-    }
-</style>
-
-<div class="container-fluid">
+<div class="container-fluid py-4">
     <!-- رأس لوحة التحكم -->
     <div class="dashboard-header">
         <div class="row align-items-center">
@@ -92,8 +19,14 @@
             </div>
             <div class="col-md-4 text-end">
                 <div class="d-inline-block p-3 bg-white bg-opacity-10 rounded">
-                    <i class="fas fa-calendar-alt me-2"></i>
-                    <span id="current-date"></span>
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                        <i class="fas fa-calendar-alt me-3"></i>
+                        <span class="fw-bold" id="current-day" style="margin-right: 5px;"></span>
+                    </div>
+                    <div class="date-container">
+                        <div id="current-date" class="hijri-date"></div>
+                        <div id="gregorian-date" class="gregorian-date"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,19 +34,39 @@
 
     <!-- البطاقات الإحصائية -->
     <div class="row g-4 mb-4">
-        <!-- إجمالي المهرجانات -->
+        <!-- الدورات -->
         <div class="col-md-3">
             <div class="card stat-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="stat-label">إجمالي المهرجانات</h6>
+                            <h6 class="stat-label">الدورات</h6>
+                            <h2 class="stat-value">@Model.TotalCourses</h2>
+                            <span class="trend-indicator trend-up">
+                                <i class="fas fa-graduation-cap"></i> دورة
+                            </span>
+                        </div>
+                        <div class="stat-icon text-primary">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المهرجانات -->
+        <div class="col-md-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="stat-label">المهرجانات</h6>
                             <h2 class="stat-value">@Model.TotalFestivals</h2>
                             <span class="trend-indicator trend-up">
                                 <i class="fas fa-calendar-alt"></i> مهرجان
                             </span>
                         </div>
-                        <div class="stat-icon text-primary">
+                        <div class="stat-icon text-success">
                             <i class="fas fa-calendar-alt"></i>
                         </div>
                     </div>
@@ -121,102 +74,160 @@
             </div>
         </div>
 
-        <!-- الكتب المتاحة -->
+        <!-- الفعاليات الثقافية -->
         <div class="col-md-3">
             <div class="card stat-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="stat-label">الكتب المتاحة</h6>
-                            <h2 class="stat-value">@Model.LibraryStats.AvailableBooks</h2>
+                            <h6 class="stat-label">الفعاليات الثقافية</h6>
+                            <h2 class="stat-value">@Model.TotalCulturalEvents</h2>
                             <span class="trend-indicator trend-up">
-                                <i class="fas fa-book"></i> كتاب متاح
+                                <i class="fas fa-theater-masks"></i> فعالية
                             </span>
                         </div>
-                        <div class="stat-icon text-success">
-                            <i class="fas fa-book"></i>
+                        <div class="stat-icon text-info">
+                            <i class="fas fa-theater-masks"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- إجمالي الأخبار -->
+        <!-- الهيئات الثقافية -->
         <div class="col-md-3">
             <div class="card stat-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="stat-label">إجمالي الأخبار</h6>
-                            <h2 class="stat-value">@Model.TotalNews</h2>
+                            <h6 class="stat-label">الهيئات الثقافية</h6>
+                            <h2 class="stat-value">@Model.TotalCulturalAssociations</h2>
                             <span class="trend-indicator trend-up">
-                                <i class="fas fa-newspaper"></i> خبر
+                                <i class="fas fa-users"></i> هيئة
                             </span>
                         </div>
                         <div class="stat-icon text-warning">
-                            <i class="fas fa-newspaper"></i>
+                            <i class="fas fa-users"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- إجمالي الكتب -->
+        <!-- حجوزات المسارح -->
         <div class="col-md-3">
             <div class="card stat-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="stat-label">إجمالي الكتب</h6>
-                            <h2 class="stat-value">@Model.LibraryStats.TotalBooks</h2>
+                            <h6 class="stat-label">حجوزات المسارح</h6>
+                            <h2 class="stat-value">@Model.TotalHallBookings</h2>
+                            <span class="trend-indicator trend-up">
+                                <i class="fas fa-door-open"></i> حجز
+                            </span>
+                        </div>
+                        <div class="stat-icon text-danger">
+                            <i class="fas fa-door-open"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الكتب -->
+        <div class="col-md-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="stat-label">الكتب</h6>
+                            <h2 class="stat-value">@Model.TotalBooks</h2>
                             <span class="trend-indicator trend-up">
                                 <i class="fas fa-book"></i> كتاب
                             </span>
                         </div>
-                        <div class="stat-icon text-info">
+                        <div class="stat-icon text-primary">
                             <i class="fas fa-book"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- إضافة قسم إحصائيات المكتبة بعد قسم المهرجانات -->
-    <div class="row g-4 mb-4">
-
-        <div class="col-md-4">
+        <!-- حجوزات الكتب -->
+        <div class="col-md-3">
             <div class="card stat-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="stat-label">الكتب المتاحة</h6>
-                            <h2 class="stat-value">@Model.LibraryStats.AvailableBooks</h2>
+                            <h6 class="stat-label">حجوزات الكتب</h6>
+                            <h2 class="stat-value">@Model.TotalBookReservations</h2>
                             <span class="trend-indicator trend-up">
-                                <i class="fas fa-check"></i> متاح
+                                <i class="fas fa-book-reader"></i> حجز
                             </span>
                         </div>
                         <div class="stat-icon text-success">
-                            <i class="fas fa-book-open"></i>
+                            <i class="fas fa-book-reader"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <!-- الأعمال الفنية -->
+        <div class="col-md-3">
             <div class="card stat-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="stat-label">الكتب المستعارة</h6>
-                            <h2 class="stat-value">@Model.LibraryStats.BorrowedBooks</h2>
+                            <h6 class="stat-label">الأعمال الفنية</h6>
+                            <h2 class="stat-value">@Model.TotalArtworks</h2>
                             <span class="trend-indicator trend-up">
-                                <i class="fas fa-book-reader"></i> مستعار
+                                <i class="fas fa-palette"></i> عمل
+                            </span>
+                        </div>
+                        <div class="stat-icon text-info">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الحرف اليدوية -->
+        <div class="col-md-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="stat-label">الحرف اليدوية</h6>
+                            <h2 class="stat-value">@Model.TotalHandicrafts</h2>
+                            <span class="trend-indicator trend-up">
+                                <i class="fas fa-paint-brush"></i> حرفة
                             </span>
                         </div>
                         <div class="stat-icon text-warning">
-                            <i class="fas fa-book-reader"></i>
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المستخدمين -->
+        <div class="col-md-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="stat-label">المستخدمين</h6>
+                            <h2 class="stat-value">@Model.TotalUsers</h2>
+                            <span class="trend-indicator trend-up">
+                                <i class="fas fa-user"></i> مستخدم
+                            </span>
+                        </div>
+                        <div class="stat-icon text-danger">
+                            <i class="fas fa-user"></i>
                         </div>
                     </div>
                 </div>
@@ -226,29 +237,29 @@
 
     <!-- المخططات البيانية -->
     <div class="row g-4 mb-4">
-        <!-- مخطط دائري للمهرجانات -->
+        <!-- مخطط دائري للتوزيع العام -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header bg-white">
-                    <h5 class="card-title mb-0">توزيع المهرجانات</h5>
+                <div class="card-header">
+                    <h5 class="card-title mb-0">التوزيع العام</h5>
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
-                        <canvas id="festivalsChart"></canvas>
+                        <canvas id="generalChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- مخطط دائري للكتب -->
+        <!-- مخطط دائري للمستخدمين -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header bg-white">
-                    <h5 class="card-title mb-0">توزيع الكتب</h5>
+                <div class="card-header">
+                    <h5 class="card-title mb-0">توزيع النشاطات</h5>
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
-                        <canvas id="booksChart"></canvas>
+                        <canvas id="activitiesChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -259,8 +270,8 @@
     <div class="row g-4 mb-4">
         <div class="col-12">
             <div class="card">
-                <div class="card-header bg-white">
-                    <h5 class="card-title mb-0">تطور المهرجانات والكتب خلال الأسبوع</h5>
+                <div class="card-header">
+                    <h5 class="card-title mb-0">المهرجانات والكتب خلال الأسبوع</h5>
                 </div>
                 <div class="card-body">
                     <div class="chart-container" style="height: 400px;">
@@ -271,68 +282,69 @@
         </div>
     </div>
 
-    <!-- آخر الأخبار -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-white">
-                    <h5 class="card-title mb-0">آخر الأخبار</h5>
-                </div>
-                <div class="card-body p-0">
-                    @foreach (var news in Model.RecentNews)
-                    {
-                        <div class="recent-news-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">@news.Title</h6>
-                                    <span class="news-date">
-                                        <i class="far fa-clock me-1"></i>
-                                        @news.PublishDate.ToString("yyyy-MM-dd")
-                                    </span>
-                                </div>
-                                <a href="#" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @section Scripts {
     <script>
-        // عرض التاريخ الحالي
-        document.getElementById('current-date').textContent = new Date().toLocaleDateString('ar-SA', {
-            weekday: 'long',
+        // عرض التاريخ الهجري والميلادي
+        const today = new Date();
+        
+        // عرض اليوم
+        document.getElementById('current-day').textContent = today.toLocaleDateString('ar-SA', {
+            weekday: 'long'
+        });
+        
+        // التاريخ الهجري
+        document.getElementById('current-date').textContent = today.toLocaleDateString('ar-SA', {
             year: 'numeric',
             month: 'long',
             day: 'numeric'
         });
 
-        // مخطط دائري للمهرجانات
-        const festivalsCtx = document.getElementById('festivalsChart').getContext('2d');
-        new Chart(festivalsCtx, {
+        // التاريخ الميلادي
+        document.getElementById('gregorian-date').textContent = today.toLocaleDateString('ar-SA', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            calendar: 'gregory'
+        });
+
+        // مخطط دائري للتوزيع العام
+        const generalCtx = document.getElementById('generalChart').getContext('2d');
+        new Chart(generalCtx, {
             type: 'doughnut',
             data: {
-                labels: ['المهرجانات', 'الكتب المتاحة', 'الكتب المستعارة'],
+                labels: ['الدورات', 'المهرجانات', 'الفعاليات', 'الهيئات', 'الحجوزات', 'الكتب', 'الأعمال الفنية', 'الحرف اليدوية'],
                 datasets: [{
                     data: [
-        @Model.TotalFestivals,
-        @Model.LibraryStats.AvailableBooks,
-        @Model.LibraryStats.BorrowedBooks
+                        @Model.TotalCourses,
+                        @Model.TotalFestivals,
+                        @Model.TotalCulturalEvents,
+                        @Model.TotalCulturalAssociations,
+                        @Model.TotalHallBookings,
+                        @Model.TotalBooks,
+                        @Model.TotalArtworks,
+                        @Model.TotalHandicrafts
                     ],
                     backgroundColor: [
                         'rgba(40, 167, 69, 0.8)',
                         'rgba(23, 162, 184, 0.8)',
-                        'rgba(255, 193, 7, 0.8)'
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(220, 53, 69, 0.8)',
+                        'rgba(111, 66, 193, 0.8)',
+                        'rgba(0, 123, 255, 0.8)',
+                        'rgba(255, 127, 80, 0.8)',
+                        'rgba(108, 117, 125, 0.8)'
                     ],
                     borderColor: [
                         'rgba(40, 167, 69, 1)',
                         'rgba(23, 162, 184, 1)',
-                        'rgba(255, 193, 7, 1)'
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(220, 53, 69, 1)',
+                        'rgba(111, 66, 193, 1)',
+                        'rgba(0, 123, 255, 1)',
+                        'rgba(255, 127, 80, 1)',
+                        'rgba(108, 117, 125, 1)'
                     ],
                     borderWidth: 1
                 }]
@@ -354,24 +366,27 @@
             }
         });
 
-        // مخطط دائري للكتب
-        const booksCtx = document.getElementById('booksChart').getContext('2d');
-        new Chart(booksCtx, {
+        // مخطط دائري للنشاطات
+        const activitiesCtx = document.getElementById('activitiesChart').getContext('2d');
+        new Chart(activitiesCtx, {
             type: 'doughnut',
             data: {
-                labels: ['الكتب المتاحة', 'الكتب المستعارة'],
+                labels: ['حجوزات المسارح', 'حجوزات الكتب', 'المستخدمين'],
                 datasets: [{
                     data: [
-        @Model.LibraryStats.AvailableBooks,
-        @Model.LibraryStats.BorrowedBooks
+                        @Model.TotalHallBookings,
+                        @Model.TotalBookReservations,
+                        @Model.TotalUsers
                     ],
                     backgroundColor: [
+                        'rgba(220, 53, 69, 0.8)',
                         'rgba(40, 167, 69, 0.8)',
-                        'rgba(255, 193, 7, 0.8)'
+                        'rgba(0, 123, 255, 0.8)'
                     ],
                     borderColor: [
+                        'rgba(220, 53, 69, 1)',
                         'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)'
+                        'rgba(0, 123, 255, 1)'
                     ],
                     borderWidth: 1
                 }]

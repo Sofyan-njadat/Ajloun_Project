@@ -1,0 +1,62 @@
+﻿@model Ajloun_Project.Models.ViewModels.UserSignIn
+
+@{
+    ViewData["Title"] = "تسجيل الدخول";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2>تسجيل الدخول</h2>
+                    
+                    <form asp-action="checkSignIn" asp-controller="User" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group">
+                            <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
+                            <input asp-for="Email" class="form-control" placeholder="أدخل بريدك الإلكتروني" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Password" class="form-label">كلمة المرور</label>
+                            <input asp-for="Password" class="form-control" type="password" placeholder="أدخل كلمة المرور" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" asp-for="Admin" class="form-check-input" />
+                            <label asp-for="Admin" class="form-check-label">تسجيل دخول كمسؤول</label>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i>
+                                تسجيل الدخول
+                            </button>
+                        </div>
+
+                        @if (ViewBag.role != null)
+                        {
+                            <div class="alert alert-info">@ViewBag.role</div>
+                        }
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p>ليس لديك حساب؟ <a asp-action="signUp" asp-controller="User">إنشاء حساب جديد</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

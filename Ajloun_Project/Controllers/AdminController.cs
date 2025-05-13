@@ -2,16 +2,22 @@
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Ajloun_Project.Controllers
 {
     public class AdminController : Controller
     {
         private readonly MyDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AdminController(MyDbContext context)
+        public AdminController(MyDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Dashboard()
         {
@@ -35,13 +41,39 @@ namespace Ajloun_Project.Controllers
         // إضافة منتج جديد
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateHandicrafts(Handicraft handicraft)
+        public async Task<IActionResult> CreateHandicrafts(Handicraft handicraft, IFormFile productImage)
         {
             if (ModelState.IsValid)
             {
+                if (productImage != null && productImage.Length > 0)
+                {
+                    // إنشاء اسم فريد للملف
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + productImage.FileName;
+                    
+                    // تحديد مسار حفظ الصورة
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "handicrafts");
+                    
+                    // التأكد من وجود المجلد
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    
+                    // حفظ الصورة
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await productImage.CopyToAsync(fileStream);
+                    }
+                    
+                    // حفظ مسار الصورة في قاعدة البيانات
+                    handicraft.ImageUrl = "/images/handicrafts/" + uniqueFileName;
+                }
+
                 handicraft.CreatedAt = DateTime.Now;
                 _context.Handicrafts.Add(handicraft);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Handicrafts));
             }
             return View(handicraft);
@@ -61,9 +93,9 @@ namespace Ajloun_Project.Controllers
         //////////////////////////////////////////////////////////////////////////////////////
 
         // حذف منتج
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteHandicraft(int id)
         {
             var handicraft = _context.Handicrafts.FirstOrDefault(h => h.CraftId == id);
             if (handicraft != null)
@@ -73,13 +105,6 @@ namespace Ajloun_Project.Controllers
             }
             return RedirectToAction(nameof(Handicrafts));
         }
-
-
-
-
-
-
-
 
         // عرض جميع الهيئات الثقافية
         public IActionResult CulturalAssociations()
@@ -99,10 +124,6 @@ namespace Ajloun_Project.Controllers
             return RedirectToAction("CulturalAssociations");
         }
 
-
-
-
-
         // عرض طلبات الانضمام للهيئات الثقافية
         public IActionResult AssociationJoinRequests()
         {
@@ -114,8 +135,6 @@ namespace Ajloun_Project.Controllers
 
             return View(requests);
         }
-
-
 
         // الموافقة على طلب الانضمام
         [HttpPost]
@@ -162,8 +181,6 @@ namespace Ajloun_Project.Controllers
             return RedirectToAction(nameof(AssociationJoinRequests));
         }
 
-
-
         public IActionResult HallBookingsRequests()
         {
             var bookings = _context.HallBookings
@@ -187,6 +204,239 @@ namespace Ajloun_Project.Controllers
             return RedirectToAction("HallBookingsRequests");
         }
 
+        // عرض قائمة المشرفين
+        public async Task<IActionResult> Index()
+        {
+            var admins = await _context.Admins.ToListAsync();
+            return View(admins);
+        }
 
+        // عرض نموذج إضافة مشرف جديد
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // إضافة مشرف جديد
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Admin admin)
+        {
+            if (ModelState.IsValid)
+            {
+                // التحقق من عدم تكرار اسم المستخدم والبريد الإلكتروني
+                if (await _context.Admins.AnyAsync(a => a.Username == admin.Username))
+                {
+                    ModelState.AddModelError("Username", "اسم المستخدم مستخدم بالفعل");
+                    return View(admin);
+                }
+
+                if (await _context.Admins.AnyAsync(a => a.Email == admin.Email))
+                {
+                    ModelState.AddModelError("Email", "البريد الإلكتروني مستخدم بالفعل");
+                    return View(admin);
+                }
+
+                // تشفير كلمة المرور
+                admin.PasswordHash = HashPassword(admin.PasswordHash);
+
+                _context.Add(admin);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(admin);
+        }
+
+        // عرض نموذج تعديل المشرف
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var admin = await _context.Admins.FindAsync(id);
+            if (admin == null)
+            {
+                return NotFound();
+            }
+
+            return View(admin);
+        }
+
+        // تحديث بيانات المشرف
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Admin admin)
+        {
+            if (id != admin.AdminId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // التحقق من عدم تكرار اسم المستخدم والبريد الإلكتروني
+                    var existingAdmin = await _context.Admins
+                        .FirstOrDefaultAsync(a => (a.Username == admin.Username || a.Email == admin.Email) && a.AdminId != id);
+
+                    if (existingAdmin != null)
+                    {
+                        if (existingAdmin.Username == admin.Username)
+                            ModelState.AddModelError("Username", "اسم المستخدم مستخدم بالفعل");
+                        if (existingAdmin.Email == admin.Email)
+                            ModelState.AddModelError("Email", "البريد الإلكتروني مستخدم بالفعل");
+                        return View(admin);
+                    }
+
+                    // إذا تم تغيير كلمة المرور، قم بتشفيرها
+                    if (!string.IsNullOrEmpty(admin.PasswordHash))
+                    {
+                        admin.PasswordHash = HashPassword(admin.PasswordHash);
+                    }
+                    else
+                    {
+                        // إذا لم يتم تغيير كلمة المرور، احتفظ بالقيمة القديمة
+                        var oldAdmin = await _context.Admins.AsNoTracking().FirstOrDefaultAsync(a => a.AdminId == id);
+                        admin.PasswordHash = oldAdmin.PasswordHash;
+                    }
+
+                    _context.Update(admin);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AdminExists(admin.AdminId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(admin);
+        }
+
+        // حذف مشرف
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var admin = await _context.Admins.FindAsync(id);
+            if (admin != null)
+            {
+                _context.Admins.Remove(admin);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool AdminExists(int id)
+        {
+            return _context.Admins.Any(e => e.AdminId == id);
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
+            }
+        }
+
+        // عرض نموذج تعديل منتج
+        public IActionResult EditHandicraft(int id)
+        {
+            var handicraft = _context.Handicrafts.FirstOrDefault(h => h.CraftId == id);
+            if (handicraft == null)
+            {
+                return NotFound();
+            }
+            return View(handicraft);
+        }
+
+        // تحديث بيانات المنتج
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditHandicraft(int id, Handicraft handicraft, IFormFile productImage)
+        {
+            if (id != handicraft.CraftId)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var existingHandicraft = await _context.Handicrafts.FindAsync(id);
+                if (existingHandicraft == null)
+                {
+                    return NotFound();
+                }
+
+                // تحديث البيانات الأساسية
+                existingHandicraft.Title = handicraft.Title;
+                existingHandicraft.Description = handicraft.Description;
+                existingHandicraft.Price = handicraft.Price;
+                existingHandicraft.Stock = handicraft.Stock;
+                existingHandicraft.Category = handicraft.Category;
+
+                // تحديث الصورة فقط إذا تم تحميل صورة جديدة
+                if (productImage != null && productImage.Length > 0)
+                {
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + productImage.FileName;
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "handicrafts");
+                    
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await productImage.CopyToAsync(fileStream);
+                    }
+                    
+                    existingHandicraft.ImageUrl = "/images/handicrafts/" + uniqueFileName;
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Handicrafts));
+            }
+            catch (Exception)
+            {
+                return View(handicraft);
+            }
+        }
+
+        public IActionResult CraftOrders()
+        {
+            var orders = _context.CraftOrders
+                .Include(o => o.Craft)
+                .Include(o => o.User)
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
+            return View(orders);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateOrderStatus(int id, string status)
+        {
+            var order = _context.CraftOrders.Find(id);
+            if (order != null)
+            {
+                order.Status = status;
+                _context.SaveChanges();
+            }
+            return RedirectToAction(nameof(CraftOrders));
+        }
     }
 }
