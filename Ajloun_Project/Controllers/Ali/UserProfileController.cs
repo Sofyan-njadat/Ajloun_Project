@@ -15,14 +15,14 @@ namespace Ajloun_Project.Controllers.Ali
 
         private int? GetUserId()
         {
-            return HttpContext.Session.GetInt32("userId") ?? 1;
+            return HttpContext.Session.GetInt32("userId");
         }
 
         public async Task<IActionResult> UserInfo()
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
             if (user == null)
@@ -35,7 +35,7 @@ namespace Ajloun_Project.Controllers.Ali
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var applications = await _context.CourseApplications
                 .Include(c => c.Course)
@@ -49,7 +49,7 @@ namespace Ajloun_Project.Controllers.Ali
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var requests = await _context.AssociationJoinRequests
                 .Include(r => r.Association)
@@ -63,7 +63,7 @@ namespace Ajloun_Project.Controllers.Ali
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var registrations = await _context.AssocEventRegistrations
                 .Include(r => r.AssocEvent)
@@ -77,7 +77,7 @@ namespace Ajloun_Project.Controllers.Ali
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var reservations = await _context.BookReservations
                 .Include(r => r.Book)
@@ -91,7 +91,7 @@ namespace Ajloun_Project.Controllers.Ali
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var orders = await _context.CraftOrders
                 .Include(o => o.Craft)
@@ -105,7 +105,7 @@ namespace Ajloun_Project.Controllers.Ali
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var reservations = await _context.FestivalReservations
                 .Include(r => r.Festival)
@@ -119,7 +119,7 @@ namespace Ajloun_Project.Controllers.Ali
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var reservations = await _context.CulturalEventReservations
                 .Include(r => r.Event)
@@ -134,7 +134,7 @@ namespace Ajloun_Project.Controllers.Ali
         {
             var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             return View();
         }
@@ -142,9 +142,9 @@ namespace Ajloun_Project.Controllers.Ali
         [HttpPost]
         public async Task<IActionResult> ChangeUserPassword(string OldPassword, string NewPassword, string ConfirmPassword)
         {
-            var userId = HttpContext.Session.GetInt32("userId")?? 1;
+            var userId = GetUserId();
             if (userId == null)
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("signIn", "User");
 
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -174,6 +174,9 @@ namespace Ajloun_Project.Controllers.Ali
         public async Task<IActionResult> EditUserInfo()
         {
             var userId = GetUserId();
+            if (userId == null)
+                return RedirectToAction("signIn", "User");
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
             if (user == null) return NotFound();
             return View(user);
@@ -183,16 +186,17 @@ namespace Ajloun_Project.Controllers.Ali
         public async Task<IActionResult> EditUserInfo(User updatedUser, IFormFile? ProfileImageFile)
         {
             var userId = GetUserId();
+            if (userId == null)
+                return RedirectToAction("signIn", "User");
+
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return NotFound();
 
-            // تعديل البيانات الأساسية
             user.FullName = updatedUser.FullName;
             user.Phone = updatedUser.Phone;
             user.Gender = updatedUser.Gender;
             user.Address = updatedUser.Address;
 
-            // حفظ الصورة الجديدة إن وُجدت
             if (ProfileImageFile != null && ProfileImageFile.Length > 0)
             {
                 var fileName = $"{Guid.NewGuid()}{Path.GetExtension(ProfileImageFile.FileName)}";
@@ -210,6 +214,15 @@ namespace Ajloun_Project.Controllers.Ali
 
             TempData["SuccessMessage"] = "تم تحديث معلومات الحساب بنجاح.";
             return RedirectToAction("UserInfo");
+        }
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            // إزالة البيانات المخزنة في الجلسة
+            HttpContext.Session.Clear();
+
+            // إعادة التوجيه إلى صفحة تسجيل الدخول أو الرئيسية
+            return RedirectToAction("SignIn", "User");
         }
 
     }

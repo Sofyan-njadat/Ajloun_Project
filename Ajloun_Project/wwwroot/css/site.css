@@ -1,30 +1,12 @@
-@ {
-    Layout = null;
-}
-
-<!DOCTYPE html >
-<html lang="ar" dir="rtl" >
-<head >
-<meta charset="utf-8" / >
-<title > @ViewData["Title"]</title >
-<meta name="viewport" content="width=device-width, initial-scale=1" / >
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" / >
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" / >
-
-@RenderSection("Styles", required: false)
-
-<style >
-body {
+﻿body {
     font-family: 'Cairo', sans-serif;
     margin: 0;
     background: #f5f5f5;
     direction: rtl;
-    top: 0 !important;
 }
 
 header {
-    background-color: #1B5E20;
+    background-color: #1E2F23;
     color: white;
     padding: 1rem 2rem;
     display: flex;
@@ -34,45 +16,103 @@ header {
     position: relative;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
+    header .logo {
+        order: 1;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-left: auto;
+    }
 
-nav {
+#main-nav {
+    order: 2;
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    align-items: center;
+    margin-right: auto;
 }
 
-    nav a {
-        color: white;
-        text-decoration: none;
-        padding: 5px 10px;
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+}
+
+    nav a:hover {
+        background-color: #263a2c;
+        border-radius: 5px;
     }
 
-        nav a:hover {
-            background-color: #66BB6A;
-            border-radius: 5px;
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1E2F23;
+    min-width: 180px;
+    top: 100%;
+    right: 0;
+    z-index: 9999;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+    .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+    }
+
+        .dropdown-content a:hover {
+            background-color: #2c3e2e;
         }
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
 
 .burger {
     display: none;
     font-size: 28px;
     cursor: pointer;
     color: white;
+    order: 0;
+}
+
+.translate-auth {
+    order: 3;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .translate-box select {
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: 25px;
-    border: 2px solid #FFD600;
+    border: 1px solid #ccc;
     background: white;
-    color: #1B5E20;
+    color: #1E2F23;
     font-weight: bold;
     font-family: 'Cairo', sans-serif;
     cursor: pointer;
-    appearance: none;
+}
+
+.goog-logo-link,
+.goog-te-gadget span,
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+body > .skiptranslate {
+    display: none !important;
+    height: 0 !important;
+    visibility: hidden;
+}
+
+html {
+    margin-top: 0px !important;
 }
 
 .auth-buttons a, .auth-buttons form button {
@@ -86,12 +126,12 @@ nav {
 
     .auth-buttons a.login {
         background: #FFD600;
-        color: #1B5E20;
+        color: #1E2F23;
     }
 
     .auth-buttons a.profile {
         background: #ffffff;
-        color: #1B5E20;
+        color: #1E2F23;
         margin-left: 10px;
     }
 
@@ -102,20 +142,13 @@ nav {
         margin-left: 10px;
     }
 
-.translate-auth {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
 .container {
     padding: 2rem;
     min-height: calc(100vh - 200px);
 }
 
 footer {
-    background-color: #1B5E20;
+    background-color: #1E2F23;
     color: white;
     padding: 2rem;
     text-align: center;
@@ -145,47 +178,42 @@ footer {
         display: block;
     }
 
-/* Google Translate hide */
-.goog-logo-link,
-.goog-te-gadget span,
-.goog-te-banner-frame,
-iframe.goog-te-banner-frame,
-body > .skiptranslate {
-    display: none !important;
-    height: 0 !important;
-    visibility: hidden;
-}
-
-html {
-    margin-top: 0px !important;
-}
-
-#google_translate_element {
-    display: inline-block;
-}
-
-/* Responsive Burger */
 @media (max-width: 768px) {
     .burger {
         display: block;
     }
 
-    nav {
+    #main-nav {
         display: none;
         flex-direction: column;
         width: 100%;
-        background-color: #1B5E20;
+        background-color: #1E2F23;
         padding: 1rem 0;
+        order: 4;
     }
 
-        nav a {
+        #main-nav.show {
+            display: flex;
+        }
+
+        #main-nav a {
             padding: 10px 20px;
             border-top: 1px solid #ffffff22;
         }
 
-        nav.show {
-            display: flex;
-        }
+    .dropdown-content {
+        position: relative;
+        box-shadow: none;
+        top: auto;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: none;
+    }
+
+    .dropdown.active .dropdown-content {
+        display: block;
+    }
 
     .translate-auth {
         flex-direction: column;
@@ -193,4 +221,37 @@ html {
         margin-top: 1rem;
         width: 100%;
     }
+
+    .mobile-auth {
+        display: block;
+        padding: 10px 20px;
+    }
+
+        .mobile-auth .translate-box {
+            margin-bottom: 10px;
+        }
+
+        .mobile-auth .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+    .auth-buttons a,
+    .auth-buttons form button {
+        width: 100%;
+        text-align: center;
+    }
 }
+
+#main-nav > a:last-of-type {
+    margin-left: 160px; /* ✅ تزييح الترجمة لليسار واللينكات لليمين */
+}
+/* ✅ أضف داخل CSS */
+.dropdown > a::after {
+    content: " ▼";
+    font-size: 12px;
+    margin-right: 4px;
+    color: #fff;
+}
+
