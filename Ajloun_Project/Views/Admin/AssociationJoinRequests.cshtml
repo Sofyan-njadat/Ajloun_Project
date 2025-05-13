@@ -1,79 +1,130 @@
 ﻿@model List<AssociationJoinRequest>
 
-<h2>طلبات الانضمام للهيئات الثقافية</h2>
+@{
+    ViewData["Title"] = "طلبات الانضمام";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>رقم الطلب</th>
-            <th>اسم المستخدم</th>
-            <th>اسم الهيئة الثقافية</th>
-            <th>الحالة</th>
-            <th>الإجراءات</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var request in Model)
-        {
-                <tr>
-                    <td>@request.RequestId</td>
-                    <td>@request.User.FullName</td>
-                    <td>@request.Association.Name</td>
-                    <td>@request.Status</td>
-                    <td>
-                    @if (request.Status == "Pending")
-                    {
-                                <form method="post" asp-action="ApproveRequest">
-                                    <input type="hidden" name="requestId" value="@request.RequestId" />
-                                    <button type="submit" class="btn btn-success btn-sm">موافقة</button>
-                                </form>
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
 
-                                <form method="post" asp-action="RejectRequest">
-                                    <input type="hidden" name="requestId" value="@request.RequestId" />
-                                    <button type="submit" class="btn btn-danger btn-sm">رفض</button>
-                                </form>
-                    }
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
 
-                        <form method="post" asp-action="DeleteRequest">
-                            <input type="hidden" name="requestId" value="@request.RequestId" />
-                            <button type="submit" class="btn btn-warning btn-sm">حذف</button>
-                        </form>
-                    </td>
-                </tr>
-        }
-    </tbody>
-</table>
+    .action-buttons .btn {
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .action-buttons form {
+        margin: 0;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">طلبات الانضمام للهيئات الثقافية</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>اسم المستخدم</th>
+                            <th>اسم الهيئة الثقافية</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var request in Model)
+                        {
+                            <tr>
+                                <td>@request.RequestId</td>
+                                <td>@request.User.FullName</td>
+                                <td>@request.Association.Name</td>
+                                <td>@request.Status</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        @if (request.Status == "Pending")
+                                        {
+                                            <form method="post" asp-action="ApproveRequest">
+                                                <input type="hidden" name="requestId" value="@request.RequestId" />
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                    <i class="fas fa-check"></i> موافقة
+                                                </button>
+                                            </form>
+
+                                            <form method="post" asp-action="RejectRequest">
+                                                <input type="hidden" name="requestId" value="@request.RequestId" />
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-times"></i> رفض
+                                                </button>
+                                            </form>
+                                        }
+
+                                        <form method="post" asp-action="DeleteRequest">
+                                            <input type="hidden" name="requestId" value="@request.RequestId" />
+                                            <button type="submit" class="btn btn-sm btn-warning" onclick="return confirmDelete(@request.RequestId)">
+                                                <i class="fas fa-trash"></i> حذف
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            function confirmDelete(requestId) {
-                Swal.fire({
-                    title: 'هل أنت متأكد؟',
-                    text: "لن تتمكن من التراجع عن هذا الإجراء!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'نعم، احذف!',
-                    cancelButtonText: 'إلغاء'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Submit the delete form
-                        const form = document.createElement('form');
-                        form.method = 'post';
-                        form.action = '/Admin/DeleteRequest';
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(requestId) {
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'نعم، احذف!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the delete form
+                    const form = document.createElement('form');
+                    form.method = 'post';
+                    form.action = '/Admin/DeleteRequest';
 
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'requestId';
-                        input.value = requestId;
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'requestId';
+                    input.value = requestId;
 
-                        form.appendChild(input);
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-                });
-            }
-        </script>
+                    form.appendChild(input);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+            return false;
+        }
+    </script>
 }

@@ -1,0 +1,135 @@
+@model IEnumerable<Ajloun_Project.Models.Admin>
+@{
+    ViewData["Title"] = "إدارة المشرفين";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .action-buttons .btn {
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .action-buttons form {
+        margin: 0;
+    }
+
+    .role-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .role-admin {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .role-superadmin {
+        background-color: #fce4ec;
+        color: #c2185b;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">إدارة المشرفين</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="@Url.Action("Create", "Admin")" class="btn btn-light">
+                    <i class="fas fa-plus"></i> إضافة مشرف جديد
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>اسم المستخدم</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>الاسم الكامل</th>
+                            <th>الدور</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var admin in Model)
+                        {
+                            <tr>
+                                <td>@admin.AdminId</td>
+                                <td>@admin.Username</td>
+                                <td>@admin.Email</td>
+                                <td>@admin.FullName</td>
+                                <td>
+                                    <span class="role-badge @(admin.Role == "SuperAdmin" ? "role-superadmin" : "role-admin")">
+                                        @(admin.Role == "SuperAdmin" ? "مدير" : "مشرف")
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="@Url.Action("Edit", "Admin", new { id = admin.AdminId })" class="btn btn-primary">
+                                            <i class="fas fa-edit"></i> تعديل
+                                        </a>
+                                        <form asp-action="Delete" asp-route-id="@admin.AdminId" method="post" class="delete-form" data-admin-username="@admin.Username">
+                                            <button type="button" class="btn btn-danger delete-btn">
+                                                <i class="fas fa-trash"></i> حذف
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const form = this.closest('form');
+                const username = form.dataset.adminUsername;
+
+                Swal.fire({
+                    title: 'تأكيد الحذف',
+                    text: `هل أنت متأكد من حذف المشرف "${username}"؟`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'نعم، احذف',
+                    cancelButtonText: 'إلغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+} 

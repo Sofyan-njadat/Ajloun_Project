@@ -1,23 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ajloun_Project.Models;
 
-public partial class CraftOrder
+public class CraftOrder
 {
+    [Key]
     public int OrderId { get; set; }
 
-    public int? CraftId { get; set; }
+    [Required]
+    public int CraftId { get; set; }
 
-    public int? UserId { get; set; }
+    [Required]
+    public int UserId { get; set; }
 
-    public int? Quantity { get; set; }
+    [Required]
+    public int Quantity { get; set; }
 
     public DateTime? OrderDate { get; set; }
 
-    public string? Status { get; set; }
+    [Required]
+    [StringLength(20)]
+    public string Status { get; set; } = "Pending";
 
-    public virtual Handicraft? Craft { get; set; }
+    // العلاقات
+    [ForeignKey("CraftId")]
+    public virtual Handicraft Craft { get; set; }
 
-    public virtual User? User { get; set; }
+    [ForeignKey("UserId")]
+    public virtual User User { get; set; }
 }

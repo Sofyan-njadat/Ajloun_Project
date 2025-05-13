@@ -2,130 +2,102 @@
 
 @{
     ViewData["Title"] = "إدارة الأخبار";
-    Layout = "_Layout";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
 
 <style>
-    :root {
-        --primary: #355E3B;
-        --secondary: #A9BA9D;
-        --accent: #E3D26F;
-        --dark: #1E2F23;
-        --light: #EFF5EC;
-        --text: #2D2D2D;
-        --white: #FFFFFF;
-        --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-        --transition: all 0.3s ease;
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
     }
 
-    body {
-        font-family: 'Tajawal', sans-serif;
-        background-color: var(--light);
-        color: var(--text);
+    .action-buttons .btn {
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
     }
 
-    .admin-header {
-        text-align: center;
-        color: var(--primary);
-        margin: 40px 0 20px;
+    .action-buttons form {
+        margin: 0;
     }
 
-    .news-table {
-        background: var(--white);
-        box-shadow: var(--box-shadow);
-        border-radius: 12px;
-        overflow: hidden;
-    }
-
-        .news-table th {
-            background-color: var(--primary);
-            color: var(--white);
-        }
-
-        .news-table td,
-        .news-table th {
-            vertical-align: middle;
-        }
-
-    .btn-action {
-        padding: 6px 15px;
-        border-radius: 6px;
+    .badge {
+        padding: 8px 12px;
         font-size: 0.9rem;
-        transition: var(--transition);
     }
-
-    .btn-edit {
-        background-color: var(--accent);
-        color: var(--dark);
-        margin-right: 5px;
-    }
-
-        .btn-edit:hover {
-            background-color: #cdbf5d;
-        }
-
-    .btn-delete {
-        background-color: crimson;
-        color: var(--white);
-    }
-
-        .btn-delete:hover {
-            background-color: #a80000;
-        }
-
-    .add-button {
-        background-color: var(--primary);
-        color: var(--white);
-        padding: 10px 20px;
-        border-radius: 8px;
-        text-decoration: none;
-        display: inline-block;
-        margin-top: 20px;
-        transition: var(--transition);
-    }
-
-        .add-button:hover {
-            background-color: var(--accent);
-            color: var(--dark);
-        }
 </style>
 
-<div class="container">
-    <h2 class="admin-header">📰 لوحة إدارة الأخبار</h2>
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">إدارة الأخبار</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="@Url.Action("Create", "News")" class="btn btn-light">
+                    <i class="fas fa-plus"></i> إضافة خبر جديد
+                </a>
+            </div>
+        </div>
+    </div>
 
-    <table class="table table-bordered table-striped text-center news-table">
-        <thead>
-            <tr>
-                <th>العنوان</th>
-                <th>التصنيف</th>
-                <th>التاريخ</th>
-                <th>الحالة</th>
-                <th>التحكم</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Title</td>
-                    <td>@item.Category</td>
-                    <td>@item.PublishDate?.ToString("yyyy-MM-dd")</td>
-                    <td>@item.Status</td>
-                    <td>
-                        <a class="btn btn-sm btn-action btn-edit" asp-action="AdminEdit" asp-route-id="@item.NewsId">✏️ تعديل</a>
-                        <form asp-action="AdminDelete" asp-route-id="@item.NewsId" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-action btn-delete" onclick="return confirm('هل أنت متأكد من الحذف؟')">🗑 حذف</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="text-center">
-        <a class="add-button" asp-action="Create">➕ إضافة خبر جديد</a>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>العنوان</th>
+                            <th>التصنيف</th>
+                            <th>التاريخ</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.Category</td>
+                                <td>@item.PublishDate?.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    @switch (item.Status)
+                                    {
+                                        case "Published":
+                                            <span class="badge bg-success">منشور</span>
+                                            break;
+                                        case "Draft":
+                                            <span class="badge bg-warning text-dark">مسودة</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary">غير معروف</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a asp-action="AdminEdit" asp-route-id="@item.NewsId" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i> تعديل
+                                        </a>
+                                        <form asp-action="AdminDelete" asp-route-id="@item.NewsId" method="post">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
+                                                <i class="fas fa-trash"></i> حذف
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

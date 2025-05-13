@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Ajloun_Project.Areas.Admin.Controllers
+namespace Ajloun_Project.Controllers
 {
-    [Area("Admin")]
     public class EventsController : Controller
     {
         private readonly MyDbContext _context;
@@ -21,7 +20,7 @@ namespace Ajloun_Project.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: Admin/Events
+        // GET: Events/AdminEvents
         public async Task<IActionResult> AdminEvents()
         {
             var events = await _context.CulturalEvents
@@ -31,7 +30,7 @@ namespace Ajloun_Project.Areas.Admin.Controllers
             return View(events);
         }
 
-        // GET: Admin/Events/Get/5
+        // GET: Events/Get/5
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
@@ -52,7 +51,7 @@ namespace Ajloun_Project.Areas.Admin.Controllers
             });
         }
 
-        // POST: Admin/Events/Create
+        // POST: Events/Create
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CulturalEvent culturalEvent, IFormFile image)
         {
@@ -142,7 +141,7 @@ namespace Ajloun_Project.Areas.Admin.Controllers
             }
         }
 
-        // DELETE: Admin/Events/Delete/5
+        // DELETE: Events/Delete/5
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {

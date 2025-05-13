@@ -2,12 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
+//builder.Services.AddDbContext<MyDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 
 
-builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
+//builder.Services.AddDbContext<MyDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -47,6 +47,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Admin}/{action=Dashboard}/{id?}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.Run();

@@ -2,66 +2,75 @@
 
 @{
     ViewData["Title"] = "AdminEvents";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
-
 
 <!-- إضافة مكتبة SweetAlert2 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
-<div class="container-fluid">
-    <h2 class="text-center mb-4">إدارة الفعاليات</h2>
-
-    <div class="row mb-3">
-        <div class="col">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">
-                <i class="fas fa-plus"></i> إضافة فعالية جديدة
-            </button>
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">الفعاليات</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#eventModal">
+                    <i class="fas fa-plus"></i> إضافة فعالية جديدة
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>العنوان</th>
-                    <th>الوصف</th>
-                    <th>تاريخ الفعالية</th>
-                    <th>الموقع</th>
-                    <th>الصورة</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var culturalEvent in Model)
-                {
-                    <tr>
-                        <td>@culturalEvent.Title</td>
-                        <td>@culturalEvent.Description</td>
-                        <td>@(culturalEvent.Date?.ToString("yyyy-MM-dd") ?? "-")</td>
-                        <td>@culturalEvent.Location</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(culturalEvent.PosterUrl))
-                            {
-                                <img src="@culturalEvent.PosterUrl" alt="@culturalEvent.Title" style="max-width: 100px; max-height: 100px;" />
-                            }
-                            else
-                            {
-                                <span>لا توجد صورة</span>
-                            }
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-primary edit-event" data-id="@culturalEvent.EventId">
-                                <i class="fas fa-edit"></i> تعديل
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-event" data-id="@culturalEvent.EventId">
-                                <i class="fas fa-trash"></i> حذف
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>العنوان</th>
+                            <th>الوصف</th>
+                            <th>تاريخ الفعالية</th>
+                            <th>الموقع</th>
+                            <th>الصورة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var culturalEvent in Model)
+                        {
+                            <tr>
+                                <td>@culturalEvent.Title</td>
+                                <td>@culturalEvent.Description</td>
+                                <td>@(culturalEvent.Date?.ToString("yyyy-MM-dd") ?? "-")</td>
+                                <td>@culturalEvent.Location</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(culturalEvent.PosterUrl))
+                                    {
+                                        <img src="@culturalEvent.PosterUrl" alt="@culturalEvent.Title" style="max-width: 100px; max-height: 100px; border-radius: 8px;" />
+                                    }
+                                    else
+                                    {
+                                        <span>لا توجد صورة</span>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary edit-event" data-id="@culturalEvent.EventId">
+                                        <i class="fas fa-edit"></i> تعديل
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-event" data-id="@culturalEvent.EventId">
+                                        <i class="fas fa-trash"></i> حذف
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -96,7 +105,7 @@
                         <label for="image" class="form-label">صورة الفعالية</label>
                         <input type="file" class="form-control" id="image" name="image" accept="image/*">
                         <div id="currentImage" class="mt-2" style="display: none;">
-                            <img src="" alt="الصورة الحالية" style="max-width: 200px; max-height: 200px;" />
+                            <img src="" alt="الصورة الحالية" style="max-width: 200px; max-height: 200px; border-radius: 8px;" />
                         </div>
                     </div>
                 </form>
@@ -148,7 +157,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '/Admin/Events/Delete/' + id,
+                            url: '/Events/Delete/' + id,
                             type: 'DELETE',
                             success: function () {
                                 Swal.fire(
@@ -176,7 +185,7 @@
                 var formData = new FormData($('#eventForm')[0]);
 
                 $.ajax({
-                    url: '/Admin/Events/Create',
+                    url: '/Events/Create',
                     type: 'POST',
                     data: formData,
                     processData: false,
