@@ -1,4 +1,4 @@
-﻿namespace AjlounProjecttt.ViewModels
+﻿namespace AjlounProject.ViewModels
 {
     public class PendingArtworkViewModel
     {

@@ -2,12 +2,12 @@ using Ajloun_Project.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
+//builder.Services.AddDbContext<MyDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 
 
-builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
+//builder.Services.AddDbContext<MyDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

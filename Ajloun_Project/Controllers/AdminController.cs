@@ -1,4 +1,5 @@
 ﻿using Ajloun_Project.Models;
+using AjlounProject.ViewModels;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -186,6 +187,95 @@ namespace Ajloun_Project.Controllers
 
             return RedirectToAction("HallBookingsRequests");
         }
+
+
+
+
+
+
+
+        //AHmad
+
+
+        public IActionResult PendingArtworks()
+        {
+            var artworks = _context.Artworks
+                .Where(a => a.Status == "Pending")
+                .Select(a => new PendingArtworkViewModel
+                {
+                    ArtworkId = a.ArtworkId,
+                    Title = a.Title,
+                    ArtistName = a.ArtistName,
+                    Type = a.Type,
+                    Description = a.Description,
+                    ImageUrl = a.ImageUrl
+                })
+                .ToList();
+
+            return View(artworks);
+        }
+
+        public IActionResult Approve(int id)
+        {
+            var artwork = _context.Artworks.Find(id);
+            if (artwork != null)
+            {
+                artwork.Status = "Approved";
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("PendingArtworks");
+        }
+
+        public IActionResult Reject(int id)
+        {
+            var artwork = _context.Artworks.Find(id);
+            if (artwork != null)
+            {
+                artwork.Status = "Rejected";
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("PendingArtworks");
+        }
+
+
+
+
+
+
+
+
+        public IActionResult HandicraftPurchaseOrders()
+        {
+            var orders = _context.CraftOrders
+                                 .Include(o => o.Craft)
+                                 .Include(o => o.User)
+                                 .OrderByDescending(o => o.OrderDate)
+                                 .Select(o => new CraftOrderViewModel
+                                 {
+                                     OrderId = o.OrderId,
+                                     CraftTitle = o.Craft.Title,
+                                     UserName = o.User.FullName,
+                                     Quantity = o.Quantity,
+                                     OrderDate = o.OrderDate,
+                                     Status = o.Status
+                                 }).ToList();
+
+            return View(orders);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }
