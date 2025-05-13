@@ -83,10 +83,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="NationalId" class="form-label">رقم الهوية</label>
-                                    <input asp-for="NationalId" class="form-control" placeholder="أدخل رقم هويتك (10 أرقام)" 
-                                           pattern="[0-9]{10}" maxlength="10" 
-                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                    <label asp-for="NationalId" class="form-label">الرقم الوطني</label>
+                                    <input asp-for="NationalId" class="form-control" placeholder="أدخل رقمك الوطني (10 أرقام)" />
                                     <span asp-validation-for="NationalId" class="text-danger"></span>
                                 </div>
                             </div>
@@ -112,7 +110,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        // التحقق من رقم الهوية
+        // التحقق من الرقم الوطني
         document.querySelector('input[name="NationalId"]').addEventListener('input', function(e) {
             if (this.value.length > 10) {
                 this.value = this.value.slice(0, 10);
