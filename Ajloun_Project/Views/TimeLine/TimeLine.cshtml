@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سردية عجلون - رحلة عبر الزمن</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
@@ -90,7 +91,7 @@
                         </div>
                         <div class="detail-item">
                             <h4 class="detail-title">تطور الزراعة</h4>
-                            <p class="detail-text">تم إدخال نظم الري المتطورة وزراعة محاصيل جديدة كالزيتون والعنب</p>
+                            <p class="detail-text">تم إدخال نظم الري المتطورة وزراعة محاصيل جد对手 كالزيتون والعنب</p>
                         </div>
                     </div>
                 </div>
@@ -163,7 +164,7 @@
                 <div class="era-point"></div>
                 <div class="era-date">1921 م - 1946 م</div>
                 <div class="era-content theme-era-7">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Ajloun_Great_Mosque_05.jpg/960px-Ajloun_Great_Mosque_05.jpg" alt="عهد الإمارة فيVenda أجلون" class="era-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Ajloun_Great_Mosque_05.jpg/960px-Ajloun_Great_Mosque_05.jpg" alt="عهد الإمارة في عجلون" class="era-image">
                     <h2 class="era-title">عهد الإمارة</h2>
                     <div class="era-period">1921 م - 1946 م</div>
                     <p class="era-text">بعد تأسيس إمارة شرق الأردن عام 1921، أصبحت عجلون جزءًا من الإمارة الناشئة. شهدت هذه الفترة بداية تأسيس المؤسسات الحكومية الحديثة وإنشاء المدارس الحديثة. كان لسكان عجلون دور بارز في حركة النهضة العربية ومقاومة الاستعمار البريطاني.</p>
@@ -216,7 +217,7 @@
                         </div>
                         <div class="detail-item">
                             <h4 class="detail-title">التعليم العالي</h4>
-                            <p class="detail-text">افتتاح جامعة عجلون الوطنية ومؤسسات التعليم العالي المختلفة</p>
+                            <p class="detail-text">افتتاح جامعة عجلون الوطنية و مؤسسات التعليم العالي المختلفة</p>
                         </div>
                     </div>
                 </div>
@@ -264,21 +265,21 @@
         <div class="nav-dot" data-era="era-5">
             <div class="nav-tooltip">العصر المملوكي</div>
         </div>
-        <div*g class="nav-dot" data-era="era-6">
+        <div class="nav-dot" data-era="era-6">
             <div class="nav-tooltip">الحكم العثماني</div>
-    </div>
-    <div class="nav-dot" data-era="era-7">
-        <div class="nav-tooltip">عهد الإمارة</div>
-    </div>
-    <div class="nav-dot" data-era="era-8">
-        <div class="nav-tooltip">المملكة الأردنية</div>
-    </div>
-    <div class="nav-dot" data-era="era-9">
-        <div class="nav-tooltip">عهد الملك عبدالله</div>
-    </div>
-    <div class="nav-dot" data-era="era-10">
-        <div class="nav-tooltip">عجلون الآن</div>
-    </div>
+        </div>
+        <div class="nav-dot" data-era="era-7">
+            <div class="nav-tooltip">عهد الإمارة</div>
+        </div>
+        <div class="nav-dot" data-era="era-8">
+            <div class="nav-tooltip">المملكة الأردنية</div>
+        </div>
+        <div class="nav-dot" data-era="era-9">
+            <div class="nav-tooltip">عهد الملك عبدالله</div>
+        </div>
+        <div class="nav-dot" data-era="era-10">
+            <div class="nav-tooltip">عجلون الآن</div>
+        </div>
     </div>
 
     <div class="info-toggle" id="infoToggle">
@@ -286,26 +287,22 @@
     </div>
     <div class="info-panel" id="infoPanel">
         <div>
-            <h3 style="color: var(--gold-primary); margin-bottom: 10px;">عن هذه الرحلة</h3>
+            <h3 style="color: var(--accent); margin-bottom: 10px;">عن هذه الرحلة</h3>
             <p>رحلة "عجلون عبر الزمن" هي تجربة تفاعلية تأخذك في جولة تاريخية عبر أهم العصور والحقب التي مرت بها منطقة عجلون منذ العصور القديمة وحتى يومنا هذا.</p>
         </div>
     </div>
 
     <script>
-        // إعدادات الصفحة
         let currentEra = 'hero';
         let isLoading = true;
         let timelineHeight;
         let eraPositions = {};
         let markers = [];
         let currentScroll = 0;
-        let scrolling = false;
 
-        // المشهد الثلاثي الأبعاد
         let scene, camera, renderer, stars = [];
         let canvas;
 
-        // تهيئة المشهد
         function initScene() {
             canvas = document.getElementById('scene-container');
             scene = new THREE.Scene();
@@ -319,9 +316,9 @@
             canvas.appendChild(renderer.domElement);
 
             const starGeometry = new THREE.SphereGeometry(0.1, 8, 8);
-            const starMaterial = new THREE.MeshBasicMaterial({ color: 0xd4af37 });
+            const starMaterial = new THREE.MeshBasicMaterial({ color: 0xE3D26F });
 
-            for(let i = 0; i < 1000; i++) {
+            for (let i = 0; i < 1200; i++) {
                 const star = new THREE.Mesh(starGeometry, starMaterial);
                 const x = (Math.random() - 0.5) * 2000;
                 const y = (Math.random() - 0.5) * 2000;
@@ -339,7 +336,7 @@
 
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
-            const pointLight = new THREE.PointLight(0xd4af37, 1);
+            const pointLight = new THREE.PointLight(0xE3D26F, 1);
             pointLight.position.set(10, 10, 10);
             scene.add(pointLight);
 
@@ -385,22 +382,29 @@
                             y: 0,
                             opacity: 1,
                             duration: 0.8,
-                            delay: 0.2 * index
+                            delay: 0.2 * index,
+                            ease: 'power2.out'
                         });
                     });
 
+                    gsap.to('.hero-title', {
+                        onComplete: () => document.querySelector('.hero-title').classList.add('visible')
+                    });
                     gsap.to('.hero-subtitle', {
                         opacity: 1,
                         y: 0,
                         duration: 1,
-                        delay: 0.8
+                        delay: 0.8,
+                        ease: 'power2.out',
+                        onComplete: () => document.querySelector('.hero-subtitle').classList.add('visible')
                     });
-
                     gsap.to('.scroll-indicator', {
                         opacity: 1,
                         y: 0,
                         duration: 1,
-                        delay: 1.2
+                        delay: 1.2,
+                        ease: 'power2.out',
+                        onComplete: () => document.querySelector('.scroll-indicator').classList.add('visible')
                     });
 
                     setupScrollObserver();

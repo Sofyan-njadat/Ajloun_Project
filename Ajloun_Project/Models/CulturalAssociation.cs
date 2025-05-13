@@ -23,7 +23,11 @@ public partial class CulturalAssociation
 
     public string? Status { get; set; }
 
+    public int? CategoryId { get; set; }
+
     public virtual ICollection<AssociationEvent> AssociationEvents { get; set; } = new List<AssociationEvent>();
 
     public virtual ICollection<AssociationJoinRequest> AssociationJoinRequests { get; set; } = new List<AssociationJoinRequest>();
+
+    public virtual AssociationCategory? Category { get; set; }
 }
