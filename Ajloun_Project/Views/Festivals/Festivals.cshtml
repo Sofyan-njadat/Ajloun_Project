@@ -1,0 +1,231 @@
+﻿@model List<Ajloun_Project.Models.Festival>
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "المهرجانات";
+    var today = DateTime.Today;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/Festivals.css" asp-append-version="true" />
+}
+
+<div class="festival-hero">
+    <div>
+        <h1>مهرجانات عجلون الثقافية</h1>
+        <p>اكتشف أجمل المهرجانات والفعاليات الثقافية في محافظة عجلون</p>
+    </div>
+</div>
+
+<div class="festivals-container">
+    <div class="festival-filters">
+        <form method="get" asp-controller="Festivals" asp-action="Festivals">
+        <div class="row">
+            <div class="col-md-4">
+                
+                    <div class="filter-group">
+                        <label class="filter-label">نوع المهرجان</label>
+                        <select name="festivalType" class="filter-select" onchange="this.form.submit()">
+                            <option value="">الكل</option>
+                            @foreach (var type in ViewBag.Types as List<string>)
+                            {
+                                if (ViewBag.SelectedType == type)
+                                {
+                                    <option value="@type" selected>@type</option>
+                                }
+                                else
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            }
+                        </select>
+                    </div>
+            </div>
+           <div class="col-md-4">
+                    <div class="filter-group">
+                        <label class="filter-label">التاريخ</label>
+                        <select name="dateFilter" class="filter-select" onchange="this.form.submit()">
+                            <option value="">الكل</option>
+                            @if (ViewBag.SelectedDate =="upcoming")
+                            {
+                            <option value="upcoming" selected>القادم</option>
+                            <option value="past">السابق</option>                            }
+                            else if(ViewBag.SelectedDate =="past")
+                            {
+                            <option value="upcoming">القادم</option>
+                            <option value="past" selected>السابق</option>
+                            }else{
+                            <option value="upcoming">القادم</option>
+                            <option value="past">السابق</option>
+                            }
+                        </select>
+                    </div>
+            </div>
+            <div class="col-md-4">
+                <div class="filter-group">
+                    <label class="filter-label">الموقع</label>
+                        <select name="festivalLocation" class="filter-select" onchange="this.form.submit()">
+                            <option value="">الكل</option>
+                            @foreach (var location in ViewBag.Locations as List<string>)
+                            {
+                                if (ViewBag.SelectedLocation == location)
+                                {
+                                    <option value="@location" selected>@location</option>
+                                }
+                                else
+                                {
+                                    <option value="@location">@location</option>
+                                }
+                            }
+                        </select>
+                </div>
+            </div>
+        </div>
+        </form>
+
+    </div>
+
+    <div class="row">
+        @if (!Model.Any())
+    {
+        <div class="col-12 text-center mt-4">
+            <p class="no-results-message">لا توجد مهرجانات مطابقة للشروط المحددة حالياً.</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var festival in Model)
+        {
+            var isFestivalEnded = festival.EndDate < today;
+            <div class="col-md-6 col-lg-4 fade-in">
+                <div class="festival-card">
+                    <img src="@Url.Content("~/images/" + festival.BannerImageUrl)" alt="@festival.Title" class="festival-image" />
+                    <div class="festival-content">
+                        <h3 class="festival-title">@festival.Title</h3>
+                        <div class="festival-date">
+                            @festival.StartDate?.ToString("d MMMM yyyy", new CultureInfo("ar-JO"))
+                            -
+                            @festival.EndDate?.ToString("d MMMM yyyy", new CultureInfo("ar-JO"))
+                        </div>
+                        <div class="festival-location">@festival.Location</div>
+                        <p class="festival-description">@festival.Description</p>
+                        <div class="festival-details">
+                            <span class="festival-category">@festival.FestivalType</span>
+                            @if (isFestivalEnded)
+                            {
+                                <span class="festival-ended">انتهى المهرجان</span>
+                            }
+                            else
+                            {
+                                <a href="#" class="festival-link" onclick="openReservationModal(@festival.FestivalId, '@festival.Title', '@festival.StartDate?.ToString("yyyy-MM-dd")', '@festival.EndDate?.ToString("yyyy-MM-dd")')">سجل مشاركتك</a>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }}
+    </div>
+</div>
+
+<!-- Reservation Modal -->
+<div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservationModalLabel">تسجيل المشاركة في المهرجان</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reservationForm" asp-controller="Festivals" asp-action="createFestivalBooking" method="post">
+                    <input type="hidden" id="festivalId" name="FestivalId" />
+                    <input type="hidden" id="festivalStartDate" name="FestivalStartDate" />
+                    <input type="hidden" id="festivalEndDate" name="FestivalEndDate" />
+                    <div class="mb-3">
+                        <label for="attendanceDate" class="form-label">تاريخ الحضور</label>
+                        <select class="form-select" id="attendanceDate" name="AttendanceDate" required>
+                            <option value="">اختر تاريخ الحضور</option>
+                        </select>
+                    </div>
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">تأكيد الحجز</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var userId = @(Context.Session.GetInt32("userId") ?? 0);
+        function openReservationModal(festivalId, festivalTitle, startDate, endDate) {
+            if (userId === 0 || userId === null) {
+                window.location.href = '/User/signIn';
+                return;
+            }
+
+            document.getElementById('festivalId').value = festivalId;
+            document.getElementById('festivalStartDate').value = startDate;
+            document.getElementById('festivalEndDate').value = endDate;
+            document.getElementById('reservationModalLabel').textContent = `تسجيل المشاركة في ${festivalTitle}`;
+
+            generateDateOptions(startDate, endDate);
+
+            var modal = new bootstrap.Modal(document.getElementById('reservationModal'));
+            modal.show();
+        }
+
+        function generateDateOptions(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const today = new Date();
+            const dateSelect = document.getElementById('attendanceDate');
+
+            dateSelect.innerHTML = '<option value="">اختر تاريخ الحضور</option>';
+
+            for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+                if (date >= today) {
+                    const option = document.createElement('option');
+                    option.value = date.toISOString().split('T')[0];
+                    option.textContent = date.toLocaleDateString('ar-JO', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    dateSelect.appendChild(option);
+                }
+            }
+        }
+
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const attendanceDate = document.getElementById('attendanceDate').value;
+            if (!attendanceDate) {
+                alert('الرجاء اختيار تاريخ الحضور');
+                return;
+            }
+
+            this.submit();
+        });
+
+        $(document).ready(function() {
+            var successMessage = '@TempData["SuccessMessage"]';
+            if (successMessage) {
+                $('#reservationModal').modal('show');
+
+                setTimeout(function() {
+                    $('#reservationModal').modal('hide');
+                }, 1500);
+            }
+        });
+    </script>
+}
