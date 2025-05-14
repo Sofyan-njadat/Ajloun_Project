@@ -98,7 +98,7 @@
             var isFestivalEnded = festival.EndDate < today;
             <div class="col-md-6 col-lg-4 fade-in">
                 <div class="festival-card">
-                    <img src="@Url.Content("~/images/" + festival.BannerImageUrl)" alt="@festival.Title" class="festival-image" />
+                        <img src="@Url.Content(festival.BannerImageUrl)" alt="@festival.Title" class="festival-image" />
                     <div class="festival-content">
                         <h3 class="festival-title">@festival.Title</h3>
                         <div class="festival-date">
