@@ -75,8 +75,14 @@
         [HttpPost]
         public async Task<IActionResult> Reserve(BookReservation reservation)
         {
-            // تحقق إذا المستخدم مسجل دخول، إذا مش مسجل خليه مؤقتًا 1
-            int userId = HttpContext.Session.GetInt32("userId") ?? 1;
+            var userId = HttpContext.Session.GetInt32("userId");
+
+            // إذا المستخدم غير مسجل دخول، رجعه على تسجيل الدخول مع رسالة
+            if (!userId.HasValue)
+            {
+                TempData["LoginRequired"] = "يرجى تسجيل الدخول أولاً لإتمام الحجز.";
+                return RedirectToAction("signIn", "User", new { returnUrl = Url.Action("Reserve", new { id = reservation.BookId }) });
+            }
 
             // تأكيد وجود الكتاب
             var book = await _context.Books.FindAsync(reservation.BookId);
@@ -84,7 +90,7 @@
                 return NotFound();
 
             // تعبئة بيانات الحجز
-            reservation.UserId = userId;
+            reservation.UserId = userId.Value;
             reservation.Agreement = true;
             reservation.ReservationDate = DateTime.Now;
             reservation.Status = "Pending";
