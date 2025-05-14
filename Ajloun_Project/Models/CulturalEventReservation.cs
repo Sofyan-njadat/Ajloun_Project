@@ -9,13 +9,11 @@ public partial class CulturalEventReservation
 
     public int? EventId { get; set; }
 
-    public int? UserId { get; set; }
-
     public DateTime? ReservationDate { get; set; }
 
-    public DateOnly AttendanceDate { get; set; }
-
     public string? Status { get; set; }
+
+    public int? UserId { get; set; }
 
     public virtual CulturalEvent? Event { get; set; }
 

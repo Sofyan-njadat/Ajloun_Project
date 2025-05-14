@@ -9,8 +9,6 @@ public partial class BookReservation
 
     public int BookId { get; set; }
 
-    public int? UserId { get; set; }
-
     public DateTime? ReservationDate { get; set; }
 
     public DateOnly? PickupDate { get; set; }
@@ -20,6 +18,8 @@ public partial class BookReservation
     public string Status { get; set; } = null!;
 
     public bool? Agreement { get; set; }
+
+    public int? UserId { get; set; }
 
     public virtual Book Book { get; set; } = null!;
 
