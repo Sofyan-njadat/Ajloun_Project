@@ -76,27 +76,27 @@
             <div class="form-container">
                 <form asp-action="CreateHandicrafts" method="post" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
-                    <div class="form-group">
+    <div class="form-group">
                         <label for="Title" class="form-label">العنوان</label>
-                        <input type="text" class="form-control" id="Title" name="Title" required />
-                    </div>
-                    <div class="form-group">
+        <input type="text" class="form-control" id="Title" name="Title" required />
+    </div>
+    <div class="form-group">
                         <label for="Description" class="form-label">الوصف</label>
-                        <textarea class="form-control" id="Description" name="Description" rows="4"></textarea>
-                    </div>
-                    <div class="form-group">
+        <textarea class="form-control" id="Description" name="Description" rows="4"></textarea>
+    </div>
+    <div class="form-group">
                         <label for="Price" class="form-label">السعر</label>
-                        <input type="number" step="0.01" class="form-control" id="Price" name="Price" required />
-                    </div>
-                    <div class="form-group">
+        <input type="number" step="0.01" class="form-control" id="Price" name="Price" required />
+    </div>
+    <div class="form-group">
                         <label for="Stock" class="form-label">المخزون</label>
-                        <input type="number" class="form-control" id="Stock" name="Stock" required />
-                    </div>
-                    <div class="form-group">
+        <input type="number" class="form-control" id="Stock" name="Stock" required />
+    </div>
+    <div class="form-group">
                         <label for="Category" class="form-label">الفئة</label>
-                        <input type="text" class="form-control" id="Category" name="Category" />
-                    </div>
-                    <div class="form-group">
+        <input type="text" class="form-control" id="Category" name="Category" />
+    </div>
+    <div class="form-group">
                         <label class="form-label">صورة المنتج</label>
                         <div>
                             <label for="productImage" class="custom-file-upload">

@@ -1,6 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "CulturalAssociations";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+	ViewData["Title"] = "CulturalAssociations";
+	Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
 @model List<CulturalAssociation>
@@ -8,117 +8,123 @@
 <link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
 
 <style>
-    .action-buttons {
-        display: flex;
-        gap: 5px;
-        justify-content: center;
-    }
+	.action-buttons {
+		display: flex;
+		gap: 5px;
+		justify-content: center;
+	}
 
-    .action-buttons .btn {
-        width: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-    }
+		.action-buttons .btn {
+			width: 80px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 5px;
+		}
 
-    .action-buttons form {
-        margin: 0;
-    }
+		.action-buttons form {
+			margin: 0;
+		}
 
-    .badge {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-    }
+	.badge {
+		padding: 8px 12px;
+		font-size: 0.9rem;
+	}
 </style>
 
 <div class="container-fluid py-4">
-    <div class="dashboard-header">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="mb-3">الهيئات الثقافية</h1>
-                <p class="mb-0">مديرية ثقافة عجلون</p>
-            </div>
-            <div class="col-md-4 text-end">
-                <a href="/Admin/AssociationJoinRequests" class="btn btn-light">
-                    <i class="fas fa-users"></i> طلبات الانضمام
-                </a>
-            </div>
-        </div>
-    </div>
+	<div class="dashboard-header">
+		<div class="row align-items-center">
+			<div class="col-md-8">
+				<h1 class="mb-3">الهيئات الثقافية</h1>
+				<p class="mb-0">مديرية ثقافة عجلون</p>
+			</div>
+			<div class="col-md-4 text-end">
+				<a href="/Admin/ManageCategories" class="btn btn-light mx-1">
+					<i class="fas fa-map-marker-alt"></i> إدارة المناطق
+				</a>
+			</div>
+		</div>
+	</div>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>الاسم</th>
-                            <th>رئيس الهيئة</th>
-                            <th>الهاتف</th>
-                            <th>المنطقة</th>
-                            <th>سنة التأسيس</th>
-                            <th>عدد الأعضاء</th>
-                            <th>الوصف</th>
-                            <th>الحالة</th>
-                            <th>الإجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var assoc in Model)
-                        {
-                            <tr>
-                                <td>@assoc.Name</td>
-                                <td>@assoc.PresidentName</td>
-                                <td>@assoc.Phone</td>
-                                <td>@assoc.Region</td>
-                                <td>@assoc.FoundedYear</td>
-                                <td>@assoc.MembersCount</td>
-                                <td>@assoc.Description</td>
-                                <td>
-                                    @switch (assoc.Status)
-                                    {
-                                        case "Pending":
-                                            <span class="badge bg-warning text-dark">بانتظار الموافقة</span>
-                                            break;
-                                        case "Approved":
-                                            <span class="badge bg-success">تمت الموافقة</span>
-                                            break;
-                                        case "Rejected":
-                                            <span class="badge bg-danger">مرفوض</span>
-                                            break;
-                                        default:
-                                            <span class="badge bg-secondary">غير معروف</span>
-                                            break;
-                                    }
-                                </td>
-                                <td>
-                                    @if (assoc.Status == "Pending")
-                                    {
-                                        <div class="action-buttons">
-                                            <form asp-action="UpdateStatus" method="post">
-                                                <input type="hidden" name="id" value="@assoc.AssociationId" />
-                                                <input type="hidden" name="status" value="Approved" />
-                                                <button type="submit" class="btn btn-sm btn-success">
-                                                    <i class="fas fa-check"></i> موافقة
-                                                </button>
-                                            </form>
-                                            <form asp-action="UpdateStatus" method="post">
-                                                <input type="hidden" name="id" value="@assoc.AssociationId" />
-                                                <input type="hidden" name="status" value="Rejected" />
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-times"></i> رفض
-                                                </button>
-                                            </form>
-                                        </div>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+	<div class="card">
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>الاسم</th>
+							<th>رئيس الهيئة</th>
+							<th>الهاتف</th>
+							<th>المكان</th>
+							<th>المنطقة</th>
+							<th>سنة التأسيس</th>
+							<th>عدد الأعضاء</th>
+							<th>الحالة</th>
+							<th>الإجراءات</th>
+						</tr>
+					</thead>
+					<tbody>
+						@{int count = 1;}
+						@foreach (var assoc in Model)
+						{
+							<tr>
+								<td>@(count++)</td>
+								<td>@assoc.Name</td>
+								<td>@assoc.PresidentName</td>
+								<td>@assoc.Phone</td>
+								<td>@assoc.Region</td>
+								<td>@(assoc.Category != null ? assoc.Category.Name : "غير محدد")</td>
+								<td>@assoc.FoundedYear</td>
+								<td>@assoc.MembersCount</td>
+								<td>
+									@switch (assoc.Status)
+									{
+										case "Pending":
+											<span class="badge bg-warning text-dark">بانتظار الموافقة</span>
+											break;
+										case "Approved":
+											<span class="badge bg-success">تمت الموافقة</span>
+											break;
+										case "Rejected":
+											<span class="badge bg-danger">مرفوض</span>
+											break;
+										default:
+											<span class="badge bg-secondary">غير معروف</span>
+											break;
+									}
+								</td>
+								<td>
+									<div class="action-buttons">
+										@if (assoc.Status == "Pending")
+										{
+											<form asp-action="UpdateStatus" method="post">
+												<input type="hidden" name="id" value="@assoc.AssociationId" />
+												<input type="hidden" name="status" value="Approved" />
+												<button type="submit" class="btn btn-sm btn-success">
+													<i class="fas fa-check"></i> موافقة
+												</button>
+											</form>
+											<form asp-action="UpdateStatus" method="post">
+												<input type="hidden" name="id" value="@assoc.AssociationId" />
+												<input type="hidden" name="status" value="Rejected" />
+												<button type="submit" class="btn btn-sm btn-danger">
+													<i class="fas fa-times"></i> رفض
+												</button>
+											</form>
+										}
+										<a href="@Url.Action("EditAssociation", "Admin", new { id = assoc.AssociationId })" class="btn btn-sm btn-primary">
+											<i class="fas fa-edit"></i> تعديل
+										</a>
+									</div>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 

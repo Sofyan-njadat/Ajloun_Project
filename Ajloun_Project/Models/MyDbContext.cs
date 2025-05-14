@@ -337,7 +337,7 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.Festival).WithMany(p => p.FestivalReservations)
                 .HasForeignKey(d => d.FestivalId)
-                .HasConstraintName("FK__FestivalR__Festi__7C4F7684");
+                .HasConstraintName("FK__FestivalR__Festi__00200768");
 
             entity.HasOne(d => d.User).WithMany(p => p.FestivalReservations)
                 .HasForeignKey(d => d.UserId)

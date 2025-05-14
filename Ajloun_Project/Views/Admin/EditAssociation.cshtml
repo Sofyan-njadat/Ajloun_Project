@@ -1,0 +1,110 @@
+@model Ajloun_Project.Models.CulturalAssociation
+
+@{
+    ViewData["Title"] = "تعديل الهيئة الثقافية";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">تعديل الهيئة الثقافية</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a asp-action="CulturalAssociations" class="btn btn-light">
+                    <i class="fas fa-arrow-right"></i> العودة إلى القائمة
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="EditAssociation" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AssociationId" />
+                <input type="hidden" asp-for="Status" />
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label">اسم الهيئة</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PresidentName" class="form-label">اسم رئيس الهيئة</label>
+                        <input asp-for="PresidentName" class="form-control" />
+                        <span asp-validation-for="PresidentName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Phone" class="form-label">رقم الهاتف</label>
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Region" class="form-label">المكان</label>
+                        <input asp-for="Region" class="form-control" />
+                        <span asp-validation-for="Region" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CategoryId" class="form-label">المنطقة</label>
+                        <select asp-for="CategoryId" class="form-select">
+                            <option value="">-- اختر المنطقة --</option>
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                if (Model.CategoryId == category.CategoryId)
+                                {
+                                    <option value="@category.CategoryId" selected>@category.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@category.CategoryId">@category.Name</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FoundedYear" class="form-label">سنة التأسيس</label>
+                        <input asp-for="FoundedYear" class="form-control" type="number" min="1900" max="@DateTime.Now.Year" />
+                        <span asp-validation-for="FoundedYear" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MembersCount" class="form-label">عدد الأعضاء</label>
+                        <input asp-for="MembersCount" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="MembersCount" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">الوصف</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary px-5">
+                        <i class="fas fa-save"></i> حفظ التغييرات
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

@@ -8,7 +8,7 @@
 
 <link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
 
-<style>
+    <style>
     .form-container {
         max-width: 800px;
         margin: 0 auto;
@@ -37,14 +37,14 @@
         color: #dc3545;
         font-size: 0.875rem;
         margin-top: 0.25rem;
-    }
+            }
 
     .image-preview {
         max-width: 200px;
         max-height: 200px;
-        margin-top: 10px;
+            margin-top: 10px;
         border-radius: 8px;
-    }
+        }
 
     .custom-file-upload {
         display: inline-block;
@@ -64,12 +64,12 @@
         margin-top: 5px;
         font-size: 0.875rem;
         color: #6c757d;
-    }
+        }
 
     .current-image {
         margin-bottom: 1rem;
-    }
-</style>
+            }
+    </style>
 
 <div class="container-fluid py-4">
     <div class="dashboard-header">
@@ -86,7 +86,7 @@
             <div class="form-container">
                 <form asp-action="EditBook" method="post" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
-                    <input type="hidden" asp-for="BookId" />
+        <input type="hidden" asp-for="BookId" />
                     <input type="hidden" asp-for="CoverImageUrl" />
                     <input type="hidden" asp-for="IsAvailable" />
                     <input type="hidden" asp-for="CreatedAt" />
@@ -146,10 +146,10 @@
                         <select asp-for="CategoryId" class="form-control" required>
                             <option value="">اختر التصنيف</option>
                             @foreach (var cat in categories)
-                            {
+                {
                                 <option value="@cat.CategoryId">@cat.Name</option>
-                            }
-                        </select>
+            }
+        </select>
                         <span asp-validation-for="CategoryId" class="validation-message"></span>
                     </div>
 
@@ -161,7 +161,7 @@
                             <i class="fas fa-arrow-right"></i> العودة للقائمة
                         </a>
                     </div>
-                </form>
+    </form>
             </div>
         </div>
     </div>

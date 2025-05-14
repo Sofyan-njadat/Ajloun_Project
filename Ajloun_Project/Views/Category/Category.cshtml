@@ -1,43 +1,148 @@
-﻿@model IEnumerable<Ajloun_Project.Models.Course>
+﻿@model IEnumerable<Ajloun_Project.Models.BookCategory>
 
 @{
-    ViewData["Title"] = "Courses";
+    ViewData["Title"] = "إدارة تصنيفات الكتب";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-</head>
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Available Courses</h1>
-        <div class="row">
-            @foreach (var course in Model)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        @if (!string.IsNullOrEmpty(course.Courseimg))
-                        {
-                            <img src="@course.Courseimg" class="card-img-top" alt="@course.Name" style="height: 200px; object-fit: cover;" />
-                        }
-                        else
-                        {
-                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;" />
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@course.Name</h5>
-                            <p class="card-text">@course.Description</p>
-                            <p class="card-text"><strong>Age Range:</strong> @course.AgeRange</p>
-                            <a href="@Url.Action("Register", new { courseId = course.CourseId })" class="btn btn-primary btn-block">Register</a>
-                        </div>
-                    </div>
-                </div>
-            }
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">إدارة تصنيفات الكتب</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a asp-controller="Library" asp-action="ManageBooks" class="btn btn-light">
+                    <i class="fas fa-arrow-right"></i> العودة إلى إدارة الكتب
+                </a>
+            </div>
         </div>
     </div>
-</body>
-</html>
+
+    <div class="row mb-4">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">إضافة تصنيف جديد</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Category" asp-action="AddCategory" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">اسم التصنيف</label>
+                            <input type="text" id="Name" name="Name" class="form-control" required />
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> إضافة تصنيف
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">قائمة التصنيفات</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>الرقم</th>
+                                    <th>اسم التصنيف</th>
+                                    <th>عدد الكتب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var category in Model)
+                                {
+                                    <tr>
+                                        <td>@category.CategoryId</td>
+                                        <td>@category.Name</td>
+                                        <td>@(category.Books?.Count ?? 0)</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="/Category/EditCategory/@category.CategoryId" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-edit"></i> تعديل
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-danger delete-category" data-id="@category.CategoryId" data-name="@category.Name">
+                                                    <i class="fas fa-trash"></i> حذف
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <form id="deleteForm" asp-controller="Category" asp-action="DeleteCategory" method="post" style="display: none;">
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="categoryId" name="id" value="" />
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            @if (TempData["Success"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم بنجاح',
+                    text: '',
+                    confirmButtonText: 'حسناً'
+                });
+                </text>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'حدث خطأ',
+                    text: '',
+                    confirmButtonText: 'حسناً'
+                });
+                </text>
+            }
+        });
+
+        $('.delete-category').click(function () {
+            const categoryId = $(this).data('id');
+            const categoryName = $(this).data('name');
+            
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: `هل تريد حذف التصنيف "${categoryName}"؟`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'نعم، احذف!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#categoryId').val(categoryId);
+                    $('#deleteForm').submit();
+                }
+            });
+        });
+    </script>
+}

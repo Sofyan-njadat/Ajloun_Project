@@ -1,5 +1,4 @@
 ﻿using Ajloun_Project.Models;
-using AjlounProject.ViewModels;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,10 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Ajloun_Project.Controllers
 {
@@ -110,7 +113,9 @@ namespace Ajloun_Project.Controllers
         // عرض جميع الهيئات الثقافية
         public IActionResult CulturalAssociations()
         {
-            var associations = _context.CulturalAssociations.ToList();
+            var associations = _context.CulturalAssociations
+                .Include(a => a.Category)
+                .ToList();
             return View(associations);
         }
         [HttpPost]
@@ -125,62 +130,7 @@ namespace Ajloun_Project.Controllers
             return RedirectToAction("CulturalAssociations");
         }
 
-        // عرض طلبات الانضمام للهيئات الثقافية
-        public IActionResult AssociationJoinRequests()
-        {
-            var requests = _context.AssociationJoinRequests
-                .Include(r => r.User)
-                .Include(r => r.Association)
-                .OrderBy(r => r.Status == "Pending" ? 0 : 1) 
-                .ToList();
 
-            return View(requests);
-        }
-
-        // الموافقة على طلب الانضمام
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ApproveRequest(int requestId)
-        {
-            var request = _context.AssociationJoinRequests.FirstOrDefault(r => r.RequestId == requestId);
-            if (request != null)
-            {
-                request.Status = "Approved";
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction(nameof(AssociationJoinRequests));
-        }
-
-        // رفض طلب الانضمام
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RejectRequest(int requestId)
-        {
-            var request = _context.AssociationJoinRequests.FirstOrDefault(r => r.RequestId == requestId);
-            if (request != null)
-            {
-                request.Status = "Rejected";
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction(nameof(AssociationJoinRequests));
-        }
-
-        // حذف طلب الانضمام
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteRequest(int requestId)
-        {
-            var request = _context.AssociationJoinRequests.FirstOrDefault(r => r.RequestId == requestId);
-            if (request != null)
-            {
-                _context.AssociationJoinRequests.Remove(request);
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction(nameof(AssociationJoinRequests));
-        }
 
         public IActionResult HallBookingsRequests()
         {
@@ -266,145 +216,77 @@ namespace Ajloun_Project.Controllers
         }
 
         // تحديث بيانات المشرف
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, Admin admin)
-        //{
-        //    if (id != admin.AdminId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            // التحقق من عدم تكرار اسم المستخدم والبريد الإلكتروني
-        //            var existingAdmin = await _context.Admins
-        //                .FirstOrDefaultAsync(a => (a.Username == admin.Username || a.Email == admin.Email) && a.AdminId != id);
-
-        //            if (existingAdmin != null)
-        //            {
-        //                if (existingAdmin.Username == admin.Username)
-        //                    ModelState.AddModelError("Username", "اسم المستخدم مستخدم بالفعل");
-        //                if (existingAdmin.Email == admin.Email)
-        //                    ModelState.AddModelError("Email", "البريد الإلكتروني مستخدم بالفعل");
-        //                return View(admin);
-        //            }
-
-        //            // إذا تم تغيير كلمة المرور، قم بتشفيرها
-        //            if (!string.IsNullOrEmpty(admin.PasswordHash))
-        //            {
-        //                admin.PasswordHash = HashPassword(admin.PasswordHash);
-        //            }
-        //            else
-        //            {
-        //                // إذا لم يتم تغيير كلمة المرور، احتفظ بالقيمة القديمة
-        //                var oldAdmin = await _context.Admins.AsNoTracking().FirstOrDefaultAsync(a => a.AdminId == id);
-        //                admin.PasswordHash = oldAdmin.PasswordHash;
-        //            }
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!AdminExists(admin.AdminId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-
-
-
-
-
-
-
-        //AHmad
-
-
-        public IActionResult PendingArtworks()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Admin admin, string NewPassword)
         {
-            var artworks = _context.Artworks
-                .Where(a => a.Status == "Pending")
-                .Select(a => new PendingArtworkViewModel
+            // للتأكد من صحة رقم المشرف
+            if (id != admin.AdminId)
+            {
+                return NotFound();
+            }
+
+            // دائمًا نزيل التحقق من كلمة المرور
+            ModelState.Remove("PasswordHash");
+
+            // الحصول على المشرف الحالي من قاعدة البيانات
+            var currentAdmin = await _context.Admins.FindAsync(id);
+            if (currentAdmin == null)
+            {
+                return NotFound();
+            }
+
+            // فحص التكرار من خارج النموذج لتحسين الرسائل
+            var usernameExists = await _context.Admins.AnyAsync(a => a.Username == admin.Username && a.AdminId != id);
+            var emailExists = await _context.Admins.AnyAsync(a => a.Email == admin.Email && a.AdminId != id);
+
+            if (usernameExists)
+            {
+                ModelState.AddModelError("Username", "اسم المستخدم مستخدم بالفعل");
+            }
+
+            if (emailExists)
+            {
+                ModelState.AddModelError("Email", "البريد الإلكتروني مستخدم بالفعل");
+            }
+
+            // إضافة كلمة المرور القديمة للنموذج الذي سيتم حفظه
+            admin.PasswordHash = currentAdmin.PasswordHash;
+
+            // إذا كان هناك أخطاء في التحقق، نعيد عرض النموذج مع الأخطاء
+            if (usernameExists || emailExists)
+            {
+                ViewData["ErrorMessage"] = "حدثت أخطاء في النموذج";
+                return View(admin);
+            }
+
+            try
+            {
+                // تحديث قيم المشرف
+                currentAdmin.Username = admin.Username;
+                currentAdmin.Email = admin.Email;
+                currentAdmin.FullName = admin.FullName;
+                currentAdmin.Role = admin.Role;
+
+                // تحديث كلمة المرور فقط إذا تم إدخال واحدة جديدة
+                if (!string.IsNullOrWhiteSpace(NewPassword))
                 {
-                    ArtworkId = a.ArtworkId,
-                    Title = a.Title,
-                    ArtistName = a.ArtistName,
-                    Type = a.Type,
-                    Description = a.Description,
-                    ImageUrl = a.ImageUrl
-                })
-                .ToList();
+                    currentAdmin.PasswordHash = HashPassword(NewPassword);
+                }
 
-            return View(artworks);
-        }
-
-        public IActionResult Approve(int id)
-        {
-            var artwork = _context.Artworks.Find(id);
-            if (artwork != null)
-            {
-                artwork.Status = "Approved";
-                _context.SaveChanges();
+                // حفظ التغييرات
+                await _context.SaveChangesAsync();
+                
+                TempData["SuccessMessage"] = "تم تحديث بيانات المشرف بنجاح";
+                return RedirectToAction(nameof(Index));
             }
-
-            return RedirectToAction("PendingArtworks");
-        }
-
-        public IActionResult Reject(int id)
-        {
-            var artwork = _context.Artworks.Find(id);
-            if (artwork != null)
+            catch (Exception ex)
             {
-                artwork.Status = "Rejected";
-                _context.SaveChanges();
+                // التقاط أي خطأ قد يحدث أثناء التحديث وعرضه للمستخدم
+                ViewData["ErrorMessage"] = $"حدث خطأ أثناء التحديث: {ex.Message}";
+                return View(admin);
             }
-
-            return RedirectToAction("PendingArtworks");
         }
-
-
-
-
-
-
-
-
-        public IActionResult HandicraftPurchaseOrders()
-        {
-            var orders = _context.CraftOrders
-                                 .Include(o => o.Craft)
-                                 .Include(o => o.User)
-                                 .OrderByDescending(o => o.OrderDate)
-                                 .Select(o => new CraftOrderViewModel
-                                 {
-                                     OrderId = o.OrderId,
-                                     CraftTitle = o.Craft.Title,
-                                     UserName = o.User.FullName,
-                                     Quantity = o.Quantity,
-                                     OrderDate = o.OrderDate,
-                                     Status = o.Status
-                                 }).ToList();
-
-            return View(orders);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // حذف مشرف
         [HttpPost]
@@ -521,6 +403,175 @@ namespace Ajloun_Project.Controllers
                 _context.SaveChanges();
             }
             return RedirectToAction(nameof(CraftOrders));
+        }
+
+        // عرض نموذج تعديل الهيئة الثقافية
+        public IActionResult EditAssociation(int id)
+        {
+            var association = _context.CulturalAssociations
+                .Include(a => a.Category)
+                .FirstOrDefault(a => a.AssociationId == id);
+            
+            if (association == null)
+            {
+                return NotFound();
+            }
+            
+            // نحضر كل التصنيفات لعرضها في القائمة المنسدلة
+            ViewBag.Categories = _context.AssociationCategories.ToList();
+            
+            return View(association);
+        }
+
+        // تحديث بيانات الهيئة الثقافية
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditAssociation(int id, CulturalAssociation association)
+        {
+            if (id != association.AssociationId)
+            {
+                return NotFound();
+            }
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(association);
+                    _context.SaveChanges();
+                    return RedirectToAction(nameof(CulturalAssociations));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.CulturalAssociations.Any(a => a.AssociationId == id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            
+            // إذا حدث خطأ، نعيد تحميل التصنيفات
+            ViewBag.Categories = _context.AssociationCategories.ToList();
+            return View(association);
+        }
+
+        // عرض جميع المناطق
+        public IActionResult ManageCategories()
+        {
+            var categories = _context.AssociationCategories
+                .Include(c => c.CulturalAssociations)
+                .ToList();
+            return View(categories);
+        }
+
+        // إضافة منطقة جديدة
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddCategory(AssociationCategory category)
+        {
+            if (ModelState.IsValid)
+            {
+                // التحقق من عدم وجود منطقة بنفس الاسم
+                if (_context.AssociationCategories.Any(c => c.Name == category.Name))
+                {
+                    TempData["Error"] = "يوجد منطقة بنفس الاسم بالفعل";
+                    return RedirectToAction(nameof(ManageCategories));
+                }
+
+                _context.AssociationCategories.Add(category);
+                _context.SaveChanges();
+                TempData["Success"] = "تمت إضافة المنطقة بنجاح";
+            }
+            return RedirectToAction(nameof(ManageCategories));
+        }
+
+        // عرض نموذج تعديل منطقة
+        public IActionResult EditCategory(int id)
+        {
+            var category = _context.AssociationCategories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+
+        // تحديث بيانات المنطقة
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCategory(int id, AssociationCategory category)
+        {
+            if (id != category.CategoryId)
+            {
+                category.CategoryId = id;
+            }
+
+            if (ModelState.IsValid)
+            {
+                // التحقق من عدم وجود منطقة أخرى بنفس الاسم
+                if (_context.AssociationCategories.Any(c => c.Name == category.Name && c.CategoryId != id))
+                {
+                    ModelState.AddModelError("Name", "يوجد منطقة بنفس الاسم بالفعل");
+                    return View(category);
+                }
+
+                try
+                {
+                    var existingCategory = _context.AssociationCategories.Find(id);
+                    if (existingCategory == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingCategory.Name = category.Name;
+                    _context.SaveChanges();
+                    
+                    TempData["Success"] = "تم تحديث المنطقة بنجاح";
+                    return RedirectToAction(nameof(ManageCategories));
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    if (!_context.AssociationCategories.Any(e => e.CategoryId == id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        TempData["Error"] = "حدث خطأ أثناء التحديث: " + ex.Message;
+                        return View(category);
+                    }
+                }
+            }
+            return View(category);
+        }
+
+        // حذف منطقة
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteCategory(int id)
+        {
+            var category = _context.AssociationCategories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            // التحقق مما إذا كانت المنطقة مستخدمة في أي هيئة ثقافية
+            var associationsUsingCategory = _context.CulturalAssociations.Any(a => a.CategoryId == id);
+            if (associationsUsingCategory)
+            {
+                TempData["Error"] = "لا يمكن حذف المنطقة لأنها مستخدمة في هيئات ثقافية";
+                return RedirectToAction(nameof(ManageCategories));
+            }
+
+            _context.AssociationCategories.Remove(category);
+            _context.SaveChanges();
+            TempData["Success"] = "تم حذف المنطقة بنجاح";
+            return RedirectToAction(nameof(ManageCategories));
         }
     }
 }

@@ -22,6 +22,110 @@ namespace Ajloun_Project.Controllers.Hazem
             var courses = await _context.Courses.ToListAsync();
             return View(courses);
         }
+        
+        // GET: /Category/ManageCategories
+        // [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ManageCategories()
+        {
+            var bookCategories = await _context.BookCategories
+                .Include(c => c.Books)
+                .ToListAsync();
+            return View("Category", bookCategories);
+        }
+        
+        // POST: /Category/AddCategory
+        [HttpPost]
+        // [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCategory(BookCategory category)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.BookCategories.Add(category);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "تم إضافة التصنيف بنجاح";
+                return RedirectToAction(nameof(ManageCategories));
+            }
+            TempData["Error"] = "حدث خطأ أثناء إضافة التصنيف";
+            return RedirectToAction(nameof(ManageCategories));
+        }
+        
+        // GET: /Category/EditCategory/5
+        // [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditCategory(int id)
+        {
+            var category = await _context.BookCategories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            
+            return View(category);
+        }
+        
+        // POST: /Category/EditCategory
+        [HttpPost]
+        // [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCategory(int id, BookCategory category)
+        {
+            if (id != category.CategoryId)
+            {
+                return NotFound();
+            }
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(category);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "تم تحديث التصنيف بنجاح";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await _context.BookCategories.AnyAsync(c => c.CategoryId == id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ManageCategories));
+            }
+            TempData["Error"] = "حدث خطأ أثناء تحديث التصنيف";
+            return View(category);
+        }
+        
+        // POST: /Category/DeleteCategory
+        [HttpPost]
+        // [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            var category = await _context.BookCategories
+                .Include(c => c.Books)
+                .FirstOrDefaultAsync(c => c.CategoryId == id);
+                
+            if (category == null)
+            {
+                return NotFound();
+            }
+            
+            if (category.Books != null && category.Books.Any())
+            {
+                TempData["Error"] = "لا يمكن حذف التصنيف لأنه مرتبط بكتب";
+                return RedirectToAction(nameof(ManageCategories));
+            }
+            
+            _context.BookCategories.Remove(category);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "تم حذف التصنيف بنجاح";
+            
+            return RedirectToAction(nameof(ManageCategories));
+        }
 
         // GET: /Category/Apply/1
        
