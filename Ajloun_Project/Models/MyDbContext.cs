@@ -134,12 +134,14 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<AssociationEvent>(entity =>
         {
-            entity.HasKey(e => e.AssocEventId).HasName("PK__Associat__68ACACD378032C27");
+            entity.HasKey(e => e.EventId).HasName("PK__Associat__68ACACD378032C27");
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.EventType).HasMaxLength(50);
             entity.Property(e => e.Location).HasMaxLength(100);
+            entity.Property(e => e.PosterUrl).HasMaxLength(255);
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
                 .HasDefaultValue("Pending");
