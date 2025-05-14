@@ -1,0 +1,85 @@
+@model Ajloun_Project.Models.BookCategory
+
+@{
+    ViewData["Title"] = "تعديل تصنيف كتاب";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">تعديل تصنيف كتاب</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a asp-controller="Category" asp-action="ManageCategories" class="btn btn-light">
+                    <i class="fas fa-arrow-right"></i> العودة إلى التصنيفات
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">تعديل التصنيف</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Category" asp-action="EditCategory" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="CategoryId" />
+                        
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">اسم التصنيف</label>
+                            <input asp-for="Name" class="form-control" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> حفظ التغييرات
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            @if (TempData["Success"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم بنجاح',
+                    text: '',
+                    confirmButtonText: 'حسناً'
+                });
+                </text>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'حدث خطأ',
+                    text: '',
+                    confirmButtonText: 'حسناً'
+                });
+                </text>
+            }
+        });
+    </script>
+} 
