@@ -9,9 +9,9 @@ public partial class AssociationJoinRequest
 
     public int? AssociationId { get; set; }
 
-    public string? Status { get; set; }
-
     public int? UserId { get; set; }
+
+    public string? Status { get; set; }
 
     public virtual CulturalAssociation? Association { get; set; }
 

@@ -106,6 +106,7 @@
 			</div>
 			<div class="modal-body">
 				<form id="festivalForm" enctype="multipart/form-data">
+					@Html.AntiForgeryToken()
 					<input type="hidden" id="FestivalId" name="FestivalId" value="0">
 					<div class="mb-3">
 						<label for="Title" class="form-label">العنوان</label>
@@ -134,6 +135,7 @@
 					<div class="mb-3">
 						<label for="bannerImage" class="form-label">صورة المهرجان</label>
 						<input type="file" class="form-control" id="bannerImage" name="bannerImage" accept="image/*">
+						<small class="form-text text-muted">يفضل صورة بحجم مناسب، أقل من 2 ميجابايت.</small>
 						<div id="currentImage" class="mt-2" style="display: none;">
 							<img src="" alt="الصورة الحالية" style="max-width: 200px; max-height: 200px; border-radius: 8px;" />
 						</div>
@@ -154,7 +156,7 @@
 			// تحميل بيانات المهرجان للتعديل
 			$('.edit-festival').click(function () {
 				var id = $(this).data('id');
-				$.get('/Admin/Festivals/Get/' + id, function (data) {
+				$.get('/Festivals/Get/' + id, function (data) {
 					$('#FestivalId').val(data.festivalId);
 					$('#Title').val(data.title);
 					$('#Description').val(data.description);
@@ -171,6 +173,13 @@
 					}
 
 					$('#festivalModal').modal('show');
+				}).fail(function(xhr) {
+					console.error('خطأ في جلب بيانات المهرجان:', xhr.responseText);
+					Swal.fire({
+						title: 'خطأ!',
+						text: 'حدث خطأ أثناء جلب بيانات المهرجان.',
+						icon: 'error'
+					});
 				});
 			});
 
@@ -189,7 +198,7 @@
 				}).then((result) => {
 					if (result.isConfirmed) {
 						$.ajax({
-							url: '/Admin/Festivals/Delete/' + id,
+							url: '/Festivals/Delete/' + id,
 							type: 'DELETE',
 							success: function () {
 								Swal.fire(
@@ -200,7 +209,8 @@
 									location.reload();
 								});
 							},
-							error: function () {
+							error: function (xhr) {
+								console.error('خطأ في حذف المهرجان:', xhr.responseText);
 								Swal.fire(
 									'خطأ!',
 									'حدث خطأ أثناء حذف المهرجان.',
@@ -214,10 +224,25 @@
 
 			// حفظ المهرجان
 			$('#saveFestival').click(function () {
+				// التحقق من الحقول الإلزامية
+				if (!validateForm()) {
+					return;
+				}
+
 				var formData = new FormData($('#festivalForm')[0]);
+				
+				// إظهار رسالة انتظار
+				Swal.fire({
+					title: 'جاري الحفظ...',
+					text: 'يرجى الانتظار',
+					allowOutsideClick: false,
+					didOpen: () => {
+						Swal.showLoading();
+					}
+				});
 
 				$.ajax({
-					url: '/Admin/Festivals/Create',
+					url: '/Festivals/Create',
 					type: 'POST',
 					data: formData,
 					processData: false,
@@ -232,6 +257,7 @@
 								location.reload();
 							});
 						} else {
+							console.error('خطأ في حفظ المهرجان:', response.message);
 							Swal.fire({
 								title: 'خطأ!',
 								text: response.message || 'حدث خطأ أثناء حفظ المهرجان.',
@@ -240,13 +266,70 @@
 						}
 					},
 					error: function (xhr) {
+						console.error('خطأ في حفظ المهرجان:', xhr.responseText);
 						Swal.fire({
 							title: 'خطأ!',
-							text: 'حدث خطأ أثناء حفظ المهرجان.',
+							text: 'حدث خطأ أثناء حفظ المهرجان. تأكد من تعبئة جميع الحقول المطلوبة وأن حجم الصورة مناسب.',
 							icon: 'error'
 						});
 					}
 				});
+			});
+			
+			// التحقق من الحقول الإلزامية
+			function validateForm() {
+				var isValid = true;
+				
+				// تنظيف رسائل الخطأ السابقة
+				$('.form-error').remove();
+				$('.form-control').removeClass('is-invalid');
+				
+				// التحقق من الحقول الإلزامية
+				if (!$('#Title').val()) {
+					appendError('#Title', 'يرجى إدخال العنوان');
+					isValid = false;
+				}
+				
+				if (!$('#StartDate').val()) {
+					appendError('#StartDate', 'يرجى إدخال تاريخ البداية');
+					isValid = false;
+				}
+				
+				if (!$('#EndDate').val()) {
+					appendError('#EndDate', 'يرجى إدخال تاريخ النهاية');
+					isValid = false;
+				}
+				
+				if (!$('#Location').val()) {
+					appendError('#Location', 'يرجى إدخال الموقع');
+					isValid = false;
+				}
+				
+				// التحقق من تاريخ البداية والنهاية
+				if ($('#StartDate').val() && $('#EndDate').val()) {
+					var startDate = new Date($('#StartDate').val());
+					var endDate = new Date($('#EndDate').val());
+					
+					if (endDate < startDate) {
+						appendError('#EndDate', 'يجب أن يكون تاريخ النهاية بعد تاريخ البداية');
+						isValid = false;
+					}
+				}
+				
+				return isValid;
+			}
+			
+			// إضافة رسالة خطأ تحت الحقل
+			function appendError(selector, message) {
+				$(selector).addClass('is-invalid').after(
+					'<div class="text-danger form-error">' + message + '</div>'
+				);
+			}
+			
+			// تنظيف رسائل الخطأ عند الكتابة
+			$(document).on('input', '.form-control', function() {
+				$(this).removeClass('is-invalid');
+				$(this).next('.form-error').remove();
 			});
 		});
 	</script>

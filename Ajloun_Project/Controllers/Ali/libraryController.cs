@@ -215,9 +215,9 @@
                 }
 
                 book.IsAvailable = true;
-                book.CreatedAt = DateTime.Now;
-                _context.Books.Add(book);
-                await _context.SaveChangesAsync();
+            book.CreatedAt = DateTime.Now;
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ManageBooks));
             }
             ViewBag.Categories = await _context.BookCategories.ToListAsync();
@@ -300,7 +300,7 @@
 
             try
             {
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ManageBooks));
             }
             catch (Exception ex)

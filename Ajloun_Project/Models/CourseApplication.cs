@@ -9,6 +9,8 @@ public partial class CourseApplication
 
     public int CourseId { get; set; }
 
+    public int? UserId { get; set; }
+
     public string? BirthCertificateImage { get; set; }
 
     public bool Agreement { get; set; }
@@ -16,8 +18,6 @@ public partial class CourseApplication
     public string? Status { get; set; }
 
     public DateTime? SubmittedAt { get; set; }
-
-    public int? UserId { get; set; }
 
     public virtual Course Course { get; set; } = null!;
 

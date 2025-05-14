@@ -62,7 +62,8 @@
                  data-event-date="@item.Date"
                  data-organizer="culture">
                 <div class="card-image">
-                    <img src="@Url.Content("~/images/"+item.PosterUrl)" alt="@item.Title">
+                    <img src="@Url.Content(item.PosterUrl)" alt="@item.Title" class="festival-image" />
+
                     <div class="event-type-badge">@item.EventType</div>
                 </div>
                 <div class="card-content">
@@ -98,7 +99,7 @@
                  data-event-date="@item.Date.ToString("yyyy-MM-dd")"
                  data-organizer="association-@item.Association.AssociationId">
                 <div class="card-image">
-                    <img src="@Url.Content("~/images/"+item.PosterUrl)" alt="@item.Title">
+                    <img src="@Url.Content(item.PosterUrl)" alt="@item.Title" class="festival-image" />
                     <div class="event-type-badge">@item.EventType</div>
                 </div>
                 <div class="card-content">
