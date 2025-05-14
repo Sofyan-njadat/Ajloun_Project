@@ -23,6 +23,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<AssocEventRegistration> AssocEventRegistrations { get; set; }
 
+    public virtual DbSet<AssociationCategory> AssociationCategories { get; set; }
+
     public virtual DbSet<AssociationEvent> AssociationEvents { get; set; }
 
     public virtual DbSet<AssociationJoinRequest> AssociationJoinRequests { get; set; }
@@ -119,6 +121,15 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.AssocEventRegistrations)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__AssocEven__UserI__5441852A");
+        });
+
+        modelBuilder.Entity<AssociationCategory>(entity =>
+        {
+            entity.HasKey(e => e.CategoryId).HasName("PK__Associat__19093A0B16815FFE");
+
+            entity.HasIndex(e => e.Name, "UQ__Associat__737584F670989B5A").IsUnique();
+
+            entity.Property(e => e.Name).HasMaxLength(100);
         });
 
         modelBuilder.Entity<AssociationEvent>(entity =>
@@ -262,6 +273,10 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.PresidentName).HasMaxLength(100);
             entity.Property(e => e.Region).HasMaxLength(50);
             entity.Property(e => e.Status).HasMaxLength(20);
+
+            entity.HasOne(d => d.Category).WithMany(p => p.CulturalAssociations)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK__CulturalA__Categ__0B91BA14");
         });
 
         modelBuilder.Entity<CulturalEvent>(entity =>
