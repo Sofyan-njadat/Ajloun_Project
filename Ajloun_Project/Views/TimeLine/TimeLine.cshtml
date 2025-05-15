@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +10,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/hazem/TimeLine.css">
+    <style>
+        #scene-container,
+        .overlay {
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav, .navbar, header {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+
 </head>
 <body>
     <div class="loading" id="loading">
@@ -54,6 +68,26 @@
                     </div>
                 </div>
             </div>
+            <div class="era theme-era-3" id="era-3">
+                <div class="era-point"></div>
+                <div class="era-date">636 م - 1099 م</div>
+                <div class="era-content theme-era-3">
+                    <img src="https://marayana.com/wp-content/uploads/2020/10/f_edited.jpg" alt="الفتح الإسلامي في عجلون" class="era-image">
+                    <h2 class="era-title">الفتح الإسلامي</h2>
+                    <div class="era-period">636 م - 1099 م</div>
+                    <p class="era-text">مع الفتح الإسلامي في القرن السابع الميلادي، دخلت عجلون في نطاق الدولة الإسلامية. أصبحت المنطقة مركزًا للعلم والثقافة في العصر الأموي. تم بناء المساجد والمدارس وازدهرت الزراعة بفضل نظم الري المتطورة التي أدخلها العرب المسلمون، وتطورت الحرف اليدوية.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title">المراكز العلمية</h4>
+                            <p class="detail-text">أصبحت عجلون مركزاً للعلم والثقافة مع إنشاء الكتاتيب والمدارس</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title">تطور الزراعة</h4>
+                            <p class="detail-text">تم إدخال نظم الري المتطورة وزراعة محاصيل جد对手 كالزيتون والعنب</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="era theme-era-2" id="era-2">
                 <div class="era-point"></div>
@@ -70,12 +104,14 @@
                         </div>
                         <div class="detail-item">
                             <h4 class="detail-title">الهندسة المعمارية</h4>
+
                             <p class="detail-text">شيدت المعابد والأعمدة والمدرجات وفق الطراز الروماني الكلاسيكي</p>
                         </div>
                     </div>
                 </div>
             </div>
 
+           
 
 
             <div class="era theme-era-4" id="era-4">
@@ -281,16 +317,6 @@
         </div>
         <div class="nav-dot" data-era="era-10">
             <div class="nav-tooltip">عجلون الآن</div>
-        </div>
-    </div>
-
-    <div class="info-toggle" id="infoToggle">
-        <span>؟</span>
-    </div>
-    <div class="info-panel" id="infoPanel">
-        <div>
-            <h3 style="color: var(--accent); margin-bottom: 10px;">عن هذه الرحلة</h3>
-            <p>رحلة "عجلون عبر الزمن" هي تجربة تفاعلية تأخذك في جولة تاريخية عبر أهم العصور والحقب التي مرت بها منطقة عجلون منذ العصور القديمة وحتى يومنا هذا.</p>
         </div>
     </div>
 
