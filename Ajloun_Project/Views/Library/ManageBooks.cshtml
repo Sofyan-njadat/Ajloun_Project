@@ -33,6 +33,12 @@
         object-fit: cover;
         border-radius: 4px;
     }
+    
+    .header-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
 </style>
 
 <div class="container-fluid py-4">
@@ -43,9 +49,17 @@
                 <p class="mb-0">مديرية ثقافة عجلون</p>
             </div>
             <div class="col-md-4 text-end">
-                <a href="@Url.Action("AddBook", "Library")" class="btn btn-light">
-                    <i class="fas fa-plus"></i> إضافة كتاب جديد
-                </a>
+                <div class="header-buttons">
+                    <a href="@Url.Action("ManageReservations", "Library")" class="btn btn-light">
+                        <i class="fas fa-calendar-check"></i>الحجوزات
+                    </a>
+                    <a href="@Url.Action("ManageCategories", "Category")" class="btn btn-light">
+                        <i class="fas fa-tags"></i>التصنيفات
+                    </a>
+                    <a href="@Url.Action("AddBook", "Library")" class="btn btn-light">
+                        <i class="fas fa-plus"></i>إضافة كتاب
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@ namespace Ajloun_Project.Models;
 
 public partial class AssociationEvent
 {
-    public int AssocEventId { get; set; }
+    public int EventId { get; set; }
 
     public int? AssociationId { get; set; }
 
@@ -24,6 +24,10 @@ public partial class AssociationEvent
     public string? Status { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+
+    public string? PosterUrl { get; set; }
+
+    public string? EventType { get; set; }
 
     public virtual ICollection<AssocEventRegistration> AssocEventRegistrations { get; set; } = new List<AssocEventRegistration>();
 

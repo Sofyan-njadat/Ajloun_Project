@@ -20,16 +20,16 @@
         align-items: center;
         justify-content: center;
         gap: 5px;
-    }
+        }
 
     .action-buttons form {
         margin: 0;
-    }
+        }
 
     .badge {
         padding: 8px 12px;
         font-size: 0.9rem;
-    }
+        }
 </style>
 
 <div class="container-fluid py-4">
@@ -51,22 +51,22 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>العنوان</th>
-                            <th>التصنيف</th>
-                            <th>التاريخ</th>
-                            <th>الحالة</th>
+        <thead>
+            <tr>
+                <th>العنوان</th>
+                <th>التصنيف</th>
+                <th>التاريخ</th>
+                <th>الحالة</th>
                             <th>الإجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.Title</td>
-                                <td>@item.Category</td>
-                                <td>@item.PublishDate?.ToString("yyyy-MM-dd")</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Category</td>
+                    <td>@item.PublishDate?.ToString("yyyy-MM-dd")</td>
                                 <td>
                                     @switch (item.Status)
                                     {
@@ -90,13 +90,13 @@
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
                                                 <i class="fas fa-trash"></i> حذف
                                             </button>
-                                        </form>
+                        </form>
                                     </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
             </div>
         </div>
     </div>

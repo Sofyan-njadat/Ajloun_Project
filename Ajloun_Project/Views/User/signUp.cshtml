@@ -2,119 +2,133 @@
 
 @{
     ViewData["Title"] = "إنشاء حساب جديد";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
-<link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إنشاء حساب جديد - مديرية ثقافة عجلون</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container signup-form">
+        <div class="site-logo">
+            <h1 class="logo-text">مديرية ثقافة عجلون</h1>
+        </div>
+        
+        <div class="card">
+            <div class="card-body compact-form">
+                <h2>إنشاء حساب جديد</h2>
+                <form asp-action="checkSignUp" asp-controller="User" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-body">
-                    <h2>إنشاء حساب جديد</h2>
-
-                    <form asp-action="checkSignUp" asp-controller="User" method="post">
-                        @Html.AntiForgeryToken()
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                        <div class="row g-2">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="FullName" class="form-label">الاسم الكامل</label>
-                                    <input asp-for="FullName" class="form-control" placeholder="أدخل اسمك الكامل" />
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
-                                    <input asp-for="Email" class="form-control" placeholder="أدخل بريدك الإلكتروني" />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row g-2">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Password" class="form-label">كلمة المرور</label>
-                                    <input asp-for="Password" class="form-control" type="password" placeholder="أدخل كلمة المرور" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Phone" class="form-label">رقم الهاتف</label>
-                                    <input asp-for="Phone" class="form-control" placeholder="أدخل رقم هاتفك" />
-                                    <span asp-validation-for="Phone" class="text-danger"></span>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FullName" class="form-label">الاسم الكامل</label>
+                                <input asp-for="FullName" class="form-control" placeholder="أدخل اسمك الكامل" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
                             </div>
                         </div>
-
-                        <div class="row g-2">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Gender" class="form-label">الجنس</label>
-                                    <select asp-for="Gender" class="form-control">
-                                        <option value="">-- اختر الجنس --</option>
-                                        <option value="ذكر">ذكر</option>
-                                        <option value="انثى">انثى</option>
-                                    </select>
-                                    <span asp-validation-for="Gender" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="BirthDate" class="form-label">تاريخ الميلاد</label>
-                                    <input asp-for="BirthDate" class="form-control" type="date" />
-                                    <span asp-validation-for="BirthDate" class="text-danger"></span>
-                                </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
+                                <input asp-for="Email" class="form-control" placeholder="أدخل بريدك الإلكتروني" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                         </div>
-
-                        <div class="row g-2">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Address" class="form-label">العنوان</label>
-                                    <input asp-for="Address" class="form-control" placeholder="أدخل عنوانك" />
-                                    <span asp-validation-for="Address" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="NationalId" class="form-label">الرقم الوطني</label>
-                                    <input asp-for="NationalId" class="form-control" placeholder="أدخل رقمك الوطني (10 أرقام)" />
-                                    <span asp-validation-for="NationalId" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-user-plus"></i>
-                                إنشاء الحساب
-                            </button>
-                        </div>
-                    </form>
-
-                    <div class="text-center mt-3">
-                        <p>لديك حساب بالفعل؟ <a asp-action="signIn" asp-controller="User">تسجيل الدخول</a></p>
                     </div>
-                </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Password" class="form-label">كلمة المرور</label>
+                                <input asp-for="Password" class="form-control" type="password" placeholder="أدخل كلمة المرور" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Phone" class="form-label">رقم الهاتف</label>
+                                <input asp-for="Phone" class="form-control" placeholder="أدخل رقم هاتفك" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Gender" class="form-label">الجنس</label>
+                                <select asp-for="Gender" class="form-control">
+                                    <option value="">-- اختر --</option>
+                                    <option value="ذكر">ذكر</option>
+                                    <option value="انثى">أنثى</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="BirthDate" class="form-label">تاريخ الميلاد</label>
+                                <input asp-for="BirthDate" class="form-control" type="date" />
+                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="NationalId" class="form-label">رقم الهوية</label>
+								<input asp-for="NationalId" class="form-control" placeholder="(10 أرقام)" />
+                                <span asp-validation-for="NationalId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Address" class="form-label">العنوان</label>
+                                <input asp-for="Address" class="form-control" placeholder="أدخل عنوانك" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus ml-2"></i>
+                            إنشاء الحساب
+                        </button>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p>لديك حساب بالفعل؟ <a asp-action="signIn" asp-controller="User">تسجيل الدخول</a></p>
+                        <a asp-controller="Home" asp-action="Index" class="btn home-btn">
+                            <i class="fas fa-home ml-2"></i>
+                            العودة للصفحة الرئيسية
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
     <script>
-        // التحقق من الرقم الوطني
+        // التحقق من رقم الهوية
         document.querySelector('input[name="NationalId"]').addEventListener('input', function(e) {
             if (this.value.length > 10) {
                 this.value = this.value.slice(0, 10);
             }
         });
     </script>
-}
+</body>
+</html>

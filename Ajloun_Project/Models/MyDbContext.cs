@@ -67,11 +67,11 @@ public partial class MyDbContext : DbContext
     {
         modelBuilder.Entity<Admin>(entity =>
         {
-            entity.HasKey(e => e.AdminId).HasName("PK__Admins__719FE4886784BAB8");
+            entity.HasKey(e => e.AdminId).HasName("PK__Admins__719FE488B7A3DDC3");
 
-            entity.HasIndex(e => e.Username, "UQ__Admins__536C85E4140E56B7").IsUnique();
+            entity.HasIndex(e => e.Username, "UQ__Admins__536C85E46C975A97").IsUnique();
 
-            entity.HasIndex(e => e.Email, "UQ__Admins__A9D1053423C49EBC").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Admins__A9D1053416BBBA7E").IsUnique();
 
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.FullName).HasMaxLength(100);
@@ -84,7 +84,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<Article>(entity =>
         {
-            entity.HasKey(e => e.ArticleId).HasName("PK__Articles__9C6270E8515F5928");
+            entity.HasKey(e => e.ArticleId).HasName("PK__Articles__9C6270E8E0776021");
 
             entity.Property(e => e.AuthorName).HasMaxLength(100);
             entity.Property(e => e.Category).HasMaxLength(50);
@@ -95,7 +95,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<Artwork>(entity =>
         {
-            entity.HasKey(e => e.ArtworkId).HasName("PK__Artworks__D073AE9BEAA7598E");
+            entity.HasKey(e => e.ArtworkId).HasName("PK__Artworks__D073AE9B9AA97C8A");
 
             entity.Property(e => e.ArtistEmail).HasMaxLength(100);
             entity.Property(e => e.ArtistName).HasMaxLength(100);
@@ -110,36 +110,38 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<AssocEventRegistration>(entity =>
         {
-            entity.HasKey(e => e.RegistrationId).HasName("PK__AssocEve__6EF588108F06B138");
+            entity.HasKey(e => e.RegistrationId).HasName("PK__AssocEve__6EF58810A4F89405");
 
             entity.Property(e => e.RegisteredAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.AssocEvent).WithMany(p => p.AssocEventRegistrations)
                 .HasForeignKey(d => d.AssocEventId)
-                .HasConstraintName("FK__AssocEven__Assoc__5AEE82B9");
+                .HasConstraintName("FK__AssocEven__Assoc__4AB81AF0");
 
             entity.HasOne(d => d.User).WithMany(p => p.AssocEventRegistrations)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__AssocEven__UserI__5BE2A6F2");
+                .HasConstraintName("FK__AssocEven__UserI__1332DBDC");
         });
 
         modelBuilder.Entity<AssociationCategory>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Associat__19093A0B5B41C7E5");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Associat__19093A0BB46C9DCA");
 
-            entity.HasIndex(e => e.Name, "UQ__Associat__737584F6464F5CE2").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Associat__737584F679524D85").IsUnique();
 
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
         modelBuilder.Entity<AssociationEvent>(entity =>
         {
-            entity.HasKey(e => e.AssocEventId).HasName("PK__Associat__68ACACD317CEA8AC");
+            entity.HasKey(e => e.EventId).HasName("PK__Associat__68ACACD3755CB923");
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.EventType).HasMaxLength(50);
             entity.Property(e => e.Location).HasMaxLength(100);
+            entity.Property(e => e.PosterUrl).HasMaxLength(255);
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
                 .HasDefaultValue("Pending");
@@ -147,12 +149,12 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.Association).WithMany(p => p.AssociationEvents)
                 .HasForeignKey(d => d.AssociationId)
-                .HasConstraintName("FK__Associati__Assoc__5629CD9C");
+                .HasConstraintName("FK__Associati__Assoc__45F365D3");
         });
 
         modelBuilder.Entity<AssociationJoinRequest>(entity =>
         {
-            entity.HasKey(e => e.RequestId).HasName("PK__Associat__33A8517ACAEDC745");
+            entity.HasKey(e => e.RequestId).HasName("PK__Associat__33A8517A67EF46B9");
 
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
@@ -160,16 +162,16 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.Association).WithMany(p => p.AssociationJoinRequests)
                 .HasForeignKey(d => d.AssociationId)
-                .HasConstraintName("FK__Associati__Assoc__5165187F");
+                .HasConstraintName("FK__Associati__Assoc__4222D4EF");
 
             entity.HasOne(d => d.User).WithMany(p => p.AssociationJoinRequests)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Associati__UserI__52593CB8");
+                .HasConstraintName("FK__Associati__UserI__123EB7A3");
         });
 
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.BookId).HasName("PK__Books__3DE0C2077936A994");
+            entity.HasKey(e => e.BookId).HasName("PK__Books__3DE0C20745867493");
 
             entity.Property(e => e.Author).HasMaxLength(100);
             entity.Property(e => e.AvailableCopies).HasDefaultValue(1);
@@ -182,21 +184,21 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.Books)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK__Books__CategoryI__6754599E");
+                .HasConstraintName("FK__Books__CategoryI__6EF57B66");
         });
 
         modelBuilder.Entity<BookCategory>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__BookCate__19093A0BC6598F46");
+            entity.HasKey(e => e.CategoryId).HasName("PK__BookCate__19093A0BBAAF0E5C");
 
-            entity.HasIndex(e => e.Name, "UQ__BookCate__737584F69594E6EF").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__BookCate__737584F60CA8FB6D").IsUnique();
 
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
         modelBuilder.Entity<BookReservation>(entity =>
         {
-            entity.HasKey(e => e.ReservationId).HasName("PK__BookRese__B7EE5F24972CF434");
+            entity.HasKey(e => e.ReservationId).HasName("PK__BookRese__B7EE5F242C3AEBD8");
 
             entity.Property(e => e.Agreement).HasDefaultValue(false);
             entity.Property(e => e.ReservationDate)
@@ -209,16 +211,16 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.Book).WithMany(p => p.BookReservations)
                 .HasForeignKey(d => d.BookId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__BookReser__BookI__6A30C649");
+                .HasConstraintName("FK__BookReser__BookI__71D1E811");
 
             entity.HasOne(d => d.User).WithMany(p => p.BookReservations)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__BookReser__UserI__6B24EA82");
+                .HasConstraintName("FK__BookReser__UserI__14270015");
         });
 
         modelBuilder.Entity<Course>(entity =>
         {
-            entity.HasKey(e => e.CourseId).HasName("PK__Courses__C92D71A72F202A66");
+            entity.HasKey(e => e.CourseId).HasName("PK__Courses__C92D71A7942EC536");
 
             entity.Property(e => e.AgeRange).HasMaxLength(50);
             entity.Property(e => e.Courseimg).HasMaxLength(500);
@@ -227,7 +229,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<CourseApplication>(entity =>
         {
-            entity.HasKey(e => e.ApplicationId).HasName("PK__CourseAp__C93A4C991C8F329A");
+            entity.HasKey(e => e.ApplicationId).HasName("PK__CourseAp__C93A4C99A2380506");
 
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
@@ -239,32 +241,32 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.Course).WithMany(p => p.CourseApplications)
                 .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__CourseApp__Cours__44FF419A");
+                .HasConstraintName("FK__CourseApp__Cours__787EE5A0");
 
             entity.HasOne(d => d.User).WithMany(p => p.CourseApplications)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__CourseApp__UserI__45F365D3");
+                .HasConstraintName("FK__CourseApp__UserI__114A936A");
         });
 
         modelBuilder.Entity<CraftOrder>(entity =>
         {
-            entity.HasKey(e => e.OrderId).HasName("PK__CraftOrd__C3905BCF20DA874E");
+            entity.HasKey(e => e.OrderId).HasName("PK__CraftOrd__C3905BCF8DC7B4E4");
 
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(20);
 
             entity.HasOne(d => d.Craft).WithMany(p => p.CraftOrders)
                 .HasForeignKey(d => d.CraftId)
-                .HasConstraintName("FK__CraftOrde__Craft__75A278F5");
+                .HasConstraintName("FK__CraftOrde__Craft__5BE2A6F2");
 
             entity.HasOne(d => d.User).WithMany(p => p.CraftOrders)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__CraftOrde__UserI__76969D2E");
+                .HasConstraintName("FK__CraftOrde__UserI__151B244E");
         });
 
         modelBuilder.Entity<CulturalAssociation>(entity =>
         {
-            entity.HasKey(e => e.AssociationId).HasName("PK__Cultural__B51A182D3B8C912B");
+            entity.HasKey(e => e.AssociationId).HasName("PK__Cultural__B51A182D8CC480D9");
 
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Phone).HasMaxLength(20);
@@ -274,12 +276,12 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.CulturalAssociations)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK__CulturalA__Categ__17036CC0");
+                .HasConstraintName("FK__CulturalA__Categ__1BC821DD");
         });
 
         modelBuilder.Entity<CulturalEvent>(entity =>
         {
-            entity.HasKey(e => e.EventId).HasName("PK__Cultural__7944C81055B1620D");
+            entity.HasKey(e => e.EventId).HasName("PK__Cultural__7944C810DD533856");
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Date).HasColumnType("datetime");
@@ -291,7 +293,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<CulturalEventReservation>(entity =>
         {
-            entity.HasKey(e => e.ReservationId).HasName("PK__Cultural__B7EE5F245654FF3E");
+            entity.HasKey(e => e.ReservationId).HasName("PK__Cultural__B7EE5F247853067D");
 
             entity.Property(e => e.ReservationDate)
                 .HasDefaultValueSql("(getdate())")
@@ -302,16 +304,16 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.Event).WithMany(p => p.CulturalEventReservations)
                 .HasForeignKey(d => d.EventId)
-                .HasConstraintName("FK__CulturalE__Event__0A9D95DB");
+                .HasConstraintName("FK__CulturalE__Event__09A971A2");
 
             entity.HasOne(d => d.User).WithMany(p => p.CulturalEventReservations)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__CulturalE__UserI__0B91BA14");
+                .HasConstraintName("FK__CulturalE__UserI__17036CC0");
         });
 
         modelBuilder.Entity<Festival>(entity =>
         {
-            entity.HasKey(e => e.FestivalId).HasName("PK__Festival__875D72CD4D8A8A25");
+            entity.HasKey(e => e.FestivalId).HasName("PK__Festival__875D72CD935C7160");
 
             entity.Property(e => e.BannerImageUrl).HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -324,7 +326,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<FestivalReservation>(entity =>
         {
-            entity.HasKey(e => e.ReservationId).HasName("PK__Festival__B7EE5F2452E1DBDC");
+            entity.HasKey(e => e.ReservationId).HasName("PK__Festival__B7EE5F24356E120E");
 
             entity.Property(e => e.ReservationDate)
                 .HasDefaultValueSql("(getdate())")
@@ -339,12 +341,12 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.FestivalReservations)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__FestivalR__UserI__04E4BC85");
+                .HasConstraintName("FK__FestivalR__UserI__160F4887");
         });
 
         modelBuilder.Entity<HallBooking>(entity =>
         {
-            entity.HasKey(e => e.BookingId).HasName("PK__HallBook__73951AEDF0DACC34");
+            entity.HasKey(e => e.BookingId).HasName("PK__HallBook__73951AEDE1A5EAA5");
 
             entity.Property(e => e.CoordinatorName).HasMaxLength(100);
             entity.Property(e => e.EventTitle).HasMaxLength(200);
@@ -361,7 +363,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<Handicraft>(entity =>
         {
-            entity.HasKey(e => e.CraftId).HasName("PK__Handicra__6B18C69CD252226E");
+            entity.HasKey(e => e.CraftId).HasName("PK__Handicra__6B18C69CAA26A3EB");
 
             entity.Property(e => e.Category).HasMaxLength(50);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -372,7 +374,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<News>(entity =>
         {
-            entity.HasKey(e => e.NewsId).HasName("PK__News__954EBDF3EBF9A073");
+            entity.HasKey(e => e.NewsId).HasName("PK__News__954EBDF3E15F8A83");
 
             entity.Property(e => e.Category).HasMaxLength(50);
             entity.Property(e => e.ImageUrl).HasMaxLength(255);
@@ -387,9 +389,9 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C5D6151DC");
+            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C5F6664A1");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D105349330847D").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__A9D105349A196538").IsUnique();
 
             entity.Property(e => e.Address).HasMaxLength(200);
             entity.Property(e => e.CreatedAt)
