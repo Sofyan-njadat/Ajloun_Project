@@ -9,13 +9,13 @@ public partial class CraftOrder
 
     public int? CraftId { get; set; }
 
-    public int? Quantity { get; set; }
+    public int? UserId { get; set; }
 
-    public DateTime? OrderDate { get; set; }
+    public int? Quantity { get; set; }
 
     public string? Status { get; set; }
 
-    public int? UserId { get; set; }
+    public string? Status { get; set; }
 
     public virtual Handicraft? Craft { get; set; }
 
