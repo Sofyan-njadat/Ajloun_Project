@@ -21,5 +21,7 @@ public partial class CulturalEvent
 
     public DateTime? CreatedAt { get; set; }
 
+    public TimeOnly? Time { get; set; }
+
     public virtual ICollection<CulturalEventReservation> CulturalEventReservations { get; set; } = new List<CulturalEventReservation>();
 }

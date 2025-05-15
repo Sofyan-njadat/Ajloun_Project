@@ -20,27 +20,49 @@ namespace Ajloun_Project.Areas.Admin.Controllers
                 .Reverse()
                 .ToList();
 
-            // إحصائيات المهرجانات
-            var festivalsData = await _context.Festivals
-                .Where(f => f.StartDate.HasValue && 
-                           f.StartDate.Value.Date >= last7Days.First() && 
-                           f.StartDate.Value.Date <= last7Days.Last())
-                .GroupBy(f => f.StartDate.Value.Date)
-                .Select(g => new
-                {
-                    Date = g.Key,
-                    Count = g.Count()
-                })
-                .ToListAsync();
-
-            // إحصائيات الكتب (متاحة ومستعارة)
-            var availableBooks = await _context.Books.Where(b => b.IsAvailable).CountAsync();
-            var borrowedBooks = await _context.Books.Where(b => !b.IsAvailable).CountAsync();
-
             var statistics = new
             {
+                // إحصائيات الدورات
+                TotalCourses = await _context.Courses.CountAsync(),
+
+                // إحصائيات المهرجانات
                 TotalFestivals = await _context.Festivals.CountAsync(),
-                TotalNews = await _context.News.CountAsync(),
+
+                // إحصائيات الفعاليات الثقافية
+                TotalCulturalEvents = await _context.CulturalEvents.CountAsync(),
+
+                // إحصائيات الهيئات الثقافية
+                TotalCulturalAssociations = await _context.CulturalAssociations.CountAsync(),
+
+                // إحصائيات حجوزات المسارح
+                TotalHallBookings = await _context.HallBookings.CountAsync(),
+
+                // إحصائيات الكتب
+                TotalBooks = await _context.Books.CountAsync(),
+
+                // إحصائيات حجوزات الكتب
+                TotalBookReservations = await _context.BookReservations.CountAsync(),
+
+                // إحصائيات الأعمال الفنية
+                TotalArtworks = await _context.Artworks.CountAsync(),
+
+                // إحصائيات الحرف اليدوية
+                TotalHandicrafts = await _context.Handicrafts.CountAsync(),
+
+                // إحصائيات المستخدمين
+                TotalUsers = await _context.Users.CountAsync(),
+
+                // بيانات الرسم البياني
+                ChartData = new
+                {
+                    Labels = last7Days.Select(d => d.ToString("yyyy-MM-dd")).ToList(),
+                    FestivalsData = last7Days.Select(date => 
+                        _context.Festivals.Count(f => f.StartDate.HasValue && f.StartDate.Value.Date == date.Date)).ToList(),
+                    BooksData = last7Days.Select(date => 
+                        _context.Books.Count(b => b.CreatedAt.HasValue && b.CreatedAt.Value.Date == date.Date)).ToList()
+                },
+
+                // الأخبار الأخيرة
                 RecentNews = await _context.News
                     .OrderByDescending(n => n.PublishDate)
                     .Take(5)
@@ -48,24 +70,11 @@ namespace Ajloun_Project.Areas.Admin.Controllers
                     {
                         n.NewsId,
                         n.Title,
-                        n.PublishDate
+                        n.Content,
+                        n.PublishDate,
+                        n.ImageUrl
                     })
-                    .ToListAsync(),
-                LibraryStats = new
-                {
-                    TotalBooks = await _context.Books.CountAsync(),
-                    AvailableBooks = availableBooks,
-                    BorrowedBooks = borrowedBooks,
-                    TotalCategories = await _context.BookCategories.CountAsync()
-                },
-                // بيانات الرسم البياني
-                ChartData = new
-                {
-                    Labels = last7Days.Select(d => d.ToString("yyyy-MM-dd")).ToList(),
-                    FestivalsData = last7Days.Select(date => 
-                        festivalsData.FirstOrDefault(f => f.Date.Date == date.Date)?.Count ?? 0).ToList(),
-                    BooksData = last7Days.Select(_ => availableBooks).ToList() // عرض عدد الكتب المتاحة لكل يوم
-                }
+                    .ToListAsync()
             };
 
             return View(statistics);

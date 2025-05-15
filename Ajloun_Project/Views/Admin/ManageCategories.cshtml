@@ -1,0 +1,154 @@
+@model List<Ajloun_Project.Models.AssociationCategory>
+
+@{
+    ViewData["Title"] = "إدارة المناطق";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+<!-- إضافة SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+<!-- إضافة SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">إدارة المناطق</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a asp-action="CulturalAssociations" class="btn btn-light">
+                    <i class="fas fa-arrow-right"></i> العودة إلى الهيئات الثقافية
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">إضافة منطقة جديدة</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddCategory" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">اسم المنطقة</label>
+                            <input type="text" id="Name" name="Name" class="form-control" required />
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> إضافة منطقة
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">قائمة المناطق</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>الرقم</th>
+                                    <th>اسم المنطقة</th>
+                                    <th>عدد الهيئات</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var category in Model)
+                                {
+                                    <tr>
+                                        <td>@category.CategoryId</td>
+                                        <td>@category.Name</td>
+                                        <td>@category.CulturalAssociations.Count</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="@Url.Action("EditCategory", "Admin", new { id = category.CategoryId })" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-edit"></i> تعديل
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-danger delete-category" data-id="@category.CategoryId" data-name="@category.Name">
+                                                    <i class="fas fa-trash"></i> حذف
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- نموذج حذف مخفي -->
+    <form id="deleteForm" asp-action="DeleteCategory" method="post" style="display: none;">
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="categoryId" name="id" value="" />
+    </form>
+
+    <script>
+        // إظهار رسائل النجاح والخطأ باستخدام SweetAlert
+        $(document).ready(function () {
+            // تحقق من وجود رسائل نجاح أو خطأ
+            @if (TempData["Success"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم بنجاح',
+                    text: '',
+                    confirmButtonText: 'حسناً'
+                });
+                </text>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'حدث خطأ',
+                    text: '',
+                    confirmButtonText: 'حسناً'
+                });
+                </text>
+            }
+        });
+
+        // تفعيل SweetAlert لتأكيد الحذف
+        $('.delete-category').click(function () {
+            const categoryId = $(this).data('id');
+            const categoryName = $(this).data('name');
+            
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: `هل تريد حذف المنطقة "${categoryName}"؟`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'نعم، احذف!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#categoryId').val(categoryId);
+                    $('#deleteForm').submit();
+                }
+            });
+        });
+    </script>
+} 

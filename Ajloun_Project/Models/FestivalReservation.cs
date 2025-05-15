@@ -9,13 +9,11 @@ public partial class FestivalReservation
 
     public int? FestivalId { get; set; }
 
-    public int? UserId { get; set; }
-
     public DateTime? ReservationDate { get; set; }
 
-    public DateOnly AttendanceDate { get; set; }
-
     public string? Status { get; set; }
+
+    public int? UserId { get; set; }
 
     public virtual Festival? Festival { get; set; }
 

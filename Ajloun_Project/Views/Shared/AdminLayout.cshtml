@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - مديرية ثقافة عجلون</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    @await RenderSectionAsync("Styles", required: false)
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --sidebar-collapsed-width: 70px;
+            --header-height: 60px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: #2c3e50;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            background: #1a252f;
+            color: white;
+            position: relative;
+        }
+
+        .sidebar-title {
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            margin-right: auto;
+        }
+
+        .sidebar.collapsed .sidebar-title {
+            opacity: 0;
+            display: none;
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .menu-item {
+            padding: 0.8rem 1rem;
+            color: #ecf0f1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        .menu-item i {
+            width: 20px;
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+
+        .menu-text {
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar.collapsed .menu-text {
+            opacity: 0;
+            display: none;
+        }
+
+        .sidebar.collapsed .menu-item {
+            padding: 0.8rem;
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .menu-item i {
+            margin-left: 0;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-right: var(--sidebar-width);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+            background: #f8f9fa;
+        }
+
+        .main-content.expanded {
+            margin-right: var(--sidebar-collapsed-width);
+        }
+
+        /* Burger Menu Button */
+        .burger-menu {
+            position: fixed;
+            top: 10px;
+            right: 15px;
+            z-index: 1001;
+            background: #2c3e50;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .burger-menu:hover {
+            background: #34495e;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-right: 0;
+            }
+
+            .burger-menu {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="burger-menu" id="burgerMenu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title" style="margin-right: 35%;">القائمة</h3>
+            <button class="burger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="/Statistics/Statistics" class="menu-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="menu-text">الإحصائيات</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Events/AdminEvents" class="menu-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="menu-text">الفعاليات الثقافية</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Festivals/AdminFestivals" class="menu-item">
+                    <i class="fas fa-theater-masks"></i>
+                    <span class="menu-text">المهرجانات</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/CulturalAssociations" class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <span class="menu-text">الهيئات الثقافية</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Course/ManageCourses" class="menu-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="menu-text">الدورات</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/HallBookingsRequests" class="menu-item">
+                    <i class="fas fa-door-open"></i>
+                    <span class="menu-text">حجوزات المسارح</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Handicrafts" class="menu-item">
+                    <i class="fas fa-paint-brush"></i>
+                    <span class="menu-text">المنتجات الحرفية</span>
+                </a>
+            </li>
+            <li>
+                <a href="/News/AdminList" class="menu-item">
+                    <i class="fas fa-newspaper"></i>
+                    <span class="menu-text">إدارة الأخبار</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Library/ManageBooks" class="menu-item">
+                    <i class="fas fa-book"></i>
+                    <span class="menu-text">إدارة الكتب</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Index" class="menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span class="menu-text">إدارة المشرفين</span>
+                </a>
+            </li>
+            <li>
+                <a href="/" class="menu-item">
+                    <i class="fas fa-home"></i>
+                    <span class="menu-text">الرئيسية</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const burgerMenu = document.getElementById('burgerMenu');
+            let isSidebarCollapsed = false;
+
+            function toggleSidebar() {
+                isSidebarCollapsed = !isSidebarCollapsed;
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            }
+
+            burgerMenu.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.toggle('show');
+                } else {
+                    toggleSidebar();
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('show');
+                }
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html> 

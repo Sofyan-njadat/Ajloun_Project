@@ -45,8 +45,14 @@ app.UseSession();
 
 app.UseAuthorization();
 
+// مسار للمتحكمات الموجودة في مجلد فرعي Hazem
+app.MapControllerRoute(
+    name: "hazem",
+    pattern: "{controller=Home}/{action=Index}/{id?}",
+    defaults: new { area = "" });
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.Run();

@@ -1,143 +1,158 @@
 ﻿@model IEnumerable<Ajloun_Project.Models.Book>
 @{
     ViewData["Title"] = "إدارة الكتب";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
     var categories = ViewBag.Categories as List<Ajloun_Project.Models.BookCategory>;
 }
 
-@section Styles {
-    <style>
-        .book-admin-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
-        h2 {
-            color: #2C6E49;
-            text-align: center;
-            margin-bottom: 25px;
-        }
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
+    .action-buttons .btn {
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
 
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-            text-align: center;
-        }
+    .action-buttons form {
+        margin: 0;
+    }
 
-        th {
-            background-color: #2C6E49;
-            color: white;
-        }
+    .book-image {
+        width: 50px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    
+    .header-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+</style>
 
-        .form-add-book {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            align-items: center;
-        }
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">إدارة الكتب</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="header-buttons">
+                    <a href="@Url.Action("ManageReservations", "Library")" class="btn btn-light">
+                        <i class="fas fa-calendar-check"></i>الحجوزات
+                    </a>
+                    <a href="@Url.Action("ManageCategories", "Category")" class="btn btn-light">
+                        <i class="fas fa-tags"></i>التصنيفات
+                    </a>
+                    <a href="@Url.Action("AddBook", "Library")" class="btn btn-light">
+                        <i class="fas fa-plus"></i>إضافة كتاب
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            .form-add-book input,
-            .form-add-book select {
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 6px;
-                width: 100%;
-            }
-
-            .form-add-book button {
-                grid-column: span 2;
-                padding: 10px;
-                background-color: #2C6E49;
-                color: white;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-            }
-
-        .delete-btn {
-            background-color: #E53935;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
-        }
-
-            .delete-btn:hover {
-                background-color: #c62828;
-            }
-    </style>
-}
-
-<div class="book-admin-container">
-    <h2>📘 إدارة الكتب</h2>
-
-    <!-- جدول عرض الكتب -->
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>الغلاف</th>
-                <th>العنوان</th>
-                <th>المؤلف</th>
-                <th>التصنيف</th>
-                <th>النسخ</th>
-                <th>الحالة</th>
-                <th>حذف</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var book in Model)
-            {
-                <tr>
-                    <td>@book.BookId</td>
-                    <td>
-                        <img src="@book.CoverImageUrl" alt="غلاف" style="width: 50px; height: 60px; object-fit: cover;" />
-                    </td>
-                    <td>@book.Title</td>
-                    <td>@book.Author</td>
-                    <td>@book.Category?.Name</td>
-                    <td>@book.AvailableCopies</td>
-                    <td>@(book.IsAvailable ? "متاح" : "غير متاح")</td>
-                    <td>
-                        <form asp-action="DeleteBook" method="post">
-                            <input type="hidden" name="id" value="@book.BookId" />
-                            <button type="submit" class="delete-btn">🗑️ حذف</button>
-                            <a asp-action="EditBook" asp-route-id="@book.BookId" class="edit-btn">✏️ تعديل</a>
-
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <!-- نموذج إضافة كتاب -->
-    <form asp-action="AddBook" method="post" class="form-add-book">
-        <input type="text" name="Title" placeholder="عنوان الكتاب" required />
-        <input type="text" name="Author" placeholder="اسم المؤلف" />
-        <input type="text" name="CoverImageUrl" placeholder="رابط صورة الغلاف" />
-        <input type="number" name="PublishedYear" placeholder="سنة النشر" />
-        <input type="number" name="AvailableCopies" placeholder="عدد النسخ" required min="1" />
-
-        <select name="CategoryId" required>
-            <option value="">اختر التصنيف</option>
-            @foreach (var cat in categories)
-            {
-                <option value="@cat.CategoryId">@cat.Name</option>
-            }
-        </select>
-
-        <input type="text" name="Description" placeholder="وصف الكتاب" />
-
-        <button type="submit">➕ إضافة كتاب</button>
-    </form>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الغلاف</th>
+                            <th>العنوان</th>
+                            <th>المؤلف</th>
+                            <th>التصنيف</th>
+                            <th>النسخ</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var book in Model)
+                        {
+                            <tr>
+                                <td>@book.BookId</td>
+                                <td>
+                                    <img src="@book.CoverImageUrl" alt="غلاف" class="book-image" />
+                                </td>
+                                <td>@book.Title</td>
+                                <td>@book.Author</td>
+                                <td>@book.Category?.Name</td>
+                                <td>@book.AvailableCopies</td>
+                                <td>
+                                    @if (book.IsAvailable)
+                                    {
+                                        <span class="badge bg-success">متاح</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">غير متاح</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a asp-action="EditBook" asp-route-id="@book.BookId" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i> تعديل
+                                        </a>
+                                        <form asp-action="DeleteBook" method="post" class="delete-form" data-book-title="@book.Title">
+                                            <input type="hidden" name="id" value="@book.BookId" />
+                                            <button type="button" class="btn btn-sm btn-danger delete-btn">
+                                                <i class="fas fa-trash"></i> حذف
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteForms = document.querySelectorAll('.delete-form');
+            
+            deleteForms.forEach(form => {
+                const deleteBtn = form.querySelector('.delete-btn');
+                const bookTitle = form.dataset.bookTitle;
+                
+                deleteBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    Swal.fire({
+                        title: 'تأكيد الحذف',
+                        text: `هل أنت متأكد من حذف الكتاب "${bookTitle}"؟`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'نعم، احذف',
+                        cancelButtonText: 'إلغاء'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

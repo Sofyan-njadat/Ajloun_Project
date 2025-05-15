@@ -1,0 +1,175 @@
+@model IEnumerable<Ajloun_Project.Models.Course>
+@{
+    ViewData["Title"] = "إدارة الدورات";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .action-buttons .btn {
+        width: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .action-buttons form {
+        margin: 0;
+    }
+
+    .course-image {
+        width: 100px;
+        height: 75px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .badge-age {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        border-radius: 15px;
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">إدارة الدورات</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="@Url.Action("CreateCourse", "Course")" class="btn btn-light mb-2">
+                    <i class="fas fa-plus"></i> إضافة دورة جديدة
+                </a>
+                <a href="@Url.Action("CourseApplications", "Course")" class="btn btn-light mb-2">
+                    <i class="fas fa-clipboard-list"></i> عرض طلبات التسجيل
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الصورة</th>
+                            <th>اسم الدورة</th>
+                            <th>الوصف</th>
+                            <th>الفئة العمرية</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var course in Model)
+                            {
+                                <tr>
+                                    <td>@course.CourseId</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(course.Courseimg))
+                                        {
+                                            <img src="@course.Courseimg" alt="@course.Name" class="course-image" />
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">لا توجد صورة</span>
+                                        }
+                                    </td>
+                                    <td>@course.Name</td>
+                                    <td>
+                                        @if (course.Description != null && course.Description.Length > 50)
+                                        {
+                                            @(course.Description.Substring(0, 50) + "...")
+                                        }
+                                        else
+                                        {
+                                            @course.Description
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge-age">@course.AgeRange</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="@Url.Action("EditCourse", "Course", new { id = course.CourseId })" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i> تعديل
+                                            </a>
+                                            <form asp-action="DeleteCourse" asp-controller="Course" method="post" onsubmit="return confirmDelete(event)">
+                                                <input type="hidden" name="id" value="@course.CourseId" />
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i> حذف
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center">لا توجد دورات متاحة</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <script>
+        function confirmDelete(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "لن تستطيع استرجاع هذه الدورة بعد الحذف!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'نعم، احذفها!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    event.target.submit();
+                }
+            });
+            return false;
+        }
+    </script>
+} 
