@@ -1,0 +1,362 @@
+﻿:root {
+    --primary: #355E3B;
+    --secondary: #A9BA9D;
+    --accent: #E3D26F;
+    --dark: #1E2F23;
+    --light: #EFF5EC;
+    --text: #2D2D2D;
+    --text-light: #6B6B6B;
+    --white: #FFFFFF;
+    --black: #000000;
+    --overlay: rgba(0, 0, 0, 0.5);
+}
+
+body {
+/*    overflow-x: hidden;*/
+}
+* {
+    box-sizing: border-box;
+}
+/* Festivals Page Styles */
+.festivals-container {
+    padding: 2rem 0;
+    min-height: calc(100vh - 300px); /* Ensures minimum height to prevent footer overlap */
+    margin-bottom: 2rem;
+/*    width:100%;*/
+    margin:15px;
+}
+
+.festival-card {
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.festival-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.festival-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.festival-content {
+    padding: 1.5rem;
+}
+
+.festival-title {
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.festival-date {
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.festival-location {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.festival-description {
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.festival-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--light);
+}
+
+.festival-category {
+    background-color: var(--secondary);
+    color: var(--white);
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.festival-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.festival-link:hover {
+    color: var(--accent);
+}
+
+/* Festival Hero Section */
+.festival-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/festival-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+    width: 100%;
+}
+
+.festival-hero > div {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+}
+
+.festival-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.festival-hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Festival Filters */
+.festival-filters {
+    background-color: var(--light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.filter-title {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-label {
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    border-radius: 5px;
+    color: var(--text);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .festival-hero {
+        height: 300px;
+    }
+
+    .festival-hero h1 {
+        font-size: 2rem;
+    }
+
+    .festival-hero p {
+        font-size: 1rem;
+    }
+
+    .festival-image {
+        height: 200px;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading State */
+.festival-loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+}
+
+.loading-spinner {
+    border: 4px solid var(--light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Reservation Modal Styles */
+.modal-content {
+    background-color: var(--white);
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    min-width:550px;
+}
+
+.modal-header {
+    background-color: var(--primary);
+    color: var(--white);
+    border-radius: 9px 9px 0 0;
+    padding: 1.5rem;
+    border: none;
+}
+
+.modal-title {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.btn-close {
+    filter: brightness(0) invert(1);
+}
+
+.modal-header .btn-close {
+    padding: .5rem .5rem;
+     margin: 0px !important; 
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.form-label {
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border: 1px solid var(--secondary);
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(53, 94, 59, 0.25);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--dark);
+    border-color: var(--dark);
+    transform: translateY(-2px);
+}
+
+/* Modal Animation */
+.modal.fade .modal-dialog {
+    transform: scale(0.8);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}
+
+/* Form Validation Styles */
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background-image: none;
+}
+
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Responsive Modal */
+@media (max-width: 576px) {
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .btn-primary {
+        width: 100%;
+    }
+}
+
+.festival-ended {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.festival-ended:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+
+.no-results-message {
+    font-size: 1.25rem;
+    color: #888;
+    padding: 2rem;
+}
+
+
+.filter-select option:hover {
+    background-color: var(--primary) !important;
+}
+

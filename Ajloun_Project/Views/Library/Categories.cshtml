@@ -58,11 +58,45 @@
                 padding: 8px 16px;
                 border-radius: 6px;
             }
+            
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
     </style>
 }
 
 <div class="category-container">
     <h2>📂 إدارة تصنيفات الكتب</h2>
+    
+    <!-- عرض رسائل النجاح والخطأ -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            تم بنجاح
+        </div>
+    }
+    
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            حدث خطأ
+        </div>
+    }
 
     <!-- عرض التصنيفات -->
     <table>

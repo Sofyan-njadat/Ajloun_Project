@@ -1,54 +1,150 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    Layout = null;
+    var userId = Context.Session.GetInt32("userId");
+}
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Ajloun_Project</title>
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Ajloun_Project.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pVfN8Jr8A8NwKw3H+XtRZ9UzSgFx3eD9ynmBhfRt+YbtdQgo/2q2akI7E4xLryE2z2ZwbyXhbiRJvMJKAw7Lsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @RenderSection("Styles", required: false)
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
 
+    @RenderSection("Styles", required: false)
 </head>
 <body>
-    @* <header> *@
-    @*     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> *@
-    @*         <div class="container-fluid"> *@
-    @*             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ajloun_Project</a> *@
-    @*             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" *@
-    @*                     aria-expanded="false" aria-label="Toggle navigation"> *@
-    @*                 <span class="navbar-toggler-icon"></span> *@
-    @*             </button> *@
-    @*             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between"> *@
-    @*                 <ul class="navbar-nav flex-grow-1"> *@
-    @*                     <li class="nav-item"> *@
-    @*                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
-    @*                     </li> *@
-    @*                     <li class="nav-item"> *@
-    @*                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
-    @*                     </li> *@
-    @*                 </ul> *@
-    @*             </div> *@
-    @*         </div> *@
-    @*     </nav> *@
-    @* </header> *@
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <header>
+        <div class="logo">مديرية ثقافة عجلون</div>
+        <div class="burger" onclick="toggleMenu()">☰</div>
+
+        <nav id="main-nav">
+            <a asp-controller="Home" asp-action="Index">الرئيسية</a>
+
+            <div class="dropdown">
+                <a href="#">المكتبة</a>
+                <div class="dropdown-content">
+                    <a asp-controller="Library" asp-action="Index">عرض الكتب</a>
+                    <a asp-controller="Home" asp-action="Articles">المقالات</a>
+                    <a asp-controller="ArtWorks" asp-action="ArtWorks">الأعمال الفنية</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">الدورات</a>
+                <div class="dropdown-content">
+                    <a asp-controller="Category" asp-action="Index">قائمة الدورات</a>
+                    <a asp-controller="UserProfile" asp-action="UserCourseApplications">دوراتي</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">الأنشطة الثقافية</a>
+                <div class="dropdown-content">
+                    <a asp-controller="Festivals" asp-action="Festivals">المهرجانات</a>
+                    <a asp-controller="Events" asp-action="Events">الفعاليات</a>
+                </div>
+            </div>
+
+
+            <div class="dropdown">
+                <a href="#">المحتوى</a>
+                <div class="dropdown-content">
+                    <a asp-controller="News" asp-action="Index">الأخبار</a>
+                    <a asp-controller="Gallery" asp-action="Gallery">معرض الصور</a>
+                </div>
+            </div>
+
+            <a asp-controller="TimeLine" asp-action="TimeLine">سردية عجلون</a>
+
+            <!-- ✅ تظهر فقط على الموبايل -->
+            <div class="mobile-auth translate-auth">
+                <div class="translate-box" id="google_translate_element"></div>
+                <div class="auth-buttons">
+                    @if (userId == null)
+                    {
+                        <a href="/User/SignIn" class="login">تسجيل الدخول</a>
+                    }
+                    else
+                    {
+                        <a href="/UserProfile/UserInfo" class="profile">الملف الشخصي</a>
+                        <form method="post" action="/UserProfile/Logout" style="display:inline;">
+                            <button type="submit" class="logout">تسجيل الخروج</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div >
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Ajloun_Project - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div class="footer-columns">
+            <div class="footer-col">
+                <h4>المكتبة</h4>
+                <a href="/Library">عرض الكتب</a>
+                <a href="/Home/Articles">المقالات</a>
+                <a href="/ArtWorks/ArtWorks">الأعمال الفنية</a>
+            </div>
+            <div class="footer-col">
+                <h4>الدورات</h4>
+                <a href="/Category">قائمة الدورات</a>
+                <a href="/UserProfile/UserCourseApplications">دوراتي</a>
+            </div>
+            <div class="footer-col">
+                <h4>روابط عامة</h4>
+                <a href="/">الرئيسية</a>
+                <a href="/TimeLine">الجدول الزمني</a>
+                <a href="/News">الأخبار</a>
+                <a href="/Gallery">معرض الصور</a>
+            </div>
         </div>
+        <p style="margin-top: 1rem;">© 2025 Powered By - <a href="#">Orange Academy Team</a> </p>
     </footer>
+
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'ar',
+                includedLanguages: 'ar,en,fr',
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+            }, 'google_translate_element');
+        }
+
+        const gtScript = document.createElement('script');
+        gtScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(gtScript);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const burger = document.querySelector('.burger');
+            const nav = document.getElementById('main-nav');
+            if (burger && nav) {
+                burger.addEventListener('click', () => {
+                    nav.classList.toggle('show');
+                });
+            }
+
+            const dropdowns = document.querySelectorAll('.dropdown > a');
+            dropdowns.forEach(drop => {
+                drop.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    this.parentElement.classList.toggle('active');
+                });
+            });
+        });
+    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

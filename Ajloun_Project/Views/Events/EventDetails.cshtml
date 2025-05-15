@@ -1,0 +1,202 @@
+@model dynamic
+@{
+    ViewData["Title"] = "تفاصيل الفعالية";
+    var eventType = Model is CulturalEvent ? "cultural" : "association";  // Declare it before using it
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/EventDetails.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+}
+
+<div class="event-details-container">
+    <div class="event-hero">
+        <div class="hero-pattern"></div>
+        <div class="hero-content">
+            <div class="hero-badge">فعالية ثقافية</div>
+            <h1>@Model.Title</h1>
+            <div class="event-meta">
+                <span><i class="fas fa-calendar"></i> @(Model.Date?.ToString("d MMMM yyyy", new System.Globalization.CultureInfo("ar-JO")))</span>
+                @if (Model is CulturalEvent culturalEvent && culturalEvent.Time.HasValue)
+                {
+                    <span><i class="fas fa-clock"></i> @(Model.Time?.ToString("hh:mm tt", new System.Globalization.CultureInfo("ar-JO")))</span>
+                }
+                <span><i class="fas fa-map-marker-alt"></i> @Model.Location</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="event-content">
+        <div class="event-main">
+            <section class="event-media">
+                <div class="media-gallery">
+                    <div class="main-media">
+                        <img src="@Url.Content("~/images/"+(Model.PosterUrl ?? "default-image.jpg"))" alt="@Model.Title" class="event-main-image">
+                    </div>
+                </div>
+            </section>
+
+            <section class="event-description">
+                <h2>عن الفعالية</h2>
+                <p>@Model.Description</p>
+            </section>
+
+            @if (Model is AssociationEvent assocEvent && assocEvent.EndTime.HasValue)
+            {
+                <section class="event-schedule">
+                    <h2>برنامج الفعالية</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="time">
+                                <i class="fas fa-clock"></i>
+                                <span>
+                                    @if (assocEvent.StartTime.HasValue)
+                                    {
+                                        @assocEvent.StartTime?.ToString("hh:mm tt", new System.Globalization.CultureInfo("ar-JO"))
+                                    }
+                                    else
+                                    {
+                                        <span>غير محدد</span>
+                                    }
+                                </span>
+                            </div>
+                            <div class="content">
+                                <h3>بداية الفعالية</h3>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="time">
+                                <i class="fas fa-clock"></i>
+                                <span>@assocEvent.EndTime?.ToString("hh:mm tt", new System.Globalization.CultureInfo("ar-JO"))</span>
+                            </div>
+                            <div class="content">
+                                <h3>نهاية الفعالية</h3>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        </div>
+
+        <div class="event-sidebar">
+            <div class="event-card">
+                <div class="card-header">
+                    <h3>معلومات الفعالية</h3>
+                </div>
+                <div class="card-body">
+                    <div class="info-item">
+                        <i class="fas fa-tag"></i>
+                        <span>@Model.EventType</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-building"></i>
+                        <span>@(Model is AssociationEvent ? Model.Association.Name : "مديرية ثقافة عجلون")</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>@Model.Location</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    @if (eventType == "cultural")
+                    {
+                        @if (Model.Date != null && Model.Date >= DateTime.Today)
+                        {
+                            <button class="register-event-btn" type="button" onclick="openRegisterModal()">
+                                <i class="fas fa-calendar-check"></i>
+                                سجل لحضور الفعالية
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="register-event-btn disabled" type="button" disabled>
+                                <i class="fas fa-calendar-xmark"></i>
+                                انتهت الفعالية
+                            </button>
+                        }
+                    }else{
+                        @if (Model.Date != null && Model.Date >= DateOnly.FromDateTime(DateTime.Today))
+                        {
+                            <button class="register-event-btn" type="button" onclick="openRegisterModal()">
+                                <i class="fas fa-calendar-check"></i>
+                                سجل لحضور الفعالية
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="register-event-btn disabled" type="button" disabled>
+                                <i class="fas fa-calendar-xmark"></i>
+                                انتهت الفعالية
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="registerModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>تأكيد حضورك للفعالية</h2>
+            <button class="close-modal" onclick="closeRegisterModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="modal-message">هل ترغب في تأكيد حضورك لهذه الفعالية؟</p>
+            @if (TempData["SuccessMessage"] != null && TempData["BadRequest"] == null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["BadRequest"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["BadRequest"]
+                </div>
+            }
+            <form id="registerForm" class="register-form" asp-action="RegisterAttendance" asp-controller="Events" method="post">
+                <input type="hidden" name="EventId" value="@Model.EventId" />
+                <input type="hidden" name="type" value="@eventType" />
+                <button type="submit" class="submit-registration">
+                    <i class="fas fa-check"></i>
+                    نعم، أؤكد حضوري
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var userId = @(Context.Session.GetInt32("userId") ?? 0);
+            $(document).ready(function () {
+            var successMessage = '@Html.Raw(TempData["SuccessMessage"])';
+            var BadRequest = '@Html.Raw(TempData["BadRequest"])';
+            if (successMessage || BadRequest) {
+                $('#modal-message').hide();
+                $('#registerModal').css('display', 'flex');
+                setTimeout(function () {
+                    $('#registerModal').css('display', 'none');
+                }, 1500);
+            }
+        });
+
+        function openRegisterModal() {
+            if (userId === 0 || userId === null) {
+                window.location.href = '/User/signIn';
+                return;
+            }
+            document.getElementById("registerModal").style.display = "flex";
+        }
+
+        function closeRegisterModal() {
+            document.getElementById("registerModal").style.display = "none";
+        }
+    </script>
+}

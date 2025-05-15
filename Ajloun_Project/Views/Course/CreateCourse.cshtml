@@ -1,0 +1,104 @@
+@model Ajloun_Project.Models.Course
+@{
+    ViewData["Title"] = "إضافة دورة جديدة";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+
+<style>
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 0.75rem;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        border-color: #80bdff;
+    }
+
+    .validation-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .form-text {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h1 class="mb-3">إضافة دورة جديدة</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="form-container">
+                <form asp-action="CreateCourse" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="form-label">اسم الدورة</label>
+                        <input asp-for="Name" class="form-control" required />
+                        <span asp-validation-for="Name" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="form-label">وصف الدورة</label>
+                        <textarea asp-for="Description" class="form-control" rows="4" required></textarea>
+                        <span asp-validation-for="Description" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AgeRange" class="form-label">الفئة العمرية</label>
+                        <input asp-for="AgeRange" class="form-control" placeholder="مثال: 8-12, 14-18" required />
+                        <span asp-validation-for="AgeRange" class="validation-message"></span>
+                        <small class="form-text">أدخل الفئة العمرية بالصيغة التالية: 8-12 أو 8-12, 14-18</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="courseImage" class="form-label">صورة الدورة</label>
+                        <input type="file" id="courseImage" name="courseImage" class="form-control" accept="image/*" />
+                        <small class="form-text">الصورة اختيارية</small>
+                    </div>
+
+                    <div class="form-group d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> حفظ الدورة
+                        </button>
+                        <a href="@Url.Action("ManageCourses", "Course")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> العودة للقائمة
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

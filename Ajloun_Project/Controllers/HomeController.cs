@@ -19,8 +19,44 @@ namespace Ajloun_Project.Controllers
 
         public IActionResult Index()
         {
+            var culturalEvents = _context.CulturalEvents
+                .OrderByDescending(e => e.CreatedAt)
+                .Select(e => new
+                {
+                    e.Title,
+                    e.Description,
+                    e.PosterUrl
+                });
+
+            var assocEvents = _context.AssociationEvents
+                .OrderByDescending(e => e.CreatedAt)
+                .Select(e => new
+                {
+                    e.Title,
+                    e.Description,
+                    PosterUrl = "" // ?? ???? ????
+                });
+
+            ViewBag.UpcomingEvents = culturalEvents.Concat(assocEvents).Take(6).ToList();
+
+            //        var artists = _context.Artworks
+            //.GroupBy(a => new { a.ArtistName, a.ArtistEmail, a.ImageUrl })
+            //.Select(g => new
+            //{
+            //    ArtistName = g.Key.ArtistName,
+            //    ArtistEmail = g.Key.ArtistEmail,
+            //    ImageUrl = g.Key.ImageUrl
+            //}).ToList();
+
+            var artists = _context.Artworks
+                  .Where(a => a.Status == "Approved").ToList();
+            ViewBag.Artists = artists;
+
+
             return View();
         }
+
+
 
         public IActionResult Articles(string? search, string? category)
         {

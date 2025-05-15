@@ -1,0 +1,76 @@
+﻿@model Ajloun_Project.Models.ViewModels.UserSignIn
+
+@{
+    ViewData["Title"] = "تسجيل الدخول";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تسجيل الدخول - مديرية ثقافة عجلون</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container login-form">
+        <div class="site-logo">
+            <h1 class="logo-text">مديرية ثقافة عجلون</h1>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <h2>تسجيل الدخول</h2>
+                <form asp-action="checkSignIn" asp-controller="User" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
+                        <input asp-for="Email" class="form-control" placeholder="أدخل بريدك الإلكتروني" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="form-label">كلمة المرور</label>
+                        <input asp-for="Password" class="form-control" type="password" placeholder="أدخل كلمة المرور" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" asp-for="Admin" class="form-check-input" id="admin-check" />
+                        <label asp-for="Admin" class="form-check-label" for="admin-check">تسجيل دخول كمسؤول</label>
+                    </div>
+
+                    @if (ViewBag.role != null)
+                    {
+                        <div class="alert alert-info">@ViewBag.role</div>
+                    }
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt ml-2"></i>
+                            تسجيل الدخول
+                        </button>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p>ليس لديك حساب؟ <a asp-action="signUp" asp-controller="User">إنشاء حساب جديد</a></p>
+                        <a asp-controller="Home" asp-action="Index" class="btn home-btn">
+                            <i class="fas fa-home ml-2"></i>
+                            العودة للصفحة الرئيسية
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

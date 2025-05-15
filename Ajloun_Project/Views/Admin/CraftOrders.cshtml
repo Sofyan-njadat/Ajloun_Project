@@ -1,0 +1,130 @@
+@model IEnumerable<Ajloun_Project.Models.CraftOrder>
+
+@{
+    ViewData["Title"] = "طلبات الشراء";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+
+<style>
+    .order-card {
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .order-header {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px 8px 0 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .order-body {
+        padding: 1rem;
+    }
+
+    .order-footer {
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        border-radius: 0 0 8px 8px;
+    }
+
+    .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .status-approved {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .status-rejected {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .status-completed {
+        background-color: #cce5ff;
+        color: #004085;
+    }
+
+    .product-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">طلبات شراء المنتجات الحرفية</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var order in Model)
+        {
+            <div class="col-md-6">
+                <div class="card order-card">
+                    <div class="order-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">طلب #@order.OrderId</h5>
+                            <span class="status-badge @($"status-{order.Status.ToLower()}")">
+                                @order.Status
+                            </span>
+                        </div>
+                    </div>
+                    <div class="order-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="@order.Craft.ImageUrl" class="product-image" alt="@order.Craft.Title" />
+                            </div>
+                            <div class="col-md-9">
+                                <h6>@order.Craft.Title</h6>
+                                <p class="mb-1">الكمية: @order.Quantity</p>
+                                <p class="mb-1">السعر: @(order.Craft.Price * order.Quantity) د.أ</p>
+                                <p class="mb-1">المشتري: @order.User.FullName</p>
+                                <p class="mb-0">تاريخ الطلب: @(order.OrderDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <form asp-action="UpdateOrderStatus" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@order.OrderId" />
+                            <div class="btn-group">
+                                <button type="submit" name="status" value="Pending" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-clock"></i> قيد الانتظار
+                                </button>
+                                <button type="submit" name="status" value="Approved" class="btn btn-success btn-sm">
+                                    <i class="fas fa-check"></i> موافق
+                                </button>
+                                <button type="submit" name="status" value="Rejected" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-times"></i> مرفوض
+                                </button>
+                                <button type="submit" name="status" value="Completed" class="btn btn-info btn-sm">
+                                    <i class="fas fa-check-double"></i> مكتمل
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 

@@ -1,0 +1,151 @@
+@model Ajloun_Project.Models.Admin
+@{
+    ViewData["Title"] = "تعديل المشرف";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+
+<style>
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 0.75rem;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        border-color: #80bdff;
+    }
+
+    .validation-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    
+    .password-hint {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+
+    .debug-info {
+        font-family: monospace;
+        background-color: #f8f9fa;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h1 class="mb-3">تعديل المشرف</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="form-container">
+                @if (ViewData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewData["ErrorMessage"]
+                    </div>
+                }
+                
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success" role="alert">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="AdminId" />
+                    <input type="hidden" asp-for="PasswordHash" />
+                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Username" class="form-label">اسم المستخدم</label>
+                        <input asp-for="Username" class="form-control" required />
+                        <span asp-validation-for="Username" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
+                        <input asp-for="Email" type="email" class="form-control" required />
+                        <span asp-validation-for="Email" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NewPassword" class="form-label">كلمة المرور الجديدة (اختياري)</label>
+                        <input name="NewPassword" id="NewPassword" type="password" class="form-control" />
+                        <p class="password-hint">* اترك هذا الحقل فارغًا للاحتفاظ بكلمة المرور الحالية</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="FullName" class="form-label">الاسم الكامل</label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Role" class="form-label">الدور</label>
+                        <select asp-for="Role" class="form-control" required>
+                            <option value="Admin">مشرف</option>
+                            <option value="SuperAdmin">مدير عام</option>
+                        </select>
+                        <span asp-validation-for="Role" class="validation-message"></span>
+                    </div>
+
+                    <div class="form-group d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> حفظ التعديلات
+                        </button>
+                        <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> العودة للقائمة
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // إزالة التركيز على حقل كلمة المرور عند تقديم النموذج إذا كان فارغًا
+            const form = document.querySelector('form');
+            const passwordInput = document.getElementById('NewPassword');
+            
+            form.addEventListener('submit', function(e) {
+                if (passwordInput.value === '') {
+                    console.log('كلمة المرور فارغة، سيتم الاحتفاظ بكلمة المرور القديمة');
+                }
+            });
+        });
+    </script>
+} 

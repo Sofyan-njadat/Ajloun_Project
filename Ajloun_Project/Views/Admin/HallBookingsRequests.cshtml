@@ -1,72 +1,124 @@
 ﻿@model List<HallBooking>
 
 @{
-    ViewData["Title"] = "طلبات حجز القاعات";
+    ViewData["Title"] = "طلبات حجز المسارح";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
-<h2 class="text-center mb-4">طلبات حجز القاعات</h2>
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
 
-<table class="table table-bordered text-center">
-    <thead class="table-dark">
-        <tr>
-            <th>رقم الطلب</th>
-            <th>نوع القاعة</th>
-            <th>الجهة الطالبة</th>
-            <th>تاريخ المناسبة</th>
-            <th>من</th>
-            <th>إلى</th>
-            <th>نوع المناسبة</th>
-            <th>عنوان المناسبة</th>
-            <th>اسم المسؤول</th>
-            <th>التاريخ</th>
-            <th>الحالة</th>
-            <th>إدارة</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.BookingId</td>
-                <td>@item.HallType</td>
-                <td>@item.RequestingParty</td>
-                <td>@item.EventDate?.ToString("yyyy-MM-dd")</td>
-                <td>@item.StartTime</td>
-                <td>@item.EndTime</td>
-                <td>@item.EventType</td>
-                <td>@item.EventTitle</td>
-                <td>@item.ResponsibleName</td>
-                <td>@item.RequestDate?.ToString("yyyy-MM-dd")</td>
-                <td>
-                    @switch (item.Status)
-                    {
-                        case "Pending":
-                            <span class="badge bg-warning text-dark">بانتظار الموافقة</span>
-                            break;
-                        case "Approved":
-                            <span class="badge bg-success">تمت الموافقة</span>
-                            break;
-                        case "Rejected":
-                            <span class="badge bg-danger">مرفوض</span>
-                            break;
-                        default:
-                            <span class="badge bg-secondary">غير معروف</span>
-                            break;
-                    }
-                </td>
-                <td>
-                    <form asp-action="UpdateHallBookingStatus" method="post" class="d-inline">
-                        <input type="hidden" name="id" value="@item.BookingId" />
-                        <input type="hidden" name="status" value="Approved" />
-                        <button type="submit" class="btn btn-success btn-sm">موافقة</button>
-                    </form>
-                    <form asp-action="UpdateHallBookingStatus" method="post" class="d-inline">
-                        <input type="hidden" name="id" value="@item.BookingId" />
-                        <input type="hidden" name="status" value="Rejected" />
-                        <button type="submit" class="btn btn-danger btn-sm">رفض</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .action-buttons .btn {
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .action-buttons form {
+        margin: 0;
+    }
+
+    .badge {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">طلبات حجز المسارح</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>نوع القاعة</th>
+                            <th>الجهة الطالبة</th>
+                            <th>تاريخ المناسبة</th>
+                            <th>من</th>
+                            <th>إلى</th>
+                            <th>نوع المناسبة</th>
+                            <th>عنوان المناسبة</th>
+                            <th>اسم المسؤول</th>
+                            <th>التاريخ</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.BookingId</td>
+                                <td>@item.HallType</td>
+                                <td>@item.RequestingParty</td>
+                                <td>@item.EventDate?.ToString("yyyy-MM-dd")</td>
+                                <td>@item.StartTime</td>
+                                <td>@item.EndTime</td>
+                                <td>@item.EventType</td>
+                                <td>@item.EventTitle</td>
+                                <td>@item.ResponsibleName</td>
+                                <td>@item.RequestDate?.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    @switch (item.Status)
+                                    {
+                                        case "Pending":
+                                            <span class="badge bg-warning text-dark">بانتظار الموافقة</span>
+                                            break;
+                                        case "Approved":
+                                            <span class="badge bg-success">تمت الموافقة</span>
+                                            break;
+                                        case "Rejected":
+                                            <span class="badge bg-danger">مرفوض</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary">غير معروف</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Status == "Pending")
+                                    {
+                                        <div class="action-buttons">
+                                            <form asp-action="UpdateHallBookingStatus" method="post">
+                                                <input type="hidden" name="id" value="@item.BookingId" />
+                                                <input type="hidden" name="status" value="Approved" />
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                    <i class="fas fa-check"></i> موافقة
+                                                </button>
+                                            </form>
+                                            <form asp-action="UpdateHallBookingStatus" method="post">
+                                                <input type="hidden" name="id" value="@item.BookingId" />
+                                                <input type="hidden" name="status" value="Rejected" />
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-times"></i> رفض
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

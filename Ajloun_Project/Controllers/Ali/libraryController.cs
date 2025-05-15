@@ -4,14 +4,19 @@
     using Ajloun_Project.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Http;
+    using System;
+    using System.IO;
 
     public class LibraryController : Controller
     {
         private readonly MyDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public LibraryController(MyDbContext context)
+        public LibraryController(MyDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // 1. عرض جميع الكتب مع الفلترة
@@ -70,8 +75,14 @@
         [HttpPost]
         public async Task<IActionResult> Reserve(BookReservation reservation)
         {
-            // تحقق إذا المستخدم مسجل دخول، إذا مش مسجل خليه مؤقتًا 1
-            int userId = HttpContext.Session.GetInt32("userId") ?? 1;
+            var userId = HttpContext.Session.GetInt32("userId");
+
+            // إذا المستخدم غير مسجل دخول، رجعه على تسجيل الدخول مع رسالة
+            if (!userId.HasValue)
+            {
+                TempData["LoginRequired"] = "يرجى تسجيل الدخول أولاً لإتمام الحجز.";
+                return RedirectToAction("signIn", "User", new { returnUrl = Url.Action("Reserve", new { id = reservation.BookId }) });
+            }
 
             // تأكيد وجود الكتاب
             var book = await _context.Books.FindAsync(reservation.BookId);
@@ -79,7 +90,7 @@
                 return NotFound();
 
             // تعبئة بيانات الحجز
-            reservation.UserId = userId;
+            reservation.UserId = userId.Value;
             reservation.Agreement = true;
             reservation.ReservationDate = DateTime.Now;
             reservation.Status = "Pending";
@@ -164,14 +175,53 @@
             return View(books);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddBook(Book book)
+        // GET: AddBook
+        public async Task<IActionResult> AddBook()
         {
-            book.IsAvailable = book.AvailableCopies > 0;
+            ViewBag.Categories = await _context.BookCategories.ToListAsync();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddBook(Book book, IFormFile coverImage)
+        {
+            if (ModelState.IsValid)
+            {
+                if (coverImage != null && coverImage.Length > 0)
+                {
+                    // إنشاء اسم فريد للملف
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + coverImage.FileName;
+                    
+                    // تحديد مسار حفظ الصورة
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "books");
+                    
+                    // التأكد من وجود المجلد
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    
+                    // حفظ الصورة
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await coverImage.CopyToAsync(fileStream);
+                    }
+                    
+                    // حفظ مسار الصورة في قاعدة البيانات
+                    book.CoverImageUrl = "/images/books/" + uniqueFileName;
+                }
+
+                book.IsAvailable = true;
             book.CreatedAt = DateTime.Now;
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
-            return RedirectToAction("ManageBooks");
+                return RedirectToAction(nameof(ManageBooks));
+            }
+            ViewBag.Categories = await _context.BookCategories.ToListAsync();
+            return View(book);
         }
 
         public async Task<IActionResult> DeleteBook(int id)
@@ -195,24 +245,70 @@
             return View(book);
         }
         [HttpPost]
-        public async Task<IActionResult> EditBook(Book updatedBook)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditBook(Book updatedBook, IFormFile coverImage)
         {
             var book = await _context.Books.FindAsync(updatedBook.BookId);
             if (book == null)
                 return NotFound();
 
+            // تحديث الصورة إذا تم تحميل صورة جديدة
+            if (coverImage != null && coverImage.Length > 0)
+            {
+                // حذف الصورة القديمة إذا كانت موجودة
+                if (!string.IsNullOrEmpty(book.CoverImageUrl))
+                {
+                    var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, book.CoverImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
 
+                // إنشاء اسم فريد للملف
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + coverImage.FileName;
+                
+                // تحديد مسار حفظ الصورة
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "books");
+                
+                // التأكد من وجود المجلد
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+                
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                
+                // حفظ الصورة
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await coverImage.CopyToAsync(fileStream);
+                }
+                
+                // حفظ مسار الصورة في قاعدة البيانات
+                book.CoverImageUrl = "/images/books/" + uniqueFileName;
+            }
+
+            // تحديث باقي البيانات
             book.Title = updatedBook.Title;
             book.Author = updatedBook.Author;
             book.Description = updatedBook.Description;
-            book.CoverImageUrl = updatedBook.CoverImageUrl;
             book.PublishedYear = updatedBook.PublishedYear;
             book.CategoryId = updatedBook.CategoryId;
             book.AvailableCopies = updatedBook.AvailableCopies;
             book.IsAvailable = updatedBook.AvailableCopies > 0;
 
+            try
+            {
             await _context.SaveChangesAsync();
-            return RedirectToAction("ManageBooks");
+                return RedirectToAction(nameof(ManageBooks));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "حدث خطأ أثناء حفظ التغييرات: " + ex.Message);
+                ViewBag.Categories = await _context.BookCategories.ToListAsync();
+                return View(updatedBook);
+            }
         }
 
     }

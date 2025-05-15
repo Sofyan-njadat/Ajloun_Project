@@ -120,7 +120,7 @@ public partial class HrmanagementSystemContext : DbContext
 
         modelBuilder.Entity<AssociationEvent>(entity =>
         {
-            entity.HasKey(e => e.AssocEventId).HasName("PK__Associat__68ACACD3F0116574");
+            entity.HasKey(e => e.EventId).HasName("PK__Associat__68ACACD3F0116574");
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")

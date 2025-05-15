@@ -1,0 +1,163 @@
+@model IEnumerable<Ajloun_Project.Models.CourseApplication>
+@{
+    ViewData["Title"] = "طلبات التسجيل في الدورات";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+
+<style>
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 16px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .status-pending {
+        background-color: #FFF3CD;
+        color: #856404;
+    }
+
+    .status-approved {
+        background-color: #D4EDDA;
+        color: #155724;
+    }
+
+    .status-rejected {
+        background-color: #F8D7DA;
+        color: #721c24;
+    }
+
+    .applicant-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .action-buttons form {
+        margin: 0;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">طلبات التسجيل في الدورات</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="@Url.Action("ManageCourses", "Course")" class="btn btn-secondary mb-2">
+                    <i class="fas fa-arrow-right"></i> العودة للدورات
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>اسم الدورة</th>
+                            <th>شهادة الميلاد</th>
+                            <th>المتقدم</th>
+                            <th>تاريخ التقديم</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var application in Model)
+                            {
+                                <tr>
+                                    <td>@application.ApplicationId</td>
+                                    <td>@(application.Course?.Name ?? "غير معروف")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(application.BirthCertificateImage))
+                                        {
+                                            <a href="@application.BirthCertificateImage" target="_blank">
+                                                <img src="@application.BirthCertificateImage" alt="شهادة الميلاد" class="applicant-image" />
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">لا توجد صورة</span>
+                                        }
+                                    </td>
+                                    <td>@(application.User?.FullName ?? "غير معروف")</td>
+                                    <td>@(application.SubmittedAt?.ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                                    <td>
+                                        <span class="status-badge @(application.Status switch {
+                                            "Approved" => "status-approved",
+                                            "Rejected" => "status-rejected",
+                                            _ => "status-pending"
+                                        })">
+                                            @(application.Status switch {
+                                                "Pending" => "قيد المراجعة",
+                                                "Approved" => "مقبول",
+                                                "Rejected" => "مرفوض",
+                                                _ => application.Status
+                                            })
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            @if (application.Status != "Approved")
+                                            {
+                                                <form asp-action="UpdateApplicationStatus" asp-controller="Course" method="post">
+                                                    <input type="hidden" name="id" value="@application.ApplicationId" />
+                                                    <input type="hidden" name="status" value="Approved" />
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        <i class="fas fa-check"></i> قبول
+                                                    </button>
+                                                </form>
+                                            }
+                                            @if (application.Status != "Rejected")
+                                            {
+                                                <form asp-action="UpdateApplicationStatus" asp-controller="Course" method="post">
+                                                    <input type="hidden" name="id" value="@application.ApplicationId" />
+                                                    <input type="hidden" name="status" value="Rejected" />
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-times"></i> رفض
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center">لا توجد طلبات تسجيل متاحة</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> 

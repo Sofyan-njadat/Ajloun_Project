@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Ajloun_Project.Areas.Admin.Controllers
+namespace Ajloun_Project.Controllers
 {
-    [Area("Admin")]
     public class EventsController : Controller
     {
         private readonly MyDbContext _context;
@@ -21,7 +20,7 @@ namespace Ajloun_Project.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: Admin/Events
+        // GET: Events/AdminEvents
         public async Task<IActionResult> AdminEvents()
         {
             var events = await _context.CulturalEvents
@@ -31,7 +30,7 @@ namespace Ajloun_Project.Areas.Admin.Controllers
             return View(events);
         }
 
-        // GET: Admin/Events/Get/5
+        // GET: Events/Get/5
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
@@ -52,7 +51,7 @@ namespace Ajloun_Project.Areas.Admin.Controllers
             });
         }
 
-        // POST: Admin/Events/Create
+        // POST: Events/Create
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CulturalEvent culturalEvent, IFormFile image)
         {
@@ -142,7 +141,7 @@ namespace Ajloun_Project.Areas.Admin.Controllers
             }
         }
 
-        // DELETE: Admin/Events/Delete/5
+        // DELETE: Events/Delete/5
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
@@ -170,6 +169,142 @@ namespace Ajloun_Project.Areas.Admin.Controllers
         private bool EventExists(int id)
         {
             return _context.CulturalEvents.Any(e => e.EventId == id);
+        }
+
+
+        //User
+        public IActionResult Events()
+        {
+            var associations = _context.CulturalAssociations
+                .Select(a => new { a.AssociationId, a.Name })
+                .ToList<dynamic>();
+
+            var culturalTypes = _context.CulturalEvents
+                .Select(e => e.EventType)
+                .Distinct()
+                .Where(e => !string.IsNullOrEmpty(e))
+                .ToList();
+
+            var associationTypes = _context.AssociationEvents
+                .Select(e => e.EventType)
+                .Distinct()
+                .Where(e => !string.IsNullOrEmpty(e))
+                .ToList();
+
+            var allTypes = culturalTypes
+                .Union(associationTypes)
+                .Distinct()
+                .ToList();
+
+            var model = new EventsViewModel
+            {
+                CulturalEvents = _context.CulturalEvents.ToList(),
+                AssociationEvents = _context.AssociationEvents
+                    .Include(a => a.Association)
+                    .ToList(),
+                Associations = associations,
+                EventTypes = allTypes // أضف هذه الخاصية إلى ViewModel
+            };
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> EventDetails(int id, string type)
+        {
+            if (type == "cultural")
+            {
+                var culturalEvent = await _context.CulturalEvents
+                    .FirstOrDefaultAsync(e => e.EventId == id);
+
+                if (culturalEvent == null)
+                {
+                    return NotFound();
+                }
+
+                return View(culturalEvent);
+            }
+            else if (type == "association")
+            {
+                var associationEvent = await _context.AssociationEvents
+                    .Include(e => e.Association)
+                    .FirstOrDefaultAsync(e => e.EventId == id);
+
+                if (associationEvent == null)
+                {
+                    return NotFound();
+                }
+
+                return View(associationEvent);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAttendance(int eventId, string type)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            var userId = HttpContext.Session.GetInt32("userId");
+
+            string eventType = type?.ToLower();
+
+            if (eventType == "cultural")
+            {
+                var culturalEvent = await _context.CulturalEvents.FindAsync(eventId);
+                if (culturalEvent == null)
+                    return NotFound("الفعالية الثقافية غير موجودة.");
+
+                var existingReservation = await _context.CulturalEventReservations
+                    .FirstOrDefaultAsync(r => r.EventId == eventId && r.UserId == userId);
+
+                if (existingReservation != null)
+                    TempData["BadRequest"] = "لقد قمت بالتسجيل مسبقًا لهذه الفعالية.";
+
+                var reservation = new CulturalEventReservation
+                {
+                    EventId = eventId,
+                    UserId = userId.Value,
+                    Status = "Pending",
+                    ReservationDate = DateTime.Now
+                };
+
+                _context.CulturalEventReservations.Add(reservation);
+                TempData["SuccessMessage"] = "تم تسجيل حضورك بنجاح في الفعالية!";
+            }
+            else if (eventType == "association")
+            {
+                var assocEvent = await _context.AssociationEvents.FindAsync(eventId);
+                if (assocEvent == null)
+                    return NotFound("فعالية الجمعية غير موجودة.");
+
+                var existingRegistration = await _context.AssocEventRegistrations
+                    .FirstOrDefaultAsync(r => r.AssocEventId == eventId && r.UserId == userId);
+
+                if (existingRegistration != null)
+                    TempData["BadRequest"] = "لقد قمت بالتسجيل مسبقًا لهذه الفعالية.";
+
+                var registration = new AssocEventRegistration
+                {
+                    AssocEventId = eventId,
+                    UserId = userId.Value,
+                    RegisteredAt = DateTime.Now
+                };
+
+                _context.AssocEventRegistrations.Add(registration);
+                TempData["SuccessMessage"] = "تم تسجيل حضورك بنجاح في الفعالية!";
+            }
+            else
+            {
+                return BadRequest("نوع الفعالية غير معروف.");
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("EventDetails", new { id = eventId, type = eventType });
         }
     }
 } 

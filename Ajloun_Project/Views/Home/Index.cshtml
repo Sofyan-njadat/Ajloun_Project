@@ -1,6 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -27,38 +26,14 @@
 
     </head>
     <body class="lang-ar">
-        <!-- Navbar -->
-        <nav class="navbar">
-            <div class="logo">
-                <img src="https://via.placeholder.com/50x50?text=شعار" alt="Ajloun Culture Logo">
-                <span class="logo-text" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Culture">مديرية ثقافة عجلون</span>
-            </div>
-
-            <div class="nav-links">
-                <a href="#home" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
-                <a href="#about" data-ar="عن المديرية" data-en="About">عن المديرية</a>
-                <a href="#services" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
-                <a href="#events" data-ar="الفعاليات" data-en="Events">الفعاليات</a>
-                <a href="#artists" data-ar="الفنانين" data-en="Artists">الفنانين</a>
-                <a href="#contact" data-ar="اتصل بنا" data-en="Contact">اتصل بنا</a>
-            </div>
-
-            <div class="language-switcher">
-                <button class="language-btn active" data-lang="ar">العربية</button>
-                <button class="language-btn" data-lang="en">English</button>
-            </div>
-
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
-            </div>
-        </nav>
+    
 
         <!-- Hero Section -->
-        <section class="hero" id="home">
-            <div class="hero-bg"></div>
-            <div class="hero-content">
+        <section class="hero" id="home" style="margin-top:-2vw;">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
                 <h3 class="hero-subtitle" data-ar="مرحبا بكم في" data-en="Welcome to">مرحبا بكم في</h3>
-                <h1 class="hero-title" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Directorate of Culture">مديرية ثقافة عجلون</h1>
+                <h1 class="hero-title" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Directorate of Culture" style="color:white;">مديرية ثقافة عجلون</h1>
                 <p class="hero-text" data-ar="نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي." data-en="We work to promote and disseminate culture and arts in Ajloun Governorate, support local talents, and preserve cultural heritage.">نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
                 <div class="hero-buttons">
                     <a href="#about" class="btn btn-primary" data-ar="تعرف علينا" data-en="About Us">تعرف علينا</a>
@@ -215,29 +190,29 @@
             </div>
         </section>
 
-        <!-- Statistics Section -->
-        <section class="section stats">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="120">0</div>
-                        <div class="stat-text" data-ar="فعالية سنوياً" data-en="Annual Events">فعالية سنوياً</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="35">0</div>
-                        <div class="stat-text" data-ar="فنان محلي" data-en="Local Artists">فنان محلي</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="15">0</div>
-                        <div class="stat-text" data-ar="ورشة عمل" data-en="Workshops">ورشة عمل</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="5000">0</div>
-                        <div class="stat-text" data-ar="زائر سنوياً" data-en="Annual Visitors">زائر سنوياً</div>
-                    </div>
+    <!-- Statistics Section -->
+    <section class="section stats" style="height:28vw;">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="120">0</div>
+                    <div class="stat-text" data-ar="فعالية سنوياً" data-en="Annual Events">فعالية سنوياً</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="35">0</div>
+                    <div class="stat-text" data-ar="فنان محلي" data-en="Local Artists">فنان محلي</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-text" data-ar="ورشة عمل" data-en="Workshops">ورشة عمل</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="5000">0</div>
+                    <div class="stat-text" data-ar="زائر سنوياً" data-en="Annual Visitors">زائر سنوياً</div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
         <!-- Events Section -->
         <section class="section events" id="events">
@@ -248,182 +223,62 @@
                 </div>
 
                 <div class="events-slider">
-                    <div class="swiper-wrapper">
+                <div class="swiper-wrapper">
+                    @foreach (var item in ViewBag.UpcomingEvents)
+                    {
                         <div class="swiper-slide">
                             <div class="event-card">
                                 <div class="event-image">
-                                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Art Exhibition">
+                                    <img src="@(string.IsNullOrEmpty(item.PosterUrl) ? "https://i.pinimg.com/736x/67/60/2e/67602e1c5677ddad5d78a9096e2ee0ed.jpg" : item.PosterUrl)" alt="@item.Title">
                                 </div>
                                 <div class="event-content">
-                                    <span class="event-date" data-ar="15 يوليو 2023" data-en="July 15, 2023">15 يوليو 2023</span>
-                                    <h3 class="event-title" data-ar="معرض الفن التشكيلي السنوي" data-en="Annual Art Exhibition">معرض الفن التشكيلي السنوي</h3>
-                                    <p data-ar="معرض يضم أعمال 20 فناناً تشكيلياً من محافظة عجلون في مختلف المدارس الفنية." data-en="An exhibition featuring works by 20 fine artists from Ajloun Governorate in various art schools.">معرض يضم أعمال 20 فناناً تشكيلياً من محافظة عجلون في مختلف المدارس الفنية.</p>
-                                    <a href="#" class="event-link" data-ar="التفاصيل <i class='fas fa-arrow-left'></i>" data-en="Details <i class='fas fa-arrow-right'></i>">التفاصيل <i class="fas fa-arrow-left"></i></a>
+                                    <span class="event-date">قريبًا</span>
+                                    <h3 class="event-title">@item.Title</h3>
+                                    <p>@item.Description</p>
+                                    @* <a href="#" class="event-link">التفاصيل <i class="fas fa-arrow-left"></i></a> *@
                                 </div>
                             </div>
                         </div>
+                    }
+                </div>
 
-                        <div class="swiper-slide">
-                            <div class="event-card">
-                                <div class="event-image">
-                                    <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Music Festival">
-                                </div>
-                                <div class="event-content">
-                                    <span class="event-date" data-ar="22 يوليو 2023" data-en="July 22, 2023">22 يوليو 2023</span>
-                                    <h3 class="event-title" data-ar="مهرجان عجلون للموسيقى" data-en="Ajloun Music Festival">مهرجان عجلون للموسيقى</h3>
-                                    <p data-ar="مهرجان موسيقي يقدم عروضاً لفنانين محليين وعرب في مختلف أنواع الموسيقى." data-en="A music festival featuring performances by local and Arab artists in various types of music.">مهرجان موسيقي يقدم عروضاً لفنانين محليين وعرب في مختلف أنواع الموسيقى.</p>
-                                    <a href="#" class="event-link" data-ar="التفاصيل <i class='fas fa-arrow-left'></i>" data-en="Details <i class='fas fa-arrow-right'></i>">التفاصيل <i class="fas fa-arrow-left"></i></a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="event-card">
-                                <div class="event-image">
-                                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Poetry Evening">
-                                </div>
-                                <div class="event-content">
-                                    <span class="event-date" data-ar="5 أغسطس 2023" data-en="August 5, 2023">5 أغسطس 2023</span>
-                                    <h3 class="event-title" data-ar="أمسية شعرية" data-en="Poetry Evening">أمسية شعرية</h3>
-                                    <p data-ar="أمسية شعرية بمشاركة شعراء من محافظة عجلون في مختلف أنواع الشعر." data-en="A poetry evening with the participation of poets from Ajloun Governorate in various types of poetry.">أمسية شعرية بمشاركة شعراء من محافظة عجلون في مختلف أنواع الشعر.</p>
-                                    <a href="#" class="event-link" data-ar="التفاصيل <i class='fas fa-arrow-left'></i>" data-en="Details <i class='fas fa-arrow-right'></i>">التفاصيل <i class="fas fa-arrow-left"></i></a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="event-card">
-                                <div class="event-image">
-                                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Heritage Workshop">
-                                </div>
-                                <div class="event-content">
-                                    <span class="event-date" data-ar="12 أغسطس 2023" data-en="August 12, 2023">12 أغسطس 2023</span>
-                                    <h3 class="event-title" data-ar="ورشة التراث الشعبي" data-en="Folk Heritage Workshop">ورشة التراث الشعبي</h3>
-                                    <p data-ar="ورشة عمل حول التراث الشعبي الأردني بمشاركة خبراء في التراث والثقافة الشعبية." data-en="A workshop on Jordanian folk heritage with the participation of experts in heritage and folk culture.">ورشة عمل حول التراث الشعبي الأردني بمشاركة خبراء في التراث والثقافة الشعبية.</p>
-                                    <a href="#" class="event-link" data-ar="التفاصيل <i class='fas fa-arrow-left'></i>" data-en="Details <i class='fas fa-arrow-right'></i>">التفاصيل <i class="fas fa-arrow-left"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Artists Section -->
-        <section class="section artists" id="artists">
-            <div class="container">
-                <div class="services-header">
-                    <h2 class="section-title" data-ar="فنانو عجلون" data-en="Ajloun Artists">فنانو عجلون</h2> <br /> <br />
-                    <p data-ar="تعرف على أبرز الفنانين والمبدعين من محافظة عجلون" data-en="Meet the most prominent artists and creators from Ajloun Governorate">تعرف على أبرز الفنانين والمبدعين من محافظة عجلون</p>
-                </div>
+    <!-- Artists Section -->
+    <section class="section artists" id="artists">
+        <div class="container">
+            <div class="services-header">
+                <h2 class="section-title" data-ar="فنانو عجلون" data-en="Ajloun Artists">فنانو عجلون</h2>
+                <br /><br />
+                <p data-ar="تعرف على أبرز الفنانين والمبدعين من محافظة عجلون" data-en="Meet the most prominent artists and creators from Ajloun Governorate">
+                    تعرف على أبرز الفنانين والمبدعين من محافظة عجلون
+                </p>
+            </div>
 
-                <div class="artists-grid">
+            <div class="artists-grid">
+                @foreach (var artist in ViewBag.Artists)
+                {
                     <div class="artist-card">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Ahmad Al-Zoubi" class="artist-image">
+                        <img src="@artist.ImageUrl" alt="@artist.ArtistName" class="artist-image" />
                         <div class="artist-overlay">
-                            <h3 class="artist-name" data-ar="أحمد الزعبي" data-en="Ahmad Al-Zoubi">أحمد الزعبي</h3>
-                            <span class="artist-specialty" data-ar="فنان تشكيلي" data-en="Visual Artist">فنان تشكيلي</span>
-                            <p data-ar="متخصص في الفن التشكيلي بمدرسة الواقعية التعبيرية." data-en="Specialized in fine art in the expressive realism school.">متخصص في الفن التشكيلي بمدرسة الواقعية التعبيرية.</p>
-                            <div class="artist-social">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="artist-card">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Samira Al-Qaisi" class="artist-image">
-                        <div class="artist-overlay">
-                            <h3 class="artist-name" data-ar="سميرة القيسي" data-en="Samira Al-Qaisi">سميرة القيسي</h3>
-                            <span class="artist-specialty" data-ar="موسيقية وعازفة عود" data-en="Musician and Oud Player">موسيقية وعازفة عود</span>
-                            <p data-ar="عازفة عود ومؤلفة موسيقية حاصلة على عدة جوائز محلية." data-en="Oud player and composer who has won several local awards.">عازفة عود ومؤلفة موسيقية حاصلة على عدة جوائز محلية.</p>
-                            <div class="artist-social">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-youtube"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="artist-card">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80" alt="Khalid Abu Ghazaleh" class="artist-image">
-                        <div class="artist-overlay">
-                            <h3 class="artist-name" data-ar="خالد أبو غزالة" data-en="Khalid Abu Ghazaleh">خالد أبو غزالة</h3>
-                            <span class="artist-specialty" data-ar="خطاط" data-en="Calligrapher">خطاط</span>
-                            <p data-ar="متخصص في فن الخط العربي بأنواعه المختلفة وحاصل على عدة جوائز." data-en="Specialized in the art of Arabic calligraphy in its various forms and has won several awards.">متخصص في فن الخط العربي بأنواعه المختلفة وحاصل على عدة جوائز.</p>
-                            <div class="artist-social">
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="artist-card">
-                        <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80" alt="Nora Al-Atoum" class="artist-image">
-                        <div class="artist-overlay">
-                            <h3 class="artist-name" data-ar="نورا العتوم" data-en="Nora Al-Atoum">نورا العتوم</h3>
-                            <span class="artist-specialty" data-ar="شاعرة وكاتبة" data-en="Poet and Writer">شاعرة وكاتبة</span>
-                            <p data-ar="شاعرة وكاتبة قصة قصيرة لها عدة إصدارات أدبية." data-en="Poet and short story writer with several literary publications.">شاعرة وكاتبة قصة قصيرة لها عدة إصدارات أدبية.</p>
+                            <h3 class="artist-name">@artist.ArtistName</h3>
+                            <span class="artist-specialty">@artist.ArtistEmail</span>
+                            @* <p>@artist.Description</p> *@
                             <div class="artist-social">
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                                 <a href="#"><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section class="section testimonials">
-            <div class="container">
-                <div class="services-header">
-                    <h2 class="section-title" data-ar="آراء الزوار" data-en="Visitors Feedback">آراء الزوار</h2> <br /><br />
-                    <p data-ar="ما قاله زوارنا عن فعالياتنا وخدماتنا" data-en="What our visitors say about our events and services">ما قاله زوارنا عن فعالياتنا وخدماتنا</p>
-                </div>
-
-                <div class="testimonials-slider">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mohammad Hassan">
-                                </div>
-                                <p class="testimonial-text" data-ar="فعاليات رائعة ومتنوعة تعكس ثقافة وتراث عجلون الأصيل. نشكر القائمين على هذه الفعاليات المتميزة." data-en="Wonderful and varied events that reflect the authentic culture and heritage of Ajloun. We thank those in charge of these distinguished events.">فعاليات رائعة ومتنوعة تعكس ثقافة وتراث عجلون الأصيل. نشكر القائمين على هذه الفعاليات المتميزة.</p>
-                                <h4 class="testimonial-author" data-ar="محمد حسن" data-en="Mohammad Hassan">محمد حسن</h4>
-                                <p class="testimonial-role" data-ar="زائر" data-en="Visitor">زائر</p>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-avatar">
-                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Rania Ahmad">
-                                </div>
-                                <p class="testimonial-text" data-ar="المديرية توفر فرصة رائعة للفنانين المحليين لعرض إبداعاتهم. سعيده بالمشاركة في معرضهم الأخير." data-en="The Directorate provides a great opportunity for local artists to showcase their creativity. Happy to participate in their latest exhibition.">المديرية توفر فرصة رائعة للفنانين المحليين لعرض إبداعاتهم. سعيده بالمشاركة في معرضهم الأخير.</p>
-                                <h4 class="testimonial-author" data-ar="رانيا أحمد" data-en="Rania Ahmad">رانيا أحمد</h4>
-                                <p class="testimonial-role" data-ar="فنانة تشكيلية" data-en="Visual Artist">فنانة تشكيلية</p>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-card">
-                                <div class="testimonial-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Ali Sami">
-                                </div>
-                                <p class="testimonial-text" data-ar="ورش العمل التي تنظمها المديرية ممتازة ومفيدة جداً، خاصة للأطفال والشباب." data-en="The workshops organized by the Directorate are excellent and very useful, especially for children and young people.">ورش العمل التي تنظمها المديرية ممتازة ومفيدة جداً، خاصة للأطفال والشباب.</p>
-                                <h4 class="testimonial-author" data-ar="علي سامي" data-en="Ali Sami">علي سامي</h4>
-                                <p class="testimonial-role" data-ar="مدرس" data-en="Teacher">مدرس</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
 
         <!-- Newsletter Section -->
-        <section class="section newsletter">
+     @*    <section class="section newsletter">
             <div class="container">
                 <h2 class="section-title text-center" data-ar="اشترك في نشرتنا البريدية" data-en="Subscribe to Our Newsletter">اشترك في نشرتنا البريدية</h2> <br /><br />
                 <p class="text-center" data-ar="ابق على اطلاع بآخر الفعاليات والأنشطة الثقافية في عجلون" data-en="Stay updated with the latest cultural events and activities in Ajloun">ابق على اطلاع بآخر الفعاليات والأنشطة الثقافية في عجلون</p>
@@ -434,96 +289,23 @@
                 </form>
             </div>
         </section>
-
-        <!-- Footer -->
-        <footer class="footer" id="contact">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-col">
-                        <div class="footer-logo">
-                            <img src="https://via.placeholder.com/50x50?text=شعار" alt="Ajloun Culture Logo">
-                            <span class="footer-logo-text" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Culture">مديرية ثقافة عجلون</span>
-                        </div>
-                        <p class="footer-about" data-ar="نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي." data-en="We work to promote and disseminate culture and arts in Ajloun Governorate, support local talents, and preserve cultural heritage.">نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
-                        <div class="footer-social">
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="footer-col">
-                        <h3 class="footer-title" data-ar="روابط سريعة" data-en="Quick Links">روابط سريعة</h3>
-                        <ul class="footer-links">
-                            <li><a href="#home" data-ar="الرئيسية" data-en="Home">الرئيسية</a></li>
-                            <li><a href="#about" data-ar="عن المديرية" data-en="About">عن المديرية</a></li>
-                            <li><a href="#services" data-ar="خدماتنا" data-en="Services">خدماتنا</a></li>
-                            <li><a href="#events" data-ar="الفعاليات" data-en="Events">الفعاليات</a></li>
-                            <li><a href="#artists" data-ar="الفنانين" data-en="Artists">الفنانين</a></li>
-                            <li><a href="#contact" data-ar="اتصل بنا" data-en="Contact">اتصل بنا</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-col">
-                        <h3 class="footer-title" data-ar="خدمات المديرية" data-en="Directorate Services">خدمات المديرية</h3>
-                        <ul class="footer-links">
-                            <li><a href="#" data-ar="المعارض الفنية" data-en="Art Exhibitions">المعارض الفنية</a></li>
-                            <li><a href="#" data-ar="المهرجانات الثقافية" data-en="Cultural Festivals">المهرجانات الثقافية</a></li>
-                            <li><a href="#" data-ar="الدورات التدريبية" data-en="Training Courses">الدورات التدريبية</a></li>
-                            <li><a href="#" data-ar="خدمات المكتبة" data-en="Library Services">خدمات المكتبة</a></li>
-                            <li><a href="#" data-ar="ورش العمل" data-en="Workshops">ورش العمل</a></li>
-                            <li><a href="#" data-ar="الفعاليات الثقافية" data-en="Cultural Events">الفعاليات الثقافية</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-col">
-                        <h3 class="footer-title" data-ar="اتصل بنا" data-en="Contact Us">اتصل بنا</h3>
-                        <div class="footer-contact-item">
-                            <div class="footer-contact-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="footer-contact-text" data-ar="عجلون، وسط البلد، بجانب بلدية عجلون الكبرى" data-en="Ajloun, City Center, Next to Greater Ajloun Municipality">عجلون، وسط البلد، بجانب بلدية عجلون الكبرى</div>
-                        </div>
-                        <div class="footer-contact-item">
-                            <div class="footer-contact-icon">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="footer-contact-text">+962 2 642 1234</div>
-                        </div>
-                        <div class="footer-contact-item">
-                            <div class="footer-contact-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="footer-contact-text">info@ajlounculture.gov.jo</div>
-                        </div>
-                        <div class="footer-contact-item">
-                            <div class="footer-contact-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="footer-contact-text" data-ar="الأحد - الخميس: 8 صباحاً - 3 مساءً" data-en="Sun - Thu: 8 AM - 3 PM">الأحد - الخميس: 8 صباحاً - 3 مساءً</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-bottom">
-                    <p data-ar="&copy; 2025 مديرية ثقافة عجلون. جميع الحقوق محفوظة." data-en="&copy; 2025 Ajloun Directorate of Culture. All Rights Reserved.">&copy; 2025 مديرية ثقافة عجلون. جميع الحقوق محفوظة.</p>
-                    <img src="https://via.placeholder.com/100x40?text=وزارة+الثقافة" alt="Ministry of Culture Logo" style="margin-top: 20px; height: 40px;">
-                </div>
-            </div>
-        </footer>
-
+ *@
+      
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
         <script>
             // Mobile Menu Toggle
-            const hamburger = document.querySelector('.hamburger');
-            const navLinks = document.querySelector('.nav-links');
+                    document.addEventListener('DOMContentLoaded', () => {
+          const hamburger = document.querySelector('.hamburger');
+          const navLinks = document.querySelector('.nav-links');
 
+          if (hamburger && navLinks) {
             hamburger.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                hamburger.classList.toggle('active');
+              navLinks.classList.toggle('active');
+              hamburger.classList.toggle('active');
             });
+          }
+        });
 
             // Language Switcher
             const languageBtns = document.querySelectorAll('.language-btn');
@@ -578,13 +360,23 @@
             });
 
             // Navbar Scroll Effect
-            window.addEventListener('scroll', () => {
+            // window.addEventListener('scroll', () => {
+            //     if (window.scrollY > 50) {
+            //         document.querySelector('.navbar').classList.add('scrolled');
+            //     } else {
+            //         document.querySelector('.navbar').classList.remove('scrolled');
+            //     }
+            // });
+                    window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
                 if (window.scrollY > 50) {
-                    document.querySelector('.navbar').classList.add('scrolled');
+                    navbar.classList.add('scrolled');
                 } else {
-                    document.querySelector('.navbar').classList.remove('scrolled');
+                    navbar.classList.remove('scrolled');
                 }
-            });
+            }
+        });
 
             // Events Slider
             const eventsSlider = new Swiper('.events-slider', {
