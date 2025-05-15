@@ -225,5 +225,12 @@ namespace Ajloun_Project.Controllers.Ali
             return RedirectToAction("SignIn", "User");
         }
 
+
+        public IActionResult ProjectTeam()
+        {
+            return View();
+        }
+
+
     }
 }
