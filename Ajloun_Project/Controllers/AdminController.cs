@@ -268,15 +268,5 @@ namespace Ajloun_Project.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
     }
 }
