@@ -9,9 +9,9 @@ public partial class AssocEventRegistration
 
     public int? AssocEventId { get; set; }
 
-    public DateTime? RegisteredAt { get; set; }
-
     public int? UserId { get; set; }
+
+    public DateTime? RegisteredAt { get; set; }
 
     public virtual AssociationEvent? AssocEvent { get; set; }
 
