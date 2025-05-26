@@ -20,7 +20,7 @@
 </head>
 <body>
     <header>
-        <div class="logo">مديرية الثقافة</div>
+        <div class="logo">مديرية ثقافة عجلون</div>
         <div class="burger" onclick="toggleMenu()">☰</div>
 
         <nav id="main-nav">
@@ -47,7 +47,11 @@
                 <a href="#">الأنشطة الثقافية</a>
                 <div class="dropdown-content">
                     <a asp-controller="Festivals" asp-action="Festivals">المهرجانات</a>
+                    <a asp-controller="Association" asp-action="AllAssociation">الهيئات الثقافية</a>
+
                     <a asp-controller="Events" asp-action="Events">الفعاليات</a>
+                    <a asp-controller="Handicrafts" asp-action="Index">الحرف اليدوية</a>
+
                 </div>
             </div>
 
@@ -82,7 +86,7 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div >
         @RenderBody()
     </div>
 
@@ -107,7 +111,18 @@
                 <a href="/Gallery">معرض الصور</a>
             </div>
         </div>
-        <p style="margin-top: 1rem;">© 2025 مديرية الثقافة - جميع الحقوق محفوظة</p>
+        <a href="/UserProfile/ProjectTeam" style="color: white; font-weight: bold;">
+            Powered by Coding Academy by Orange
+
+
+
+
+
+
+
+
+
+        </a>
     </footer>
 
     <script>

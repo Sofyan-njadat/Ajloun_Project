@@ -1,0 +1,230 @@
+﻿@model IEnumerable<Ajloun_Project.Models.Handicraft>
+@{
+    ViewData["Title"] = "الحرف اليدوية";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="text-center mb-4">الحرف اليدوية التقليدية</h1>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!-- Filter by Category -->
+            <div class="category-filter text-center mb-4">
+                <form method="get" action="@Url.Action("Index")" class="d-flex justify-content-center">
+                    <select name="category" class="form-select category-select" onchange="this.form.submit()">
+                        <option value="">جميع الفئات</option>
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <option value="@category" selected="@(ViewBag.SelectedCategory == category ? "selected" : null)">
+                                @category
+                            </option>
+                        }
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="craft-card">
+                    <div class="craft-image">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" alt="@item.Title" class="img-fluid">
+                        }
+                        else
+                        {
+                            <img src="~/Images/craft-placeholder.jpg" alt="Craft placeholder" class="img-fluid">
+                        }
+                    </div>
+                    <div class="craft-info">
+                        <h3>@item.Title</h3>
+                        <div class="category-tag">@item.Category</div>
+                        <div class="price">@item.Price jd</div>
+                        <p class="stock @(item.Stock > 0 ? "in-stock" : "out-of-stock")">
+                            @if (item.Stock > 0)
+                            {
+                                <span>متوفر (@item.Stock قطعة)</span>
+                            }
+                            else
+                            {
+                                <span>غير متوفر</span>
+                            }
+                        </p>
+                        <a href="@Url.Action("Details", new { id = item.CraftId })" class="btn btn-primary view-details-btn">
+                            عرض التفاصيل
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <h3 class="text-muted">لا توجد حرف يدوية في هذه الفئة</h3>
+        </div>
+    }
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("MyOrders")" class="btn btn-secondary view-orders-btn">
+            <i class="fas fa-shopping-bag"></i> طلباتي
+        </a>
+    </div>
+</div>
+
+<style>
+    .craft-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .craft-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .craft-image {
+        height: 250px;
+        overflow: hidden;
+    }
+
+    .craft-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .craft-card:hover .craft-image img {
+        transform: scale(1.05);
+    }
+
+    .craft-info {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .craft-info h3 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: var(--primary, #1E2F23);
+    }
+
+    .category-tag {
+        display: inline-block;
+        background: #f5f5f5;
+        color: #555;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .price {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary, #1E2F23);
+        margin-bottom: 15px;
+    }
+
+    .stock {
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    .in-stock {
+        color: #4CAF50;
+    }
+
+    .out-of-stock {
+        color: #F44336;
+    }
+
+    .view-details-btn {
+        margin-top: auto;
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 25px;
+        background: var(--primary, #1E2F23);
+        color: white;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .view-details-btn:hover {
+        background: #2c4033;
+        transform: translateY(-2px);
+    }
+
+    .category-select {
+        width: 300px;
+        padding: 12px 20px;
+        border-radius: 25px;
+        border: 2px solid var(--primary, #1E2F23);
+        background-color: #f5f5f5;
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23355E3B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 20px;
+        padding-right: 45px;
+    }
+
+    .view-orders-btn {
+        padding: 10px 25px;
+        border-radius: 25px;
+        font-weight: 500;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .view-orders-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    @@media (max-width: 768px) {
+        .category-select {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style> 

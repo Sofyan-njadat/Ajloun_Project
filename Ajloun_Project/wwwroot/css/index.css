@@ -148,7 +148,7 @@ a {
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 2px;
 }
 
 .section {
@@ -288,7 +288,7 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://images.unsplash.com/photo-1580077873521-dc86339ef022?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/5/50/Ajlun_Castle_in_2009.jpg') no-repeat center center;
     background-size: cover;
     z-index: -1;
 }
