@@ -77,8 +77,9 @@ namespace Ajloun_Project.Controllers
                         HttpContext.Session.SetString("role", admin.Role);
                         HttpContext.Session.SetInt32("userId", admin.AdminId);
 
-                        return View("signIn");
-                    }
+                       return RedirectToAction("Statistics", "Statistics");       
+                            
+                            }
                     else
                     {
                         ViewBag.role = "You are not Admin";
@@ -94,7 +95,7 @@ namespace Ajloun_Project.Controllers
                         HttpContext.Session.SetString("role", "User");
                         HttpContext.Session.SetInt32("userId", user.UserId);
 
-                        return View("signIn");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {

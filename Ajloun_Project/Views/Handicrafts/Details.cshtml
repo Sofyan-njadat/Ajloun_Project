@@ -1,0 +1,330 @@
+﻿@model Ajloun_Project.Models.Handicraft
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = Context.Session.GetInt32("userId");
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="craft-image-container">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid craft-image">
+                }
+                else
+                {
+                    <img src="~/Images/craft-placeholder.jpg" alt="Craft placeholder" class="img-fluid craft-image">
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="craft-details">
+                <h1 class="craft-title">@Model.Title</h1>
+                <div class="craft-meta">
+                    <span class="craft-category">@Model.Category</span>
+                    @if (Model.CreatedAt.HasValue)
+                    {
+                        <span class="craft-date">تم الإضافة في @Model.CreatedAt.Value.ToString("dd/MM/yyyy")</span>
+                    }
+                </div>
+                <div class="craft-price">@Model.Price jd</div>
+                <div class="craft-stock @(Model.Stock > 0 ? "in-stock" : "out-of-stock")">
+                    @if (Model.Stock > 0)
+                    {
+                        <span><i class="fas fa-check-circle"></i> متوفر (@Model.Stock قطعة)</span>
+                    }
+                    else
+                    {
+                        <span><i class="fas fa-times-circle"></i> غير متوفر</span>
+                    }
+                </div>
+
+                <div class="craft-description">
+                    <h4>وصف المنتج</h4>
+                    <p>@Model.Description</p>
+                </div>
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger mt-3">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+
+                @if (Model.Stock > 0)
+                {
+                    <form asp-action="Order" method="post" class="order-form">
+                        <input type="hidden" name="craftId" value="@Model.CraftId" />
+                        <div class="form-group">
+                            <label for="quantity">الكمية:</label>
+                            <div class="quantity-selector">
+                                <button type="button" class="quantity-btn minus-btn" onclick="decrementQuantity()">-</button>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="@Model.Stock" class="quantity-input" required>
+                                <button type="button" class="quantity-btn plus-btn" onclick="incrementQuantity()">+</button>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <span>المجموع:</span>
+                            <span id="total-price">@Model.Price jd</span>
+                        </div>
+                        <div class="form-actions">
+                            @if (userId.HasValue)
+                            {
+                                <button type="submit" class="btn btn-primary order-btn">
+                                    <i class="fas fa-shopping-cart"></i> طلب شراء
+                                </button>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("SignIn", "User", new { returnUrl = Url.Action("Details", "Handicrafts", new { id = Model.CraftId }) })" class="btn btn-primary order-btn">
+                                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول للشراء
+                                </a>
+                            }
+                            <a href="@Url.Action("Index")" class="btn btn-secondary back-btn">
+                                <i class="fas fa-arrow-right"></i> العودة للمنتجات
+                            </a>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <div class="form-actions">
+                        <button class="btn btn-outline-secondary order-btn" disabled>غير متوفر للطلب</button>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary back-btn">
+                            <i class="fas fa-arrow-right"></i> العودة للمنتجات
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .craft-image-container {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .craft-image {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .craft-details {
+        height: 100%;
+        padding: 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .craft-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--primary, #1E2F23);
+    }
+
+    .craft-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .craft-category {
+        background: #f5f5f5;
+        color: #555;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .craft-date {
+        color: #777;
+        font-size: 0.9rem;
+    }
+
+    .craft-price {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--primary, #1E2F23);
+    }
+
+    .craft-stock {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    .in-stock {
+        color: #4CAF50;
+    }
+
+    .out-of-stock {
+        color: #F44336;
+    }
+
+    .craft-description {
+        margin-bottom: 25px;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 10px;
+    }
+
+        .craft-description h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary, #1E2F23);
+            font-weight: 600;
+        }
+
+        .craft-description p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+    .order-form {
+        margin-top: 20px;
+    }
+
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        width: 150px;
+        margin: 10px 0 20px;
+    }
+
+    .quantity-btn {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ddd;
+        background: #f5f5f5;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+    }
+
+    .minus-btn {
+        border-radius: 20px 0 0 20px;
+    }
+
+    .plus-btn {
+        border-radius: 0 20px 20px 0;
+    }
+
+    .quantity-btn:hover {
+        background: #e0e0e0;
+    }
+
+    .quantity-input {
+        width: 70px;
+        height: 40px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-right: none;
+        border-left: none;
+    }
+
+    .order-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 10px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+    }
+
+    .order-btn, .back-btn {
+        flex: 1;
+        padding: 12px 15px;
+        border-radius: 25px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s;
+    }
+
+    .order-btn {
+        background: var(--primary, #1E2F23);
+        border-color: var(--primary, #1E2F23);
+    }
+
+        .order-btn:hover {
+            background: #2c4033;
+            transform: translateY(-2px);
+        }
+
+    .back-btn {
+        background: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+    /* Responsive styles */
+    @@media (max-width: 768px) {
+        .form-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // Update price based on quantity
+        function updatePrice() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const price = @Html.Raw(Json.Serialize(Model.Price));
+            const totalPrice = (quantity * price).toFixed(2);
+            document.getElementById('total-price').innerText = totalPrice + ' jd';
+        }
+
+        function incrementQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            const maxQuantity = @Model.Stock;
+            let quantity = parseInt(quantityInput.value);
+
+            if (quantity < maxQuantity) {
+                quantityInput.value = quantity + 1;
+                updatePrice();
+            }
+        }
+
+        function decrementQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value);
+
+            if (quantity > 1) {
+                quantityInput.value = quantity - 1;
+                updatePrice();
+            }
+        }
+
+        // Initialize and add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('quantity').addEventListener('change', updatePrice);
+        });
+    </script>
+} 

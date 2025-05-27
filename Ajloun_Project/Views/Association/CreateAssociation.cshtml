@@ -1,0 +1,152 @@
+﻿@model CulturalAssociation
+@{
+    ViewData["Title"] = "إضافة هيئة ثقافية جديدة";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">إضافة هيئة ثقافية جديدة</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateAssociation" method="post">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Name" class="form-label">اسم الهيئة</label>
+                                    <input asp-for="Name" class="form-control" required />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PresidentName" class="form-label">اسم رئيس الهيئة</label>
+                                    <input asp-for="PresidentName" class="form-control" required />
+                                    <span asp-validation-for="PresidentName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Phone" class="form-label">رقم الهاتف</label>
+                                    <input asp-for="Phone" class="form-control" type="tel" required />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Region" class="form-label">المنطقة</label>
+                                    <input asp-for="Region" class="form-control" required />
+                                    <span asp-validation-for="Region" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="FoundedYear" class="form-label">سنة التأسيس</label>
+                                    <input asp-for="FoundedYear" class="form-control" type="number" min="1900" max="@DateTime.Now.Year" required />
+                                    <span asp-validation-for="FoundedYear" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="MembersCount" class="form-label">عدد الأعضاء</label>
+                                    <input asp-for="MembersCount" class="form-control" type="number" min="1" required />
+                                    <span asp-validation-for="MembersCount" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="CategoryId" class="form-label">فئة الهيئة</label>
+                            <select asp-for="CategoryId" class="form-select" required>
+                                <option value="">اختر الفئة</option>
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.CategoryId">@category.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="form-label">الرقم الوطني للهيئة</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-primary px-5 py-2">إضافة الهيئة</button>
+                            <a asp-action="AllAssociation" class="btn btn-secondary px-5 py-2 ms-2">رجوع</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background-color: var(--primary, #1E2F23) !important;
+        padding: 1.5rem;
+    }
+
+    .form-control, .form-select {
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary, #1E2F23);
+            box-shadow: 0 0 0 0.25rem rgba(30, 47, 35, 0.25);
+        }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .btn-primary {
+        background-color: var(--primary, #1E2F23);
+        border-color: var(--primary, #1E2F23);
+        transition: all 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #2c4033;
+            border-color: #2c4033;
+            transform: translateY(-2px);
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        transition: all 0.3s;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            transform: translateY(-2px);
+        }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 
