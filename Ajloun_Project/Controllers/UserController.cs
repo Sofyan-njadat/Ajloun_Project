@@ -14,7 +14,7 @@ namespace Ajloun_Project.Controllers
             _Db = db;
         }
 
-
+        
         public IActionResult signUp()
         {
 
@@ -43,7 +43,7 @@ namespace Ajloun_Project.Controllers
                 await _Db.Users.AddAsync(user);
                 await _Db.SaveChangesAsync();
 
-                return View(nameof(signUp));
+                return View(nameof(signIn));
             }
             else
             {
