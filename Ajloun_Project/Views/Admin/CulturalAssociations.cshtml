@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "CulturalAssociations";
+    ViewData["Title"] = "CulturalAssociations";
 	Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
@@ -52,77 +52,77 @@
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
-						<tr>
+        <tr>
 							<th>#</th>
-							<th>الاسم</th>
-							<th>رئيس الهيئة</th>
-							<th>الهاتف</th>
+            <th>الاسم</th>
+            <th>رئيس الهيئة</th>
+            <th>الهاتف</th>
 							<th>المكان</th>
-							<th>المنطقة</th>
-							<th>سنة التأسيس</th>
-							<th>عدد الأعضاء</th>
-							<th>الحالة</th>
+            <th>المنطقة</th>
+            <th>سنة التأسيس</th>
+            <th>عدد الأعضاء</th>
+            <th>الحالة</th>
 							<th>الإجراءات</th>
-						</tr>
-					</thead>
-					<tbody>
+        </tr>
+    </thead>
+    <tbody>
 						@{int count = 1;}
-						@foreach (var assoc in Model)
-						{
-							<tr>
+        @foreach (var assoc in Model)
+        {
+            <tr>
 								<td>@(count++)</td>
-								<td>@assoc.Name</td>
-								<td>@assoc.PresidentName</td>
-								<td>@assoc.Phone</td>
-								<td>@assoc.Region</td>
+                <td>@assoc.Name</td>
+                <td>@assoc.PresidentName</td>
+                <td>@assoc.Phone</td>
+                <td>@assoc.Region</td>
 								<td>@(assoc.Category != null ? assoc.Category.Name : "غير محدد")</td>
-								<td>@assoc.FoundedYear</td>
-								<td>@assoc.MembersCount</td>
-								<td>
-									@switch (assoc.Status)
-									{
-										case "Pending":
-											<span class="badge bg-warning text-dark">بانتظار الموافقة</span>
-											break;
-										case "Approved":
-											<span class="badge bg-success">تمت الموافقة</span>
-											break;
-										case "Rejected":
-											<span class="badge bg-danger">مرفوض</span>
-											break;
-										default:
-											<span class="badge bg-secondary">غير معروف</span>
-											break;
-									}
-								</td>
-								<td>
+                <td>@assoc.FoundedYear</td>
+                <td>@assoc.MembersCount</td>
+                <td>
+                    @switch (assoc.Status)
+                    {
+                        case "Pending":
+                            <span class="badge bg-warning text-dark">بانتظار الموافقة</span>
+                            break;
+                        case "Approved":
+                            <span class="badge bg-success">تمت الموافقة</span>
+                            break;
+                        case "Rejected":
+                            <span class="badge bg-danger">مرفوض</span>
+                            break;
+                        default:
+                            <span class="badge bg-secondary">غير معروف</span>
+                            break;
+                    }
+                </td>
+                <td>
 									<div class="action-buttons">
-										@if (assoc.Status == "Pending")
-										{
+                    @if (assoc.Status == "Pending")
+                    {
 											<form asp-action="UpdateStatus" method="post">
-												<input type="hidden" name="id" value="@assoc.AssociationId" />
-												<input type="hidden" name="status" value="Approved" />
+                            <input type="hidden" name="id" value="@assoc.AssociationId" />
+                            <input type="hidden" name="status" value="Approved" />
 												<button type="submit" class="btn btn-sm btn-success">
 													<i class="fas fa-check"></i> موافقة
 												</button>
-											</form>
+                        </form>
 											<form asp-action="UpdateStatus" method="post">
-												<input type="hidden" name="id" value="@assoc.AssociationId" />
-												<input type="hidden" name="status" value="Rejected" />
+                            <input type="hidden" name="id" value="@assoc.AssociationId" />
+                            <input type="hidden" name="status" value="Rejected" />
 												<button type="submit" class="btn btn-sm btn-danger">
 													<i class="fas fa-times"></i> رفض
 												</button>
-											</form>
-										}
+                        </form>
+                    }
 										<a href="@Url.Action("EditAssociation", "Admin", new { id = assoc.AssociationId })" class="btn btn-sm btn-primary">
 											<i class="fas fa-edit"></i> تعديل
 										</a>
 									</div>
-								</td>
-							</tr>
-						}
-					</tbody>
-				</table>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 			</div>
 		</div>
 	</div>

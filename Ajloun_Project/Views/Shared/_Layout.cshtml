@@ -17,6 +17,46 @@
     <link rel="stylesheet" href="~/css/site.css" />
 
     @RenderSection("Styles", required: false)
+    <style>
+        .auth-buttons {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .auth-buttons .btn {
+            min-width: 70px !important;
+            padding: 2px 8px !important;
+            font-size: 0.97rem !important;
+            height: 32px !important;
+            line-height: 1.2 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 6px !important;
+            margin: 0 !important;
+        }
+        .profile {
+            background: #FFD600 !important;
+            color: #222 !important;
+            font-weight: 600;
+            border: none !important;
+        }
+        .logout {
+            background: #f14d21 !important;
+            color: #fff !important;
+            font-weight: 600;
+            border: none !important;
+        }
+        @@media (max-width: 991px) {
+            .auth-buttons .btn {
+                min-width: 60px !important;
+                font-size: 0.93rem !important;
+                padding: 2px 6px !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -47,7 +87,11 @@
                 <a href="#">الأنشطة الثقافية</a>
                 <div class="dropdown-content">
                     <a asp-controller="Festivals" asp-action="Festivals">المهرجانات</a>
+                    <a asp-controller="Association" asp-action="AllAssociation">الهيئات الثقافية</a>
+
                     <a asp-controller="Events" asp-action="Events">الفعاليات</a>
+                    <a asp-controller="Handicrafts" asp-action="Index">الحرف اليدوية</a>
+
                 </div>
             </div>
 
@@ -65,16 +109,16 @@
             <!-- ✅ تظهر فقط على الموبايل -->
             <div class="mobile-auth translate-auth">
                 <div class="translate-box" id="google_translate_element"></div>
-                <div class="auth-buttons">
+                <div class="auth-buttons d-flex align-items-center gap-2">
                     @if (userId == null)
                     {
-                        <a href="/User/SignIn" class="login">تسجيل الدخول</a>
+                        <a href="/User/SignIn" class="login btn btn-sm btn-outline-primary">تسجيل الدخول</a>
                     }
                     else
                     {
-                        <a href="/UserProfile/UserInfo" class="profile">الملف الشخصي</a>
+                        <a href="/UserProfile/UserInfo" class="profile btn btn-sm" style="background:#FFD600; color:#222; font-weight:600; min-width:90px; padding:4px 12px; border-radius:6px; border:none;">الملف الشخصي</a>
                         <form method="post" action="/UserProfile/Logout" style="display:inline;">
-                            <button type="submit" class="logout">تسجيل الخروج</button>
+                            <button type="submit" class="logout btn btn-sm" style="background:#f14d21; color:#fff; font-weight:600; min-width:90px; padding:4px 12px; border-radius:6px; border:none;">تسجيل الخروج</button>
                         </form>
                     }
                 </div>

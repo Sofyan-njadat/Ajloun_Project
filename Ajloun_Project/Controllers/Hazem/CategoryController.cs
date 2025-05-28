@@ -22,7 +22,7 @@ namespace Ajloun_Project.Controllers.Hazem
             var courses = await _context.Courses.ToListAsync();
             return View(courses);
         }
-        
+
         // GET: /Category/ManageCategories
         // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageCategories()

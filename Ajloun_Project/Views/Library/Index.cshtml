@@ -1,404 +1,469 @@
 ﻿@model IEnumerable<Ajloun_Project.Models.Book>
 @{
-    ViewData["Title"] = "المكتبة";
-    var searchTerm = ViewBag.SearchTerm as string;
+	ViewData["Title"] = "المكتبة";
+	var searchTerm = ViewBag.SearchTerm as string;
 }
 @{
-    int pageSize = 15;
-    int pageNumber = Convert.ToInt32(Context.Request.Query["page"]);
-    if (pageNumber < 1) pageNumber = 1;
-    var pagedBooks = Model.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-    int totalPages = (int)Math.Ceiling((double)Model.Count() / pageSize);
+	int pageSize = 15;
+	int pageNumber = Convert.ToInt32(Context.Request.Query["page"]);
+	if (pageNumber < 1) pageNumber = 1;
+	var pagedBooks = Model.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+	int totalPages = (int)Math.Ceiling((double)Model.Count() / pageSize);
 }
-
 
 @section Styles {
-    <style>
-        :root {
-            --primary: #2C6E49;
-            --secondary: #F2E8CF;
-            --background: #FAFAF7;
-            --text-dark: #1B1B2F;
-            --text-muted: #777;
-            --success: #4CAF50;
-            --danger: #E53935;
-            /* الألوان الإضافية التي طلبتها */
-            --accent: #C7AD8F;
-            --text-light: #F9F5F0;
-            --gold: #D4AF37;
-        }
+	<link rel="stylesheet" href="~/css/ArtWorks.css" asp-append-version="true" />
+	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--primary: #355E3B;
+			--secondary: #F2E8CF;
+			--background: #EFF5EC;
+			--text-dark: #1B1B2F;
+			--text-muted: #777;
+			--success: #4CAF50;
+			--danger: #E53935;
+			--accent: #C7AD8F;
+			--text-light: #F9F5F0;
+			--gold: #FFE15D;
+		}
 
-        body {
-            background-color: var(--background);
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
-            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
-            background-size: 40px 40px;
-        }
+		body {
+			background-color: var(--background);
+			font-family: 'Cairo', 'Segoe UI', sans-serif;
+		}
 
-        .library-header {
-            text-align: center;
-            margin: 40px 0 50px;
-            position: relative;
-        }
+		.modern-header {
+			background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/images/library-bg.jpg);
+			background-size: cover;
+			background-position: center;
+			height: 300px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			margin-bottom: 50px;
+			position: relative;
+			border-top: 25px solid #1E2F23;
+			border-bottom: 25px solid #1E2F23;
+		}
 
-        h1 {
-            display: inline-block;
-            color: var(--primary);
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin: 0;
-            padding: 0 30px;
-            position: relative;
-            background: linear-gradient(90deg, var(--secondary) 0%, var(--background) 20%, var(--background) 80%, var(--secondary) 100%);
-        }
+		.overlay {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #355E3B;
+		}
 
-            h1:before, h1:after {
-                content: "";
-                position: absolute;
-                top: 50%;
-                width: 100vw;
-                height: 3px;
-                background: linear-gradient(90deg, var(--accent), transparent);
-            }
+		.header-content {
+			color: white;
+			z-index: 1;
+			padding: 0 20px;
+		}
 
-            h1:before {
-                right: 100%;
-            }
+			.header-content h1 {
+				font-size: 4rem;
+				font-weight: 700;
+				margin-bottom: 1rem;
+				color: var(--gold);
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+			}
 
-            h1:after {
-                left: 100%;
-                background: linear-gradient(90deg, transparent, var(--accent));
-            }
+			.header-content .subtitle {
+				font-size: 1.5rem;
+				color: white;
+				margin: 0;
+				text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+			}
 
-        .filter-container {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            margin-bottom: 40px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+		.library-header {
+			text-align: center;
+			margin: 40px 0 50px;
+			position: relative;
+		}
 
-        .filter-form {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+		h1 {
+			display: inline-block;
+			color: var(--primary);
+			font-size: 2.8rem;
+			font-weight: 700;
+			margin: 0;
+			padding: 0 30px;
+			position: relative;
+			background: linear-gradient(90deg, var(--secondary) 0%, var(--background) 20%, var(--background) 80%, var(--secondary) 100%);
+		}
 
-            .filter-form select,
-            .filter-form input {
-                padding: 12px 20px;
-                border-radius: 30px;
-                border: 2px solid var(--secondary);
-                background: white;
-                min-width: 200px;
-                font-size: 1rem;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            }
+		.filter-container {
+			background: white;
+			padding: 25px;
+			border-radius: 12px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+			margin-bottom: 40px;
+			max-width: 900px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 
-                .filter-form select:focus,
-                .filter-form input:focus {
-                    outline: none;
-                    border-color: var(--accent);
-                    box-shadow: 0 4px 15px rgba(199, 173, 143, 0.3);
-                }
+		.filter-form {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			justify-content: center;
+		}
 
-            .filter-form button {
-                padding: 12px 30px;
-                background: linear-gradient(135deg, var(--primary), #2a3e38);
-                color: white;
-                border: none;
-                border-radius: 30px;
-                cursor: pointer;
-                font-size: 1rem;
-                font-weight: 600;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(58, 78, 72, 0.3);
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
+			.filter-form select,
+			.filter-form input {
+				padding: 12px 20px;
+				border-radius: 30px;
+				border: 2px solid var(--secondary);
+				background: white;
+				min-width: 200px;
+				font-size: 1rem;
+				transition: all 0.3s ease;
+			}
 
-                .filter-form button:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(58, 78, 72, 0.4);
-                }
+				.filter-form select:focus,
+				.filter-form input:focus {
+					outline: none;
+					border-color: var(--primary);
+					box-shadow: 0 0 0 2px rgba(44, 110, 73, 0.2);
+				}
 
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 0 20px;
-            margin-top: 30px;
-        }
+			.filter-form button {
+				padding: 12px 30px;
+				background: var(--primary);
+				color: white;
+				border: none;
+				border-radius: 30px;
+				cursor: pointer;
+				font-size: 1rem;
+				font-weight: 600;
+				transition: all 0.3s ease;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				min-width: 120px;
+				justify-content: center;
+			}
 
-        .book-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            border-top: 5px solid var(--accent);
-        }
+				.filter-form button:hover {
+					background: #235c3a;
+					transform: translateY(-2px);
+				}
 
-            .book-card:hover {
-                transform: translateY(-10px) scale(1.02);
-                box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-            }
+		@@media (max-width: 768px) {
+			.filter-form {
+				flex-direction: column;
+				width: 100%;
+			}
 
-            .book-card:before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 5px;
-                background: linear-gradient(90deg, var(--accent), var(--primary));
-            }
+				.filter-form select,
+				.filter-form input,
+				.filter-form button {
+					width: 100%;
+				}
 
-        .book-cover {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            transition: transform 0.5s ease;
-        }
+			.header-content h1 {
+				font-size: 2.5rem;
+			}
+		}
 
-        .book-card:hover .book-cover {
-            transform: scale(1.05);
-        }
+		.book-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+			gap: 30px;
+			padding: 0 20px;
+			margin-top: 30px;
+		}
 
-        .book-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            position: relative;
-            background: white;
-            z-index: 1;
-        }
+		.book-card {
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			position: relative;
+			border-top: 5px solid var(--accent);
+		}
 
-        .book-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            line-height: 1.4;
-            min-height: 3.6rem;
-        }
+			.book-card:hover {
+				transform: translateY(-10px) scale(1.02);
+				box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+			}
 
-        .book-meta {
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+			.book-card:before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 5px;
+				background: linear-gradient(90deg, var(--accent), var(--primary));
+			}
 
-            .book-meta svg {
-                width: 16px;
-                height: 16px;
-                fill: var(--accent);
-            }
+		.book-cover {
+			width: 100%;
+			height: 240px;
+			object-fit: cover;
+			border-bottom: 1px solid rgba(0,0,0,0.1);
+			transition: transform 0.5s ease;
+		}
 
-        .book-category {
-            display: inline-block;
-            background: rgba(199, 173, 143, 0.2);
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin: 5px 0;
-            font-weight: 600;
-        }
+		.book-card:hover .book-cover {
+			transform: scale(1.05);
+		}
 
-        .copies-available {
-            margin: 15px 0;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+		.book-content {
+			padding: 20px;
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			position: relative;
+			background: white;
+			z-index: 1;
+		}
 
-            .copies-available:before {
-                content: "";
-                display: inline-block;
-                width: 10px;
-                height: 10px;
-                background-color: var(--success);
-                border-radius: 50%;
-            }
+		.book-title {
+			font-size: 1.3rem;
+			font-weight: 700;
+			color: var(--text-dark);
+			margin-bottom: 10px;
+			line-height: 1.4;
+			min-height: 3.6rem;
+		}
 
-        .book-actions {
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+		.book-meta {
+			font-size: 0.95rem;
+			color: var(--text-dark);
+			margin-bottom: 8px;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
 
-        .action-btn {
-            padding: 12px;
-            border-radius: 6px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
+			.book-meta svg {
+				width: 16px;
+				height: 16px;
+				fill: var(--accent);
+			}
 
-        .details-btn {
-            background: linear-gradient(135deg, var(--secondary), #e0cdb4);
-            color: var(--text-dark);
-            border: 1px solid var(--accent);
-        }
+		.book-category {
+			display: inline-block;
+			background: rgba(199, 173, 143, 0.2);
+			color: var(--primary);
+			padding: 4px 12px;
+			border-radius: 20px;
+			font-size: 0.85rem;
+			margin: 5px 0;
+			font-weight: 600;
+		}
 
-            .details-btn:hover {
-                background: linear-gradient(135deg, #e0cdb4, var(--secondary));
-                box-shadow: 0 4px 12px rgba(232, 216, 196, 0.4);
-            }
+		.copies-available {
+			margin: 15px 0;
+			font-size: 1rem;
+			font-weight: 600;
+			color: var(--primary);
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
 
-        .reserve-btn {
-            background: linear-gradient(135deg, var(--primary), #2a3e38);
-            color: white;
-            border: 1px solid var(--primary);
-        }
+			.copies-available:before {
+				content: "";
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				background-color: var(--success);
+				border-radius: 50%;
+			}
 
-            .reserve-btn:hover {
-                background: linear-gradient(135deg, #2a3e38, var(--primary));
-                box-shadow: 0 4px 12px rgba(58, 78, 72, 0.4);
-            }
+		.book-actions {
+			margin-top: auto;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
 
-        .unavailable {
-            background: rgba(211, 93, 110, 0.1);
-            color: var(--danger);
-            padding: 12px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: 600;
-            margin-top: 10px;
-            border: 1px dashed var(--danger);
-        }
+		.action-btn {
+			padding: 12px;
+			border-radius: 6px;
+			text-align: center;
+			text-decoration: none;
+			font-weight: 600;
+			transition: all 0.3s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+		}
 
-        /* تأثيرات خاصة */
-        .book-card:after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 10px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.03), transparent);
-            z-index: 0;
-        }
+		.details-btn {
+			background: linear-gradient(135deg, var(--secondary), #e0cdb4);
+			color: var(--text-dark);
+			border: 1px solid var(--accent);
+		}
 
-       
-    </style>
+			.details-btn:hover {
+				background: linear-gradient(135deg, #e0cdb4, var(--secondary));
+				box-shadow: 0 4px 12px rgba(232, 216, 196, 0.4);
+			}
+
+		.reserve-btn {
+			background: linear-gradient(135deg, var(--primary), #2a3e38);
+			color: white;
+			border: 1px solid var(--primary);
+		}
+
+			.reserve-btn:hover {
+				background: linear-gradient(135deg, #2a3e38, var(--primary));
+				box-shadow: 0 4px 12px rgba(58, 78, 72, 0.4);
+			}
+
+		.unavailable {
+			background: rgba(211, 93, 110, 0.1);
+			color: var(--danger);
+			padding: 12px;
+			border-radius: 6px;
+			text-align: center;
+			font-weight: 600;
+			margin-top: 10px;
+			border: 1px dashed var(--danger);
+		}
+
+		/* تأثيرات خاصة */
+		.book-card:after {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 10px;
+			background: linear-gradient(180deg, rgba(0,0,0,0.03), transparent);
+			z-index: 0;
+		}
+
+		.library-header {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 40px 0 50px;
+			padding: 0 15px;
+			text-align: center;
+		}
+
+		h1 {
+			color: var(--primary);
+			font-size: 2.2rem;
+			font-weight: 700;
+			position: relative;
+			display: inline-block;
+			padding: 0 20px;
+			background: none;
+			max-width: 100%;
+			word-wrap: break-word;
+		}
+	</style>
 }
 
-<div class="library-header">
-    <h1> مكتبة مركز عجلون الثقافي</h1>
+<div class="modern-header">
+	<div class="overlay">
+		<div class="header-content">
+			<h1>مكتبة مركز عجلون الثقافي</h1>
+			<p class="subtitle">أكبر مكتبة ثقافية في عجلون</p>
+		</div>
+	</div>
 </div>
 
 <div class="filter-container">
-    <form asp-action="Index" method="get" class="filter-form">
-        <select asp-items="ViewBag.CategoryList" name="categoryId">
-            <option value="">كل التصنيفات</option>
-        </select>
+	<form asp-action="Index" method="get" class="filter-form">
+		<select asp-items="ViewBag.CategoryList" name="categoryId">
+			<option value="">كل التصنيفات</option>
+		</select>
 
-        <input type="text" name="search" placeholder="ابحث عن كتاب..." value="@searchTerm" />
+		<input type="text" name="search" placeholder="ابحث عن كتاب..." value="@searchTerm" />
 
-        <button type="submit">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            بحث
-        </button>
-    </form>
+		<button type="submit">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<circle cx="11" cy="11" r="8"></circle>
+				<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+			</svg>
+			بحث
+		</button>
+	</form>
 </div>
 
 <div class="book-grid">
-    @foreach (var book in pagedBooks)
-    {
-        <div class="book-card">
-            <img src="@book.CoverImageUrl" alt="غلاف @book.Title" class="book-cover" />
-            <div class="book-content">
-                <h3 class="book-title">@book.Title</h3>
+	@foreach (var book in pagedBooks)
+	{
+		<div class="book-card">
+			<img src="@book.CoverImageUrl" alt="غلاف @book.Title" class="book-cover" />
+			<div class="book-content">
+				<h3 class="book-title">@book.Title</h3>
 
-                <div class="book-meta">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z" />
-                    </svg>
-                    <span>@book.Author</span>
-                </div>
+				<div class="book-meta">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+						<path d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z" />
+					</svg>
+					<span>@book.Author</span>
+				</div>
 
-                @if (book.Category != null)
-                {
-                    <div class="book-category">@book.Category.Name</div>
-                }
+				@if (book.Category != null)
+				{
+					<div class="book-category">@book.Category.Name</div>
+				}
 
-                <div class="copies-available">@book.AvailableCopies نسخ متاحة</div>
+				<div class="copies-available">@book.AvailableCopies نسخ متاحة</div>
 
-                <div class="book-actions">
-                    <a class="action-btn details-btn" asp-action="Details" asp-route-id="@book.BookId">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        تفاصيل الكتاب
-                    </a>
+				<div class="book-actions">
+					<a class="action-btn details-btn" asp-action="Details" asp-route-id="@book.BookId">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+							<circle cx="12" cy="12" r="3"></circle>
+						</svg>
+						تفاصيل الكتاب
+					</a>
 
-                    @if (book.AvailableCopies > 0)
-                    {
-                        <a class="action-btn reserve-btn" asp-action="Reserve" asp-route-id="@book.BookId">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                            احجز الآن
-                        </a>
-                    }
-                    else
-                    {
-                        <div class="unavailable">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
-                            </svg>
-                            غير متاح حالياً
-                        </div>
-                    }
-                </div>
+					@if (book.AvailableCopies > 0)
+					{
+						<a class="action-btn reserve-btn" asp-action="Reserve" asp-route-id="@book.BookId">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+							</svg>
+							احجز الآن
+						</a>
+					}
+					else
+					{
+						<div class="unavailable">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="12" cy="12" r="10"></circle>
+								<line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+							</svg>
+							غير متاح حالياً
+						</div>
+					}
+				</div>
 
-            </div>
+			</div>
 
 
-        </div>
-    }
+		</div>
+	}
 </div>
 <div style="text-align:center; margin: 30px 0;">
-    @for (int i = 1; i <= totalPages; i++)
-    {
-        if (i == pageNumber)
-        {
-            <span style="margin: 0 6px; padding: 8px 12px; background-color: #2C6E49; color: white; border-radius: 6px;">@i</span>
-        }
-        else
-        {
-            <a href="?page=@i" style="margin: 0 6px; padding: 8px 12px; border: 1px solid #2C6E49; color: #2C6E49; border-radius: 6px; text-decoration: none;">@i</a>
-        }
-    }
+	@for (int i = 1; i <= totalPages; i++)
+	{
+		if (i == pageNumber)
+		{
+			<span style="margin: 0 6px; padding: 8px 12px; background-color: #2C6E49; color: white; border-radius: 6px;">@i</span>
+		}
+		else
+		{
+			<a href="?page=@i" style="margin: 0 6px; padding: 8px 12px; border: 1px solid #2C6E49; color: #2C6E49; border-radius: 6px; text-decoration: none;">@i</a>
+		}
+	}
 </div>

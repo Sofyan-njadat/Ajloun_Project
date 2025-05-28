@@ -103,7 +103,7 @@ namespace Ajloun_Project.Controllers.Ali
                 _context.News.Add(news);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("AdminList");
             }
 
             return View(news);

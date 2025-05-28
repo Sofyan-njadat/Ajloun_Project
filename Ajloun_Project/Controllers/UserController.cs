@@ -71,13 +71,18 @@ namespace Ajloun_Project.Controllers
                 if (_user.Admin)
                 {
                     var admin = await _Db.Admins.FirstOrDefaultAsync(a => a.Email == _user.Email && a.PasswordHash == _user.Password);
+                    if (admin == null)
+                    {
+                        var hashedPassword = HashPassword(_user.Password);
+                        admin = await _Db.Admins.FirstOrDefaultAsync(a => a.Email == _user.Email && a.PasswordHash == hashedPassword);
+                    }
                     if (admin != null)
                     {
                         ViewBag.role = "You are Admin";
                         HttpContext.Session.SetString("role", admin.Role);
                         HttpContext.Session.SetInt32("userId", admin.AdminId);
-
-                        return View("signIn");
+                        HttpContext.Session.SetString("email", admin.Email);
+                        return RedirectToAction("Statistics", "Statistics");
                     }
                     else
                     {
@@ -93,16 +98,24 @@ namespace Ajloun_Project.Controllers
                         ViewBag.role = "You are user";
                         HttpContext.Session.SetString("role", "User");
                         HttpContext.Session.SetInt32("userId", user.UserId);
-
-                        return View("signIn");
+                        HttpContext.Session.SetString("email", user.Email);
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
                         ViewBag.role = "You are not user";
                         return View("signIn");
                     }
-
                 }
+            }
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
             }
         }
     }
