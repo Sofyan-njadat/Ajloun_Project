@@ -7,99 +7,313 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/ArtWorks.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet">
+    <style>
+        .digital-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+        }
 
- 
- 
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 450px;
+        }
+
+            .gallery-item:hover {
+                transform: translateY(-5px);
+            }
+
+        .item-image-wrapper {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .item-info {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+            .item-info h3 {
+                margin: 0;
+                color: #333;
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+                font-family: 'Cairo', sans-serif;
+            }
+
+            .item-info p {
+                color: #666;
+                margin: 0.5rem 0;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-family: 'Cairo', sans-serif;
+            }
+
+        .item-category {
+            background: #f0f0f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Modal Styles */
+        .preview-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1050;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-container {
+            position: relative;
+            width: 100%;
+            max-width: 580px;
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgb(255 255 255 / 85%);
+        }
+
+        .preview-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 75%;
+        }
+
+        .preview-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: white;
+        }
+
+        .preview-details {
+            padding: 20px;
+            background: white;
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .preview-description {
+            color: #666;
+            margin-bottom: 10px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .preview-category {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            color: #555;
+            font-size: 0.9rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .close-preview {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 1060;
+        }
+
+        .add-item-btn {
+            position: static;
+            display: inline-flex;
+            margin: 20px;
+            background: var(--primary, #355E3B);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0rem 0rem 0rem;
+        }
+
+        @@media (max-width: 992px) {
+            .digital-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .digital-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .add-item-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+            }
+        }
+
+        /* تنسيق خاص للسويت اليرت */
+        .swal2-container {
+            z-index: 9999 !important;
+        }
+
+        .swal2-popup {
+            font-family: 'Cairo', sans-serif !important;
+        }
+    </style>
 }
+
 <header class="modern-header">
     <div class="overlay">
         <div class="header-content">
-            <h1>مديرية ثقافة عجلون</h1>
-            <p class="subtitle">معرض الأعمال الفنية الرقمية</p>
+            <h1>الأعمال الفنية</h1>
+            <p class="subtitle">معرض الأعمال الفنية و الرقمية</p>
         </div>
     </div>
 </header>
 
-
-<table>
-    <thead>
-        <tr>
-            <th>الصورة</th>
-            <th>اسم الفنان</th>
-            <th>وصف العمل</th>
-			<th>نوع العمل الفني</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var art in Model)
-        {
-            <tr>
-                <td>
-                    <div class="zoom-wrapper">
-                        <img class="art-image" src="@art.ImageUrl" alt="صورة رقمية" />
-                        <div class="zoom-modal">
-                            <img src="@art.ImageUrl" />
-                        </div>
-                    </div>
-                </td>
-                <td>@art.ArtistName</td>
-                <td>@art.Description</td>
-                <td>@art.Type</td>
-               
-                
-
-            </tr>
-        }
-    </tbody>
-</table>
-
-<div class="form-section">
-    <h2> أضف عملك الفني </h2>
-    <form asp-action="SubmitArtwork" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label>الاسم الكامل</label>
-            <input name="ArtistName" required />
-        </div>
-        <div class="form-group">
-            <label>البريد الإلكتروني</label>
-            <input name="ArtistEmail" type="email" required />
-        </div>
-        <div class="form-group">
-            <label>اسم العمل الفني</label>
-            <input name="Title" required />
-        </div>
-        <div class="form-group">
-            <label>وصف مختصر</label>
-            <textarea name="Description" rows="3" required></textarea>
-        </div>
-        <div class="form-group">
-            <label>رابط معرض الفنان الشخصي (اختياري)</label>
-            <input name="PortfolioUrl" />
-        </div>
-        <div class="form-group">
-            <label>نوع العمل (مثلاً: صورة رقمية، لوحة...)</label>
-            <input name="Type" required />
-        </div>
-        <div class="form-group">
-            <label>رفع صورة العمل الفني</label>
-            <input name="ImageFile" type="file" accept="image/*" required />
-        </div>
-        <input type="submit" value="إرسال " />
-    </form>
+<div class="btn-wrapper">
+    <a href="@Url.Action("Create", "ArtWorks")" class="add-item-btn">
+        <i class="fas fa-plus-circle"></i>
+        إضافة عمل فني
+    </a>
 </div>
 
-            @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="digital-gallery">
+    @foreach (var art in Model)
+    {
+        <div class="gallery-item">
+            <div class="item-image-wrapper">
+                <img src="@art.ImageUrl" alt="@art.Title" class="item-image"
+                     onclick="openPreview('@art.ImageUrl', '@art.Title', '@art.Description', '@art.Type', '@art.ArtistName')">
+            </div>
+            <div class="item-info">
+                <div>
+                    <h3>@art.ArtistName</h3>
+                    <p>@art.Description</p>
+                </div>
+                <div class="item-category">@art.Type</div>
+            </div>
+        </div>
+    }
+</div>
 
+<!-- Modal for Image Preview -->
+<div id="imagePreview" class="preview-overlay" onclick="closePreview()">
+    <div class="preview-container" onclick="event.stopPropagation()">
+        <span class="close-preview" onclick="closePreview()">&times;</span>
+        <div class="preview-image-wrapper">
+            <img class="preview-content" id="previewImage">
+        </div>
+        <div class="preview-details">
+            <h3 class="preview-title" id="previewTitle"></h3>
+            <p class="preview-description" id="previewDescription"></p>
+            <div class="preview-category" id="previewCategory"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        function openPreview(imgSrc, title, description, type, artist) {
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImage');
+            const previewTitle = document.getElementById('previewTitle');
+            const previewDescription = document.getElementById('previewDescription');
+            const previewCategory = document.getElementById('previewCategory');
+
+            preview.style.display = "flex";
+            previewImg.src = imgSrc;
+            previewTitle.textContent = artist;
+            previewDescription.textContent = description;
+            previewCategory.textContent = type;
+        }
+
+        function closePreview() {
+            document.getElementById('imagePreview').style.display = "none";
+        }
+
+        // Close preview when pressing ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closePreview();
+            }
+        });
+
+        // تعديل خيارات السويت اليرت
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
         @if (TempData["Success"] != null)
         {
             <text>
-                    Swal.fire({
+                    Toast.fire({
                         icon: 'success',
-                        title: 'نجاح',
-                        text: '@Html.Raw(TempData["Success"])'
+                        title: '@Html.Raw(TempData["Success"])'
                     });
             </text>
         }
@@ -107,15 +321,11 @@
         @if (TempData["Error"] != null)
         {
             <text>
-                    Swal.fire({
+                    Toast.fire({
                         icon: 'error',
-                        title: 'خطأ',
-                        text: '@Html.Raw(TempData["Error"])'
+                        title: '@Html.Raw(TempData["Error"])'
                     });
             </text>
         }
     </script>
-
-   
-            
-            } 
+}

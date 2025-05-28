@@ -4,11 +4,71 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles {
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
+    <style>
+        .modern-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/images/library-bg.jpg);
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            border-top: 25px solid #1E2F23;
+            border-bottom: 25px solid #1E2F23;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .overlay {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #355E3B;
+        }
+
+        .header-content {
+            color: white;
+            z-index: 1;
+            padding: 0 20px;
+        }
+
+        .header-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #FFE15D;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .header-content .subtitle {
+            font-size: 1.5rem;
+            color: white;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-weight: 600;
+        }
+    </style>
+}
+
+<div class="modern-header">
+    <div class="overlay">
+        <div class="header-content">
+            <h1>الحرف اليدوية</h1>
+            <p class="subtitle">اكتشف الحرف اليدوية التقليدية في محافظة عجلون</p>
+        </div>
+    </div>
+</div>
+
 <div class="container py-5">
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="text-center mb-4">الحرف اليدوية التقليدية</h1>
-
             @if (TempData["SuccessMessage"] != null)
             {
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -25,11 +85,12 @@
                 </div>
             }
 
+
             <!-- Filter by Category -->
             <div class="category-filter text-center mb-4">
                 <form method="get" action="@Url.Action("Index")" class="d-flex justify-content-center">
                     <select name="category" class="form-select category-select" onchange="this.form.submit()">
-                        <option value="">جميع الفئات</option>
+                        <option value="">كل الفئات</option>
                         @foreach (var category in ViewBag.Categories)
                         {
                             <option value="@category" selected="@(ViewBag.SelectedCategory == category ? "selected" : null)">
@@ -38,6 +99,11 @@
                         }
                     </select>
                 </form>
+                <div class="text-center mt-4">
+                    <a href="@Url.Action("MyOrders")" class="btn btn-secondary view-orders-btn">
+                        <i class="fas fa-shopping-bag"></i> طلباتي
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -87,11 +153,7 @@
         </div>
     }
 
-    <div class="text-center mt-4">
-        <a href="@Url.Action("MyOrders")" class="btn btn-secondary view-orders-btn">
-            <i class="fas fa-shopping-bag"></i> طلباتي
-        </a>
-    </div>
+
 </div>
 
 <style>

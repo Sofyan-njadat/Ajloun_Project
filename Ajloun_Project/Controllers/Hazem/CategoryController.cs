@@ -22,7 +22,7 @@ namespace Ajloun_Project.Controllers.Hazem
             var courses = await _context.Courses.ToListAsync();
             return View(courses);
         }
-        
+
         // GET: /Category/ManageCategories
         // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageCategories()
@@ -153,10 +153,10 @@ namespace Ajloun_Project.Controllers.Hazem
             }
 
             // Get the authenticated user's ID from session
-            var userId = HttpContext.Session.GetInt32("UserId");
+            var userId = HttpContext.Session.GetInt32("userId");
             if (!userId.HasValue)
             {
-                return RedirectToAction("Login", "Account", new { returnUrl = Url.Action("Apply", new { id = courseId }) });
+                return RedirectToAction("signIn", "User", new { returnUrl = Url.Action("Apply", new { id = courseId }) });
             }
 
             var user = await _context.Users.FindAsync(userId.Value);

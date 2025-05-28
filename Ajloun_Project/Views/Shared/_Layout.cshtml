@@ -17,6 +17,126 @@
     <link rel="stylesheet" href="~/css/site.css" />
 
     @RenderSection("Styles", required: false)
+    <style>
+        /* تحسينات عامة للشريط */
+        header {
+            z-index: 1000;
+            position: relative;
+        }
+
+        /* تحسينات القوائم المنسدلة */
+        .dropdown > a::after {
+            display: none !important;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #2E3A2A; /* نفس لون الـ navbar */
+            color: #fff; /* لون النصوص أبيض مثل الـ navbar */
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1001; /* z-index أعلى من الـ header لضمان الظهور */
+            border-radius: 0 0 5px 5px;
+        }
+
+            .dropdown-content a {
+                color: #fff !important; /* لون النصوص داخل الـ dropdown أبيض */
+            }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* تحسينات أزرار المستخدم */
+        .auth-buttons {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .auth-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border: none !important;
+            transition: all 0.3s ease;
+        }
+
+            .auth-btn:hover {
+                transform: scale(1.1);
+            }
+
+        .profile-btn {
+            background: #FFD600 !important;
+            color: #222 !important;
+        }
+
+        .logout-btn {
+            background: #f14d21 !important;
+            color: #fff !important;
+        }
+
+        .login-btn {
+            background: transparent !important;
+            color: #fff !important;
+            border: 1px solid #fff !important;
+        }
+
+        /* تعديلات للجوال */
+        @@media (max-width: 991px) {
+            .auth-btn
+
+        {
+            width: 32px;
+            height: 32px;
+            font-size: 0.9rem !important;
+        }
+
+        /* تحسين الـ responsive للـ dropdown */
+        .dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-content {
+            position: relative; /* لتجنب مشاكل الموضع في الـ responsive */
+            width: 100%;
+            background-color: #2E3A2A; /* نفس لون الـ navbar */
+            color: #fff; /* لون النصوص */
+            z-index: 1001; /* نفس الـ z-index */
+        }
+
+            .dropdown-content a {
+                color: #fff !important;
+                padding: 10px 20px;
+                display: block;
+                text-align: right;
+            }
+
+        .dropdown:hover .dropdown-content {
+            display: none; /* لأننا في الجوال نعتمد على النقر */
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block; /* يظهر عند النقر */
+        }
+
+        }
+
+        .dropdown-content {
+            z-index: 9999 !important; /* 🔥 أعلى من أي شيء */
+            position: absolute;
+        }
+
+      
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -48,13 +168,10 @@
                 <div class="dropdown-content">
                     <a asp-controller="Festivals" asp-action="Festivals">المهرجانات</a>
                     <a asp-controller="Association" asp-action="AllAssociation">الهيئات الثقافية</a>
-
                     <a asp-controller="Events" asp-action="Events">الفعاليات</a>
                     <a asp-controller="Handicrafts" asp-action="Index">الحرف اليدوية</a>
-
                 </div>
             </div>
-
 
             <div class="dropdown">
                 <a href="#">المحتوى</a>
@@ -66,19 +183,25 @@
 
             <a asp-controller="TimeLine" asp-action="TimeLine">سردية عجلون</a>
 
-            <!-- ✅ تظهر فقط على الموبايل -->
+            <!-- قسم تسجيل الدخول/الخروج -->
             <div class="mobile-auth translate-auth">
                 <div class="translate-box" id="google_translate_element"></div>
                 <div class="auth-buttons">
                     @if (userId == null)
                     {
-                        <a href="/User/SignIn" class="login">تسجيل الدخول</a>
+                        <a href="/User/SignIn" class="auth-btn login-btn" title="تسجيل الدخول">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </a>
                     }
                     else
                     {
-                        <a href="/UserProfile/UserInfo" class="profile">الملف الشخصي</a>
+                        <a href="/UserProfile/UserInfo" class="auth-btn profile-btn" title="الملف الشخصي">
+                            <i class="fas fa-user"></i>
+                        </a>
                         <form method="post" action="/UserProfile/Logout" style="display:inline;">
-                            <button type="submit" class="logout">تسجيل الخروج</button>
+                            <button type="submit" class="auth-btn logout-btn" title="تسجيل الخروج">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
                         </form>
                     }
                 </div>
@@ -86,7 +209,7 @@
         </nav>
     </header>
 
-    <div >
+    <div>
         @RenderBody()
     </div>
 
@@ -96,7 +219,7 @@
                 <h4>المكتبة</h4>
                 <a href="/Library">عرض الكتب</a>
                 <a href="/Home/Articles">المقالات</a>
-                <a href="/ArtWorks/ArtWorks">الأعمال الفنية</a>
+                <a href="/ArtWorks/Artिं:ArtWorks">الأعمال الفنية</a>
             </div>
             <div class="footer-col">
                 <h4>الدورات</h4>
@@ -113,15 +236,6 @@
         </div>
         <a href="/UserProfile/ProjectTeam" style="color: white; font-weight: bold;">
             Powered by Coding Academy by Orange
-
-
-
-
-
-
-
-
-
         </a>
     </footer>
 
@@ -147,11 +261,27 @@
                 });
             }
 
-            const dropdowns = document.querySelectorAll('.dropdown > a');
-            dropdowns.forEach(drop => {
-                drop.addEventListener('click', function (e) {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                const dropLink = dropdown.querySelector('a');
+                const dropContent = dropdown.querySelector('.dropdown-content');
+
+                dropLink.addEventListener('click', function (e) {
                     e.preventDefault();
-                    this.parentElement.classList.toggle('active');
+                    // إغلاق جميع الـ dropdowns الأخرى
+                    dropdowns.forEach(d => {
+                        if (d !== dropdown) {
+                            d.classList.remove('active');
+                        }
+                    });
+                    dropdown.classList.toggle('active');
+                });
+
+                // إغلاق الـ dropdown عند النقر خارجها
+                document.addEventListener('click', function (e) {
+                    if (!dropdown.contains(e.target)) {
+                        dropdown.classList.remove('active');
+                    }
                 });
             });
         });
