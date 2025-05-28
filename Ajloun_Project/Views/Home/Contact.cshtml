@@ -1,0 +1,440 @@
+@model ContactViewModel
+@{
+    ViewData["Title"] = "تواصل معنا";
+}
+
+<!-- Hero Section -->
+<section class="hero" id="contact-hero" style="margin-top: 80px; min-height: 400px;">
+    <div class="hero-bg" style="background-image: url('/images/ajloun-castle.jpg'); background-position: center 30%;"></div>
+    <div class="hero-overlay" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7));"></div>
+    <div class="hero-content">
+        <h3 class="hero-subtitle" style="font-family: 'Playfair Display', serif; color: #FFD700;">تواصل معنا</h3>
+        <h1 class="hero-title" style="font-family: 'Tajawal', sans-serif; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">نحن هنا للإجابة على استفساراتكم</h1>
+        <p class="hero-text" style="font-family: 'Tajawal', sans-serif; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">يسعدنا تواصلكم معنا عبر النموذج أدناه أو من خلال معلومات الاتصال المباشر</p>
+    </div>
+</section>
+
+<!-- إضافة مكتبة SweetAlert2 إذا لم تكن موجودة مسبقاً -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Contact Section -->
+<section class="section contact" id="contact-section" style="padding: 80px 0;">
+    <div class="container">
+        <div class="contact-grid">
+            <!-- معلومات الاتصال -->
+            <div class="contact-info">
+                <h2 class="section-title" style="font-family: 'Playfair Display', serif;">معلومات الاتصال</h2>
+                <div class="info-items">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3 style="font-family: 'Tajawal', sans-serif;">العنوان</h3>
+                            <p style="font-family: 'Tajawal', sans-serif;">مديرية ثقافة عجلون، وسط البلد، عجلون، الأردن</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3 style="font-family: 'Tajawal', sans-serif;">الهاتف</h3>
+                            <p style="font-family: 'Tajawal', sans-serif;">02-6421234</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3 style="font-family: 'Tajawal', sans-serif;">البريد الإلكتروني</h3>
+                            <p style="font-family: 'Tajawal', sans-serif;">firasabumallih@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3 style="font-family: 'Tajawal', sans-serif;">ساعات العمل</h3>
+                            <p style="font-family: 'Tajawal', sans-serif;">الأحد - الخميس: 8:00 صباحاً - 4:00 مساءً</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- نموذج الاتصال -->
+            <div class="contact-form">
+                <h2 class="section-title" style="font-family: 'Playfair Display', serif;">أرسل لنا رسالة</h2>
+                
+                <form asp-action="Contact" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Name" style="font-family: 'Tajawal', sans-serif;"></label>
+                        <input asp-for="Name" class="form-control" placeholder="أدخل اسمك الكامل" style="font-family: 'Tajawal', sans-serif;" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" style="font-family: 'Tajawal', sans-serif;"></label>
+                        <input asp-for="Email" class="form-control" placeholder="أدخل بريدك الإلكتروني" style="font-family: 'Tajawal', sans-serif;" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Phone" style="font-family: 'Tajawal', sans-serif;"></label>
+                        <input asp-for="Phone" class="form-control" placeholder="أدخل رقم هاتفك" style="font-family: 'Tajawal', sans-serif;" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Subject" style="font-family: 'Tajawal', sans-serif;"></label>
+                        <input asp-for="Subject" class="form-control" placeholder="أدخل موضوع الرسالة" style="font-family: 'Tajawal', sans-serif;" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Message" style="font-family: 'Tajawal', sans-serif;"></label>
+                        <textarea asp-for="Message" class="form-control" rows="5" placeholder="أدخل رسالتك" style="font-family: 'Tajawal', sans-serif;"></textarea>
+                        <span asp-validation-for="Message" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary send-email-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span style="font-family: 'Tajawal', sans-serif;">إرسال الرسالة</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const formGroups = document.querySelectorAll('.form-group');
+            
+            formGroups.forEach(group => {
+                const input = group.querySelector('input, textarea');
+                const label = group.querySelector('label');
+                
+                input.addEventListener('focus', () => {
+                    group.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', () => {
+                    if (!input.value) {
+                        group.classList.remove('focused');
+                    }
+                });
+                
+                if (input.value) {
+                    group.classList.add('focused');
+                }
+            });
+        });
+    </script>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <text>
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: '@TempData["SuccessMessage"]',
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true
+            });
+        </script>
+        </text>
+    }
+    @if (ViewData.ModelState.ErrorCount > 0)
+    {
+        <text>
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'حدث خطأ أثناء إرسال الرسالة. الرجاء المحاولة مرة أخرى.',
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true
+            });
+        </script>
+        </text>
+    }
+}
+
+<style>
+    :root {
+        --primary-color: #8B4513;
+        --primary-color-dark: #654321;
+        --primary-color-rgb: 139, 69, 19;
+    }
+
+    .hero {
+        position: relative;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+        overflow: hidden;
+    }
+
+    .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: cover;
+        background-position: center;
+        z-index: -2;
+        filter: brightness(0.8) contrast(1.1);
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+    }
+
+    .hero-subtitle {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: #FFD700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-title {
+        font-size: 3.2rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        font-weight: 700;
+    }
+
+    .hero-text {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+        line-height: 1.6;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin-top: 2rem;
+    }
+
+    .contact-info {
+        background: #fff;
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    }
+
+    .info-items {
+        display: grid;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .info-item:hover {
+        transform: translateX(-5px);
+    }
+
+    .info-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover .info-icon {
+        background: var(--primary-color-dark);
+        transform: scale(1.1);
+    }
+
+    .info-content h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .info-content p {
+        margin: 0.5rem 0 0;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .contact-form {
+        background: #fff;
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1.8rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.8rem;
+        color: #333;
+        font-weight: 500;
+        font-size: 1.1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #eee;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f9f9f9;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+        outline: none;
+        background: #fff;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 150px;
+    }
+
+    .send-email-btn {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 1.2rem 2.5rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        justify-content: center;
+        font-weight: 600;
+        text-transform: none;
+        box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.2);
+    }
+
+    .send-email-btn:hover {
+        background: var(--primary-color-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    .send-email-btn i {
+        font-size: 1.2rem;
+    }
+
+    .alert {
+        padding: 1.2rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 0.4rem;
+        display: block;
+    }
+
+    @@media (max-width: 992px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .hero {
+            padding: 60px 15px;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+        }
+
+        .hero-text {
+            font-size: 1.1rem;
+        }
+
+        .hero-content {
+            padding: 15px;
+        }
+
+        .contact-info,
+        .contact-form {
+            padding: 2rem;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+        }
+    }
+</style> 
