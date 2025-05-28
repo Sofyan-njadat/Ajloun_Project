@@ -6,83 +6,228 @@
 @model List<Ajloun_Project.Models.Article>
 @{
     ViewData["Title"] = "المقالات";
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = Model.Select(a => a.Category).Distinct().ToList();
 }
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مديرية ثقافة عجلون | Ajloun Directorate of Culture</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+@section Styles {
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #EFF5EC;
+        }
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        .modern-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/images/library-bg.jpg);
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            border-top: 25px solid #1E2F23;
+            border-bottom: 25px solid #1E2F23;
+            font-family: 'Cairo', sans-serif;
+        }
 
-    <!-- Libraries -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        .overlay {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #355E3B;
+        }
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.5/dist/ScrollTrigger.min.js"></script>
+        .header-content {
+            color: white;
+            z-index: 1;
+            padding: 0 20px;
+        }
 
-    <link rel="stylesheet" href="~/css/Articles.css">
-    <link rel="stylesheet" href="~/css/index.css">
+        .header-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #FFE15D;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Cairo', sans-serif;
+        }
 
+        .header-content .subtitle {
+            font-size: 1.5rem;
+            color: white;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-weight: 600;
+        }
 
-</head>
-<body class="lang-ar">
-    <br /><br /><br /><br />
-    <div class="container my-5">
-        <h2 class="mb-4 text-center">المقالات الثقافية والأدبية والتاريخية</h2><br />
+        .search-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group input {
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 2px solid #F2E8CF;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #2C6E49;
+            box-shadow: 0 0 0 2px rgba(44, 110, 73, 0.2);
+        }
+
+        .input-group button {
+            padding: 12px 30px;
+            background: #2C6E49;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            min-width: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group button:hover {
+            background: #235c3a;
+            transform: translateY(-2px);
+        }
+
+        .filter-buttons {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .filter-buttons .btn {
+            margin: 5px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 2px solid #2C6E49;
+            color: #2C6E49;
+            background: transparent;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .filter-buttons .btn:hover,
+        .filter-buttons .btn.active {
+            background: #2C6E49;
+            color: white;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2C6E49;
+        }
+
+        .btn-primary {
+            background: #2C6E49;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #235c3a;
+        }
+
+        @@media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group button {
+                width: 100%;
+            }
+        }
+    </style>
+}
+
+<div class="modern-header">
+    <div class="overlay">
+        <div class="header-content">
+            <h1>المقالات</h1>
+            <p class="subtitle">المقالات الثقافية والأدبية والتاريخية</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
         <!-- البحث -->
-        <div class="row mb-3">
-            <div class="col-md-6 offset-md-3">
+    <div class="search-container">
                 <form method="get" asp-controller="Home" asp-action="Articles" class="input-group">
-                    <input type="text" name="search" class="form-control rounded-start" placeholder="🔍 ابحث عن مقال..." value="@(Context.Request.Query["search"])" />
-                    <button type="submit" class="btn btn-primary rounded-end">بحث</button>
+            <input type="text" name="search" class="form-control" placeholder="🔍 ابحث عن مقال..." value="@(Context.Request.Query["search"])" />
+            <button type="submit" class="btn">بحث</button>
                 </form>
-            </div>
         </div>
 
         <!-- الفلاتر -->
-        @{
-            var selectedCategory = Context.Request.Query["category"].ToString();
-        }
-        <div class="text-center mb-4">
+    <div class="filter-buttons">
             <form method="get" asp-controller="Home" asp-action="Articles">
                 <button type="submit" name="category" value=""
-                        class="btn btn-outline-secondary m-1 @(string.IsNullOrEmpty(selectedCategory) ? "active" : "")">
+                    class="btn @(string.IsNullOrEmpty(Context.Request.Query["category"].ToString()) ? "active" : "")">
                     الكل
                 </button>
-                <button type="submit" name="category" value="ثقافة محلية"
-                        class="btn btn-outline-secondary m-1 @(selectedCategory == "ثقافة محلية" ? "active" : "")">
-                    ثقافة محلية
+            @foreach (var category in categories)
+            {
+                <button type="submit" name="category" value="@category"
+                        class="btn @(Context.Request.Query["category"].ToString() == category ? "active" : "")">
+                    @category
                 </button>
-                <button type="submit" name="category" value="تراث"
-                        class="btn btn-outline-secondary m-1 @(selectedCategory == "تراث" ? "active" : "")">
-                    تراث
-                </button>
-                <button type="submit" name="category" value="فن"
-                        class="btn btn-outline-secondary m-1 @(selectedCategory == "فن" ? "active" : "")">
-                    فن
-                </button>
-                <button type="submit" name="category" value="معارض"
-                        class="btn btn-outline-secondary m-1 @(selectedCategory == "معارض" ? "active" : "")">
-                    معارض
-                </button>
-                <button type="submit" name="category" value="أدب وشعر"
-                        class="btn btn-outline-secondary m-1 @(selectedCategory == "أدب وشعر" ? "active" : "")">
-                    أدب وشعر
-                </button>
+            }
             </form>
         </div>
-
 
         @if (Model != null && Model.Any())
         {
@@ -90,11 +235,13 @@
                 @foreach (var article in Model)
                 {
                     <div class="col-md-4 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <img src="@article.CoverImageUrl" class="card-img-top" alt="صورة المقال" style="height: 200px; object-fit: cover;" />
+                    <div class="card h-100">
+                        <img src="@article.CoverImageUrl" class="card-img-top" alt="@article.Title" />
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">@article.Title</h5>
-                                <p class="card-text text-muted mb-1"><i class="bi bi-person"></i> @article.AuthorName</p>
+                            <p class="card-text text-muted mb-1">
+                                <i class="bi bi-person"></i> @article.AuthorName
+                            </p>
                                 <p class="card-text text-muted">
                                     <i class="bi bi-calendar-event"></i> @article.PublishDate?.ToString("yyyy-MM-dd")
                                 </p>
@@ -110,225 +257,3 @@
             <div class="alert alert-info text-center">لا توجد مقالات لعرضها حاليًا.</div>
         }
     </div>
-
-
-  
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script>
-        // Mobile Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        });
-
-        // Language Switcher
-        const languageBtns = document.querySelectorAll('.language-btn');
-        const elementsToTranslate = document.querySelectorAll('[data-ar], [data-en]');
-        const placeholdersToTranslate = document.querySelectorAll('[data-ar-placeholder], [data-en-placeholder]');
-
-        languageBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const lang = btn.dataset.lang;
-
-                languageBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                document.documentElement.lang = lang;
-
-                if (lang === 'ar') {
-                    document.documentElement.dir = 'rtl';
-                    document.body.className = 'lang-ar';
-
-                    // Translate text content
-                    elementsToTranslate.forEach(el => {
-                        if (el.dataset.ar) {
-                            el.textContent = el.dataset.ar;
-                        }
-                    });
-
-                    // Translate placeholders
-                    placeholdersToTranslate.forEach(el => {
-                        if (el.dataset.arPlaceholder) {
-                            el.placeholder = el.dataset.arPlaceholder;
-                        }
-                    });
-                } else {
-                    document.documentElement.dir = 'ltr';
-                    document.body.className = 'lang-en';
-
-                    // Translate text content
-                    elementsToTranslate.forEach(el => {
-                        if (el.dataset.en) {
-                            el.textContent = el.dataset.en;
-                        }
-                    });
-
-                    // Translate placeholders
-                    placeholdersToTranslate.forEach(el => {
-                        if (el.dataset.enPlaceholder) {
-                            el.placeholder = el.dataset.enPlaceholder;
-                        }
-                    });
-                }
-            });
-        });
-
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                document.querySelector('.navbar').classList.add('scrolled');
-            } else {
-                document.querySelector('.navbar').classList.remove('scrolled');
-            }
-        });
-
-        // Events Slider
-        const eventsSlider = new Swiper('.events-slider', {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                768: {
-                    slidesPerView: 2,
-                },
-                992: {
-                    slidesPerView: 3,
-                }
-            }
-        });
-
-        // Testimonials Slider
-        const testimonialsSlider = new Swiper('.testimonials-slider', {
-            slidesPerView: 1,
-            loop: true,
-            autoplay: {
-                delay: 7000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            }
-        });
-
-        // Counter Animation
-        const statNumbers = document.querySelectorAll('.stat-number');
-
-        function animateCounters() {
-            statNumbers.forEach(stat => {
-                const target = parseInt(stat.dataset.count);
-                const duration = 2000;
-                const step = target / (duration / 16);
-                let current = 0;
-
-                const counter = setInterval(() => {
-                    current += step;
-                    if (current >= target) {
-                        clearInterval(counter);
-                        stat.textContent = target;
-                    } else {
-                        stat.textContent = Math.floor(current);
-                    }
-                }, 16);
-            });
-        }
-
-        // GSAP Animations
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Animate hero content
-        gsap.from('.hero-subtitle', {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            delay: 0.5
-        });
-
-        gsap.from('.hero-title', {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            delay: 0.8
-        });
-
-        gsap.from('.hero-text', {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            delay: 1.1
-        });
-
-        gsap.from('.hero-buttons', {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            delay: 1.4
-        });
-
-        // Animate sections on scroll
-        gsap.utils.toArray('.animate-on-scroll').forEach(section => {
-            gsap.from(section, {
-                opacity: 0,
-                y: 100,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 80%',
-                    toggleActions: 'play none none none'
-                }
-            });
-        });
-
-        // Animate about section
-        gsap.from('.about-image', {
-            scrollTrigger: {
-                trigger: '.about',
-                start: 'top 70%',
-                toggleActions: 'play none none none'
-            },
-            x: -100,
-            opacity: 0,
-            duration: 1
-        });
-
-        gsap.from('.about-text', {
-            scrollTrigger: {
-                trigger: '.about',
-                start: 'top 70%',
-                toggleActions: 'play none none none'
-            },
-            x: 100,
-            opacity: 0,
-            duration: 1
-        });
-
-        // Initialize counters when stats section is in view
-        ScrollTrigger.create({
-            trigger: '.stats',
-            start: 'top 70%',
-            onEnter: animateCounters
-        });
-
-        // Parallax effect for hero background
-        gsap.to('.hero-bg', {
-            scrollTrigger: {
-                scrub: true
-            },
-            y: 100,
-            scale: 1.1
-        });
-    </script>
-</body>
-</html>

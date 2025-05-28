@@ -29,15 +29,15 @@
     
 
         <!-- Hero Section -->
-        <section class="hero" id="home">
-            <div class="hero-bg"></div>
-            <div class="hero-content">
+        <section class="hero" id="home" style="margin-top:-2vw;">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
                 <h3 class="hero-subtitle" data-ar="مرحبا بكم في" data-en="Welcome to">مرحبا بكم في</h3>
-                <h1 class="hero-title" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Directorate of Culture">مديرية ثقافة عجلون</h1>
+                <h1 class="hero-title" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Directorate of Culture" style="color:white;">مديرية ثقافة عجلون</h1>
                 <p class="hero-text" data-ar="نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي." data-en="We work to promote and disseminate culture and arts in Ajloun Governorate, support local talents, and preserve cultural heritage.">نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
                 <div class="hero-buttons">
-                    <a href="#about" class="btn btn-primary" data-ar="تعرف علينا" data-en="About Us">تعرف علينا</a>
-                    <a href="#contact" class="btn btn-outline" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a>
+                <a asp-controller="Home" asp-action="AboutUs" class="btn btn-primary" data-ar="تعرف علينا" data-en="About Us">تعرف علينا</a>
+                <a asp-controller="Home" asp-action="Contact" class="btn btn-outline" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a>
                 </div>
             </div>
             <a href="#about" class="scroll-down">
@@ -190,36 +190,38 @@
             </div>
         </section>
 
-        <!-- Statistics Section -->
-        <section class="section stats">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="120">0</div>
-                        <div class="stat-text" data-ar="فعالية سنوياً" data-en="Annual Events">فعالية سنوياً</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="35">0</div>
-                        <div class="stat-text" data-ar="فنان محلي" data-en="Local Artists">فنان محلي</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="15">0</div>
-                        <div class="stat-text" data-ar="ورشة عمل" data-en="Workshops">ورشة عمل</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="5000">0</div>
-                        <div class="stat-text" data-ar="زائر سنوياً" data-en="Annual Visitors">زائر سنوياً</div>
-                    </div>
+    <!-- Statistics Section -->
+   @*  <section class="section stats" style="height:20vw; z-index:-1;">
+        <div class="container" style="height:3vw!important;margin-top:-5vw!important; ">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="120">0</div>
+                    <div class="stat-text" data-ar="فعالية سنوياً" data-en="Annual Events">فعالية سنوياً</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="35">0</div>
+                    <div class="stat-text" data-ar="فنان محلي" data-en="Local Artists">فنان محلي</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-text" data-ar="ورشة عمل" data-en="Workshops">ورشة عمل</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="5000">0</div>
+                    <div class="stat-text" data-ar="زائر سنوياً" data-en="Annual Visitors">زائر سنوياً</div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section> *@
 
         <!-- Events Section -->
         <section class="section events" id="events">
             <div class="container">
                 <div class="events-header">
                     <h2 class="section-title" data-ar="الفعاليات القادمة" data-en="Upcoming Events">الفعاليات القادمة</h2> <br />
-                    <a href="#" class="btn btn-primary" data-ar="عرض الكل" data-en="View All">عرض الكل</a>
+                <a asp-controller="Events" asp-action="Events" class="btn btn-primary" data-ar="عرض الكل" data-en="View All">عرض الكل</a>
+                @* <a href="/Events/Events" class="btn btn-primary">عرض الكل</a> *@
+
                 </div>
 
                 <div class="events-slider">
@@ -250,10 +252,10 @@
     <section class="section artists" id="artists">
         <div class="container">
             <div class="services-header">
-                <h2 class="section-title" data-ar="فنانو عجلون" data-en="Ajloun Artists">فنانو عجلون</h2>
+                <h2 class="section-title" data-ar="أبرز الأعمال" data-en="Ajloun Artists">أبرز الأعمال</h2>
                 <br /><br />
-                <p data-ar="تعرف على أبرز الفنانين والمبدعين من محافظة عجلون" data-en="Meet the most prominent artists and creators from Ajloun Governorate">
-                    تعرف على أبرز الفنانين والمبدعين من محافظة عجلون
+                <p data-ar="تعرف على أبرز الأعمال الفنية في محافظة عجلون" data-en="Meet the most prominent artworks in Ajloun Governorate.">
+                    تعرف على أبرز الأعمال الفنية في محافظة عجلون
                 </p>
             </div>
 
@@ -278,7 +280,7 @@
     </section>
 
         <!-- Newsletter Section -->
-        <section class="section newsletter">
+     @*    <section class="section newsletter">
             <div class="container">
                 <h2 class="section-title text-center" data-ar="اشترك في نشرتنا البريدية" data-en="Subscribe to Our Newsletter">اشترك في نشرتنا البريدية</h2> <br /><br />
                 <p class="text-center" data-ar="ابق على اطلاع بآخر الفعاليات والأنشطة الثقافية في عجلون" data-en="Stay updated with the latest cultural events and activities in Ajloun">ابق على اطلاع بآخر الفعاليات والأنشطة الثقافية في عجلون</p>
@@ -289,7 +291,7 @@
                 </form>
             </div>
         </section>
-
+ *@
       
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>

@@ -11,7 +11,12 @@
     .order-card {
         margin-bottom: 1rem;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0px 1px 13px 2px rgb(0 0 0 / 50%);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .order-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.90);
     }
 
     .order-header {
@@ -53,9 +58,24 @@
         color: #721c24;
     }
 
+    .status-processing {
+        background-color: #e2e3e5;
+        color: #383d41;
+    }
+
+    .status-shipped {
+        background-color: #cff4fc;
+        color: #055160;
+    }
+
     .status-completed {
         background-color: #cce5ff;
         color: #004085;
+    }
+
+    .status-cancelled {
+        background-color: #6c757d;
+        color: #fff;
     }
 
     .product-image {
@@ -63,6 +83,89 @@
         height: 80px;
         object-fit: cover;
         border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .product-image:hover {
+        transform: scale(1.05);
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .btn-group .btn {
+        flex: 1;
+        min-width: 120px;
+        margin-bottom: 5px;
+    }
+
+    .order-locked {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    .order-status-text {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .order-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .info-group {
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+
+    .info-group h6 {
+        color: #495057;
+        margin-bottom: 8px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-group p {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.95rem;
+    }
+
+    .info-group i {
+        color: #355E3B;
+    }
+
+    .price-tag {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #355E3B;
+    }
+
+    .contact-info {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .contact-item {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .divider {
+        height: 1px;
+        background-color: #dee2e6;
+        margin: 15px 0;
     }
 </style>
 
@@ -79,27 +182,57 @@
     <div class="row">
         @foreach (var order in Model)
         {
+            var isLocked = order.Status == "Completed" || order.Status == "Cancelled" || order.Status == "Rejected";
+            var statusText = order.Status switch
+            {
+                "Pending" => "قيد الانتظار",
+                "Approved" => "تمت الموافقة",
+                "Rejected" => "مرفوض",
+                "Processing" => "قيد التجهيز",
+                "Shipped" => "تم الشحن",
+                "Completed" => "مكتمل",
+                "Cancelled" => "ملغي",
+                _ => order.Status
+            };
+
             <div class="col-md-6">
                 <div class="card order-card">
                     <div class="order-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">طلب #@order.OrderId</h5>
                             <span class="status-badge @($"status-{order.Status.ToLower()}")">
-                                @order.Status
+                                @statusText
                             </span>
                         </div>
                     </div>
                     <div class="order-body">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <img src="@order.Craft.ImageUrl" class="product-image" alt="@order.Craft.Title" />
+                        <div class="info-group">
+                            <h6><i class="fas fa-box"></i> تفاصيل المنتج</h6>
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <img src="@order.Craft.ImageUrl" class="product-image" alt="@order.Craft.Title"/>
+                                </div>
+                                <div class="col">
+                                    <h6 class="mb-2">@order.Craft.Title</h6>
+                                    <p class="mb-1">الكمية: @order.Quantity</p>
+                                    <p class="price-tag">السعر الإجمالي: @(order.Craft.Price * order.Quantity) د.أ</p>
+                                </div>
                             </div>
-                            <div class="col-md-9">
-                                <h6>@order.Craft.Title</h6>
-                                <p class="mb-1">الكمية: @order.Quantity</p>
-                                <p class="mb-1">السعر: @(order.Craft.Price * order.Quantity) د.أ</p>
-                                <p class="mb-1">المشتري: @order.User.FullName</p>
-                                <p class="mb-0">تاريخ الطلب: @(order.OrderDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")</p>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="info-group">
+                            <h6><i class="fas fa-user"></i> معلومات المشتري</h6>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <p><i class="fas fa-user-circle"></i> @order.User.FullName</p>
+                                    <p><i class="fas fa-phone"></i> @order.User.Phone</p>
+                                </div>
+                                <div class="contact-item">
+                                    <p><i class="fas fa-map-marker-alt"></i> @order.User.Address</p>
+                                    <p><i class="fas fa-calendar-alt"></i> @(order.OrderDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,19 +240,47 @@
                         <form asp-action="UpdateOrderStatus" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@order.OrderId" />
-                            <div class="btn-group">
-                                <button type="submit" name="status" value="Pending" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-clock"></i> قيد الانتظار
-                                </button>
-                                <button type="submit" name="status" value="Approved" class="btn btn-success btn-sm">
-                                    <i class="fas fa-check"></i> موافق
-                                </button>
-                                <button type="submit" name="status" value="Rejected" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-times"></i> مرفوض
-                                </button>
-                                <button type="submit" name="status" value="Completed" class="btn btn-info btn-sm">
-                                    <i class="fas fa-check-double"></i> مكتمل
-                                </button>
+                            <div class="btn-group @(isLocked ? "order-locked" : "")">
+                                @if (isLocked)
+                                {
+                                    <div class="order-status-text text-muted">
+                                        <i class="fas fa-lock"></i>
+                                        @{
+                                            var lockMessage = order.Status switch
+                                            {
+                                                "Completed" => "تم إكمال الطلب",
+                                                "Cancelled" => "تم إلغاء الطلب",
+                                                "Rejected" => "تم رفض الطلب",
+                                                _ => ""
+                                            };
+                                        }
+                                        @lockMessage
+                                    </div>
+                                }
+                                else
+                                {
+                                    <button type="submit" name="status" value="Pending" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-clock"></i> قيد الانتظار
+                                    </button>
+                                    <button type="submit" name="status" value="Approved" class="btn btn-success btn-sm">
+                                        <i class="fas fa-check"></i> موافقة
+                                    </button>
+                                    <button type="submit" name="status" value="Processing" class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-cog"></i> قيد التجهيز
+                                    </button>
+                                    <button type="submit" name="status" value="Shipped" class="btn btn-info btn-sm">
+                                        <i class="fas fa-shipping-fast"></i> تم الشحن
+                                    </button>
+                                    <button type="submit" name="status" value="Completed" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-check-double"></i> مكتمل
+                                    </button>
+                                    <button type="submit" name="status" value="Rejected" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-times"></i> رفض
+                                    </button>
+                                    <button type="submit" name="status" value="Cancelled" class="btn btn-dark btn-sm">
+                                        <i class="fas fa-ban"></i> إلغاء
+                                    </button>
+                                }
                             </div>
                         </form>
                     </div>

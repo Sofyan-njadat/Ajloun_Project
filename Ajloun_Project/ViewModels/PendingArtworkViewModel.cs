@@ -1,4 +1,6 @@
-﻿namespace AjlounProject.ViewModels
+﻿using System;
+
+namespace AjlounProject.ViewModels
 {
     public class PendingArtworkViewModel
     {
@@ -8,5 +10,6 @@
         public string Type { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+        public string Status { get; set; }
     }
 }

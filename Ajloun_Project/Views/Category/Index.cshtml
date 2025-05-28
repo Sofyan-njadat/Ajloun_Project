@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الدورات المتاحة في مديرية الثقافة - عجلون</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --primary: #355E3B;
             --secondary: #A9BA9D;
-            --accent: #E3D26F;
+            --accent: #FFE15D;
             --dark: #1E2F23;
             --light: #EFF5EC;
             --text: #2D2D2D;
@@ -23,7 +23,7 @@
         }
 
         body {
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Cairo', sans-serif;
             background: linear-gradient(135deg, var(--light) 0%, #e7ece6 100%);
             color: var(--text);
             line-height: 1.6;
@@ -31,18 +31,66 @@
             overflow-x: hidden;
         }
 
-            /* خلفية ديكورية خفيفة */
-            body::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: url('https://www.transparenttextures.com/patterns/canvas.png');
-                opacity: 0.05;
-                z-index: -1;
-            }
+        .modern-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/images/library-bg.jpg);
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            border-top: 25px solid #1E2F23;
+            border-bottom: 25px solid #1E2F23;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .overlay {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #355E3B;
+        }
+
+        .header-content {
+            color: white;
+            z-index: 1;
+            padding: 0 20px;
+        }
+
+        .header-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #FFE15D;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .header-content .subtitle {
+            font-size: 1.5rem;
+            color: white;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-weight: 600;
+        }
+
+        /* خلفية ديكورية خفيفة */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/canvas.png');
+            opacity: 0.05;
+            z-index: -1;
+        }
 
         /* تحسين البطاقات */
         .course-card {
@@ -282,11 +330,17 @@
     </style>
 </head>
 <body>
-    <div class="container mx-auto px-4 py-16">
-        <h1 class="text-4xl md:text-5xl font-bold text-center text-[var(--primary)] mb-12 relative">
-            الدورات المتاحة في مديرية الثقافة - عجلون
-            <span class="block w-24 h-1 bg-[var(--accent)] mx-auto mt-2"></span>
-        </h1>
+    <!-- Hero Section -->
+    <div class="modern-header">
+        <div class="overlay">
+            <div class="header-content">
+                <h1>الدورات</h1>
+                <p class="subtitle">اكتشف الدورات المتاحة في مديرية ثقافة عجلون</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
             @foreach (var course in Model)
             {

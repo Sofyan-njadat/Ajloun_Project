@@ -1,3 +1,21 @@
+@using Microsoft.AspNetCore.Http
+@using Ajloun_Project.Models
+@inject MyDbContext _db
+@{
+    var context = Context;
+    var httpContext = context.RequestServices.GetService(typeof(IHttpContextAccessor)) as IHttpContextAccessor;
+    var session = httpContext?.HttpContext?.Session;
+    var email = session?.GetString("email");
+    var isAdmin = false;
+    if (!string.IsNullOrEmpty(email))
+    {
+        isAdmin = _db.Admins.Any(a => a.Email == email);
+    }
+    if (!isAdmin)
+    {
+        context.Response.Redirect("/User/signIn");
+    }
+}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -183,6 +201,18 @@
                 </a>
             </li>
             <li>
+                <a href="/Admin/PendingArtworks" class="menu-item">
+                    <i class="fas fa-paint-brush"></i>
+                    <span class="menu-text">الأعمال الفنية</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Handicrafts" class="menu-item">
+                    <i class="fas fa-hands-helping"></i>
+                    <span class="menu-text">المنتجات الحرفية</span>
+                </a>
+            </li>
+            <li>
                 <a href="/Festivals/AdminFestivals" class="menu-item">
                     <i class="fas fa-theater-masks"></i>
                     <span class="menu-text">المهرجانات</span>
@@ -207,12 +237,6 @@
                 </a>
             </li>
             <li>
-                <a href="/Admin/Handicrafts" class="menu-item">
-                    <i class="fas fa-paint-brush"></i>
-                    <span class="menu-text">المنتجات الحرفية</span>
-                </a>
-            </li>
-            <li>
                 <a href="/News/AdminList" class="menu-item">
                     <i class="fas fa-newspaper"></i>
                     <span class="menu-text">إدارة الأخبار</span>
@@ -228,6 +252,12 @@
                 <a href="/Admin/Index" class="menu-item">
                     <i class="fas fa-user-shield"></i>
                     <span class="menu-text">إدارة المشرفين</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Users" class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <span class="menu-text">المستخدمون</span>
                 </a>
             </li>
             <li>

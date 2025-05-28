@@ -35,62 +35,62 @@
 			</div>
 			<div class="col-md-4 text-end">
 				<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#festivalModal">
-					<i class="fas fa-plus"></i> إضافة مهرجان جديد
-				</button>
+				<i class="fas fa-plus"></i> إضافة مهرجان جديد
+			</button>
 			</div>
 		</div>
 	</div>
 
 	<div class="card">
 		<div class="card-body">
-			<div class="table-responsive">
+	<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
-						<tr>
-							<th>العنوان</th>
-							<th>الوصف</th>
-							<th>نوع المهرجان</th>
-							<th>تاريخ البداية</th>
-							<th>تاريخ النهاية</th>
-							<th>الموقع</th>
-							<th>الصورة</th>
-							<th>الإجراءات</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var festival in Model)
-						{
-							<tr>
-								<td>@festival.Title</td>
-								<td>@festival.Description</td>
-								<td>@festival.FestivalType</td>
-								<td>@(festival.StartDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-								<td>@(festival.EndDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-								<td>@festival.Location</td>
-								<td>
-									@if (!string.IsNullOrEmpty(festival.BannerImageUrl))
-									{
+				<tr>
+					<th>العنوان</th>
+					<th>الوصف</th>
+					<th>نوع المهرجان</th>
+					<th>تاريخ البداية</th>
+					<th>تاريخ النهاية</th>
+					<th>الموقع</th>
+					<th>الصورة</th>
+					<th>الإجراءات</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var festival in Model)
+				{
+					<tr>
+						<td>@festival.Title</td>
+						<td>@festival.Description</td>
+						<td>@festival.FestivalType</td>
+						<td>@(festival.StartDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+						<td>@(festival.EndDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+						<td>@festival.Location</td>
+						<td>
+							@if (!string.IsNullOrEmpty(festival.BannerImageUrl))
+							{
 										<img src="@festival.BannerImageUrl" alt="@festival.Title" style="max-width: 100px; max-height: 100px; border-radius: 8px;" />
-									}
-									else
-									{
-										<span>لا توجد صورة</span>
-									}
-								</td>
-								<td>
+							}
+							else
+							{
+								<span>لا توجد صورة</span>
+							}
+						</td>
+						<td>
 									<div class="action-buttons">
-										<button class="btn btn-sm btn-primary edit-festival" data-id="@festival.FestivalId">
-											<i class="fas fa-edit"></i> تعديل
-										</button>
-										<button class="btn btn-sm btn-danger delete-festival" data-id="@festival.FestivalId">
-											<i class="fas fa-trash"></i> حذف
-										</button>
+							<button class="btn btn-sm btn-primary edit-festival" data-id="@festival.FestivalId">
+								<i class="fas fa-edit"></i> تعديل
+							</button>
+							<button class="btn btn-sm btn-danger delete-festival" data-id="@festival.FestivalId">
+								<i class="fas fa-trash"></i> حذف
+							</button>
 									</div>
-								</td>
-							</tr>
-						}
-					</tbody>
-				</table>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
 			</div>
 		</div>
 	</div>

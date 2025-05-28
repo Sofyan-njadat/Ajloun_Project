@@ -1,0 +1,203 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مديرية ثقافة عجلون | About Us</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.5/dist/ScrollTrigger.min.js"></script>
+
+    <link rel="stylesheet" href="~/css/index.css">
+
+</head>
+<body class="lang-ar">
+
+    <!-- Hero Section -->
+    <section class="hero" id="aboutus-hero" style="margin-top:-2vw;">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h3 class="hero-subtitle" data-ar="مرحبا بكم في" data-en="Welcome to">مرحبا بكم في</h3>
+            <h1 class="hero-title" data-ar="صفحة من نحن" data-en="About Us Page" style="color:white;">صفحة من نحن</h1>
+            <p class="hero-text" data-ar="نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي." data-en="We work to promote and disseminate culture and arts in Ajloun Governorate, support local talents, and preserve cultural heritage.">نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="aboutus-about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Ajlun_Castle_in_2009.jpg" alt="About Ajloun Culture" />
+                </div>
+                <div class="about-text">
+                    <h2 data-ar="عن مديريتنا" data-en="About Our Directorate">عن مديريتنا</h2><br />
+                    <p data-ar="مديرية ثقافة عجلون هي إحدى مديريات وزارة الثقافة الأردنية، تأسست عام 1998 بهدف نشر الثقافة والفنون في محافظة عجلون ودعم المبدعين والمثقفين." data-en="The Ajloun Directorate of Culture is one of the directorates of the Jordanian Ministry of Culture, established in 1998 with the aim of spreading culture and arts in Ajloun Governorate and supporting creators and intellectuals.">مديرية ثقافة عجلون هي إحدى مديريات وزارة الثقافة الأردنية، تأسست عام 1998 بهدف نشر الثقافة والفنون في محافظة عجلون ودعم المبدعين والمثقفين.</p>
+                    <p data-ar="ننظم العديد من الفعاليات الثقافية والفنية على مدار العام، بما في ذلك المعارض والمهرجانات وورش العمل والدورات التدريبية في مختلف المجالات الثقافية والفنية." data-en="We organize many cultural and artistic events throughout the year, including exhibitions, festivals, workshops and training courses in various cultural and artistic fields.">ننظم العديد من الفعاليات الثقافية والفنية على مدار العام، بما في ذلك المعارض والمهرجانات وورش العمل والدورات التدريبية في مختلف المجالات الثقافية والفنية.</p>
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 data-ar="رؤيتنا" data-en="Our Vision">رؤيتنا</h4>
+                                <p data-ar="مجتمع مبدع مثقف يحافظ على تراثه" data-en="A creative, cultured society that preserves its heritage">مجتمع مبدع مثقف يحافظ على تراثه</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 data-ar="رسالتنا" data-en="Our Mission">رسالتنا</h4>
+                                <p data-ar="نشر الثقافة والفنون في محافظة عجلون" data-en="Spreading culture and arts in Ajloun Governorate">نشر الثقافة والفنون في محافظة عجلون</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 data-ar="قيمنا" data-en="Our Values">قيمنا</h4>
+                                <p data-ar="الإبداع، التميز، الاحتراف" data-en="Creativity, Excellence, Professionalism">الإبداع، التميز، الاحتراف</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 data-ar="إنجازاتنا" data-en="Our Achievements">إنجازاتنا</h4>
+                                <p data-ar="أكثر من 100 فعالية سنوياً" data-en="More than 100 events annually">أكثر من 100 فعالية سنوياً</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section services" id="aboutus-services">
+        <div class="container">
+            <div class="services-header">
+                <h2 class="section-title" data-ar="خدماتنا الثقافية" data-en="Our Cultural Services">خدماتنا الثقافية</h2><br /> <br />
+                <p data-ar="نقدم مجموعة متنوعة من الخدمات الثقافية والفنية لأهالي محافظة عجلون" data-en="We provide a variety of cultural and artistic services for the people of Ajloun Governorate">نقدم مجموعة متنوعة من الخدمات الثقافية والفنية لأهالي محافظة عجلون</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Art Exhibitions" />
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3 class="service-title" data-ar="المعارض الفنية" data-en="Art Exhibitions">المعارض الفنية</h3>
+                        <p data-ar="تنظيم معارض للفنون التشكيلية والخط العربي والتصوير الفوتوغرافي لعرض أعمال الفنانين المحليين." data-en="Organizing exhibitions of fine arts, Arabic calligraphy and photography to display the works of local artists.">تنظيم معارض للفنون التشكيلية والخط العربي والتصوير الفوتوغرافي لعرض أعمال الفنانين المحليين.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Festivals" />
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h3 class="service-title" data-ar="المهرجانات الثقافية" data-en="Cultural Festivals">المهرجانات الثقافية</h3>
+                        <p data-ar="إقامة مهرجانات ثقافية وفنية سنوية تعكس تراث وثقافة محافظة عجلون." data-en="Holding annual cultural and artistic festivals that reflect the heritage and culture of Ajloun Governorate.">إقامة مهرجانات ثقافية وفنية سنوية تعكس تراث وثقافة محافظة عجلون.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Training Courses" />
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="service-title" data-ar="الدورات التدريبية" data-en="Training Courses">الدورات التدريبية</h3>
+                        <p data-ar="عقد دورات تدريبية في مختلف المجالات الثقافية والفنية مثل الخط العربي والرسم والموسيقى." data-en="Conducting training courses in various cultural and artistic fields such as Arabic calligraphy, drawing and music.">عقد دورات تدريبية في مختلف المجالات الثقافية والفنية مثل الخط العربي والرسم والموسيقى.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1453&q=80" alt="Library Services" />
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="service-title" data-ar="خدمات المكتبة" data-en="Library Services">خدمات المكتبة</h3>
+                        <p data-ar="توفير مكتبة ثقافية تحتوي على آلاف الكتب والمصادر في مختلف المجالات المعرفية." data-en="Providing a cultural library containing thousands of books and resources in various fields of knowledge.">توفير مكتبة ثقافية تحتوي على آلاف الكتب والمصادر في مختلف المجالات المعرفية.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Workshops" />
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3 class="service-title" data-ar="ورش العمل" data-en="Workshops">ورش العمل</h3>
+                        <p data-ar="تنظيم ورش عمل متخصصة في التراث الشعبي والحرف اليدوية التقليدية." data-en="Organizing specialized workshops in folk heritage and traditional handicrafts.">تنظيم ورش عمل متخصصة في التراث الشعبي والحرف اليدوية التقليدية.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Events" />
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3 class="service-title" data-ar="الفعاليات الثقافية" data-en="Cultural Events">الفعاليات الثقافية</h3>
+                        <p data-ar="إقامة أمسيات شعرية وندوات ثقافية وعروض مسرحية ومواهب شابة." data-en="Holding poetry evenings, cultural seminars, theatrical performances and young talents.">إقامة أمسيات شعرية وندوات ثقافية وعروض مسرحية ومواهب شابة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    @* <section class="section stats" style="height:28vw;"> *@
+    @*     <div class="container"> *@
+    @*         <div class="stats-grid"> *@
+    @*             <div class="stat-item"> *@
+    @*                 <div class="stat-number" data-count="120">0</div> *@
+    @*                 <div class="stat-text" data-ar="فعالية سنوياً" data-en="Annual Events">فعالية سنوياً</div> *@
+    @*             </div> *@
+    @*             <div class="stat-item"> *@
+    @*                 <div class="stat-number" data-count="50">0</div> *@
+    @*                 <div class="stat-text" data-ar="ورشة عمل" data-en="Workshops">ورشة عمل</div> *@
+    @*             </div> *@
+    @*             <div class="stat-item"> *@
+    @*                 <div class="stat-number" data-count="200">0</div> *@
+    @*                 <div class="stat-text" data-ar="فنان مشارك" data-en="Participating Artists">فنان مشارك</div> *@
+    @*             </div> *@
+    @*             <div class="stat-item"> *@
+    @*                 <div class="stat-number" data-count="10">0</div> *@
+    @*                 <div class="stat-text" data-ar="مهرجان سنوي" data-en="Annual Festivals">مهرجان سنوي</div> *@
+    @*             </div> *@
+    @*         </div> *@
+    @*     </div> *@
+    @* </section> *@
+
+</body>
+</html> 

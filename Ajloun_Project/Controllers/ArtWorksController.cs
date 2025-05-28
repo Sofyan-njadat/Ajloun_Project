@@ -48,5 +48,10 @@ namespace Ajloun_Project.Controllers
             TempData["Success"] = "تم إرسال العمل الفني بنجاح!";
             return RedirectToAction("Artworks");
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

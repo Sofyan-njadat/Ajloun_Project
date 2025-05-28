@@ -7,115 +7,325 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/ArtWorks.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet">
+    <style>
+        .artwork-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+        }
 
- 
- 
+        .artwork-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 450px;
+        }
+
+        .artwork-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .artwork-image-container {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .artwork-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .artwork-details {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .artwork-details h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .artwork-details p {
+            color: #666;
+            margin: 0.5rem 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .artwork-type {
+            background: #f0f0f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1050;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-container {
+            position: relative;
+            width: 100%;
+            max-width: 580px;
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgb(255 255 255 / 85%);
+        }
+
+        .modal-image-container {
+            position: relative;
+            width: 100%;
+            padding-top: 75%;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: white;
+        }
+
+        .modal-details {
+            padding: 20px;
+            background: white;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .modal-description {
+            color: #666;
+            margin-bottom: 10px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .modal-type {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            color: #555;
+            font-size: 0.9rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 1060;
+        }
+
+        .add-artwork-btn {
+            position: static;
+            display: inline-flex;
+            margin: 20px;
+            background: var(--primary, #355E3B);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0rem 0rem 0rem;
+        }
+
+        @@media (max-width: 992px) {
+            .artwork-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .artwork-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .add-artwork-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+            }
+        }
+
+        /* تنسيق خاص للسويت اليرت */
+        .swal2-container {
+            z-index: 9999 !important;
+        }
+
+        .swal2-popup {
+            font-family: 'Cairo', sans-serif !important;
+        }
+    </style>
 }
+
 <header class="modern-header">
     <div class="overlay">
         <div class="header-content">
-            <h1>مديرية ثقافة عجلون</h1>
-            <p class="subtitle">معرض الأعمال الفنية الرقمية</p>
+            <h1>الأعمال الفنية</h1>
+            <p class="subtitle">معرض الأعمال الفنية و الرقمية</p>
         </div>
     </div>
 </header>
 
-
-<table>
-    <thead>
-        <tr>
-            <th>الصورة</th>
-            <th>اسم الفنان</th>
-            <th>وصف العمل</th>
-			<th>نوع العمل الفني</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var art in Model)
-        {
-            <tr>
-                <td>
-                    <div class="zoom-wrapper">
-                        <img class="art-image" src="@art.ImageUrl" alt="صورة رقمية" />
-                        <div class="zoom-modal">
-                            <img src="@art.ImageUrl" />
-                        </div>
-                    </div>
-                </td>
-                <td>@art.ArtistName</td>
-                <td>@art.Description</td>
-                <td>@art.Type</td>
-               
-                
-
-            </tr>
-        }
-    </tbody>
-</table>
-
-<div class="form-section">
-    <h2> أضف عملك الفني </h2>
-    <form asp-action="SubmitArtwork" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label>الاسم الكامل</label>
-            <input name="ArtistName" required />
-        </div>
-        <div class="form-group">
-            <label>البريد الإلكتروني</label>
-            <input name="ArtistEmail" type="email" required />
-        </div>
-        <div class="form-group">
-            <label>اسم العمل الفني</label>
-            <input name="Title" required />
-        </div>
-        <div class="form-group">
-            <label>وصف مختصر</label>
-            <textarea name="Description" rows="3" required></textarea>
-        </div>
-        <div class="form-group">
-            <label>رابط معرض الفنان الشخصي (اختياري)</label>
-            <input name="PortfolioUrl" />
-        </div>
-        <div class="form-group">
-            <label>نوع العمل (مثلاً: صورة رقمية، لوحة...)</label>
-            <input name="Type" required />
-        </div>
-        <div class="form-group">
-            <label>رفع صورة العمل الفني</label>
-            <input name="ImageFile" type="file" accept="image/*" required />
-        </div>
-        <input type="submit" value="إرسال " />
-    </form>
+<div class="button-container">
+    <a href="@Url.Action("Create", "ArtWorks")" class="add-artwork-btn">
+        <i class="fas fa-plus-circle"></i>
+        إضافة عمل فني
+    </a>
 </div>
 
-            @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="artwork-grid">
+    @foreach (var art in Model)
+    {
+        <div class="artwork-card">
+            <div class="artwork-image-container">
+                <img src="@art.ImageUrl" alt="@art.Title" class="artwork-image" 
+                     onclick="openModal('@art.ImageUrl', '@art.Title', '@art.Description', '@art.Type', '@art.ArtistName')">
+            </div>
+            <div class="artwork-details">
+                <div>
+                    <h3>@art.ArtistName</h3>
+                    <p>@art.Description</p>
+                </div>
+                <div class="artwork-type">@art.Type</div>
+            </div>
+        </div>
+    }
+</div>
 
+<!-- Modal for Image Preview -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <div class="modal-container" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-image-container">
+            <img class="modal-content" id="modalImage">
+        </div>
+        <div class="modal-details">
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <p class="modal-description" id="modalDescription"></p>
+            <div class="modal-type" id="modalType"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        function openModal(imgSrc, title, description, type, artist) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalType = document.getElementById('modalType');
+
+            modal.style.display = "flex";
+            modalImg.src = imgSrc;
+            modalTitle.textContent = artist;
+            modalDescription.textContent = description;
+            modalType.textContent = type;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+
+        // Close modal when pressing ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+
+        // تعديل خيارات السويت اليرت
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
         @if (TempData["Success"] != null)
         {
             <text>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'نجاح',
-                        text: '@Html.Raw(TempData["Success"])'
-                    });
+                Toast.fire({
+                    icon: 'success',
+                    title: '@Html.Raw(TempData["Success"])'
+                });
             </text>
         }
 
         @if (TempData["Error"] != null)
         {
             <text>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'خطأ',
-                        text: '@Html.Raw(TempData["Error"])'
-                    });
+                Toast.fire({
+                    icon: 'error',
+                    title: '@Html.Raw(TempData["Error"])'
+                });
             </text>
         }
     </script>
-
-   
-            
-            } 
+} 
