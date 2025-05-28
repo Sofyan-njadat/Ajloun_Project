@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/hazem/TimeLine.css">
     <style>
+
         #scene-container,
         .overlay {
             pointer-events: none;
@@ -21,13 +22,76 @@
             position: relative;
             z-index: 10;
         }
+
+
+        #languageToggle {
+            position: fixed;
+            top: 97px;
+            left: 20px;
+            z-index:  ;
+            background-color: #f2f2f2;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        body.ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+            body.ltr .era-date,
+            body.ltr .era-period {
+                text-align: left;
+                float: left;
+            }
+
+        body.rtl {
+            direction: rtl;
+            text-align: right;
+        }
+
+            body.rtl .era-date,
+            body.rtl .era-period {
+                text-align: right;
+                float: right;
+            }
+
+        .era-date {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: #355E3B;
+            color: white;
+            font-weight: bold;
+            z-index: 10;
+            transition: left 0.3s ease, right 0.3s ease;
+        }
+
+        /* الوضع العربي */
+        body.rtl .era-date {
+            right: 20px;
+            left: auto;
+        }
+
+        /* الوضع الفرنسي */
+        body.ltr .era-date {
+            left: 20px;
+            right: auto;
+        }
+
+        .era-period{color:darkgoldenrod}
+
     </style>
 
 </head>
 <body>
     <div class="loading" id="loading">
         <div class="loader"></div>
-        <div class="loading-text">جارِ تحميل رحلة عجلون عبر الزمن...</div>
+        <div class="loading-text" data-fr="Chargement du voyage à travers le temps d'Ajloun...">جارِ تحميل رحلة عجلون عبر الزمن...</div>
     </div>
 
     <div id="scene-container"></div>
@@ -36,10 +100,10 @@
     <div id="timeline-progress"></div>
 
     <div class="hero" id="hero">
-        <h1 class="hero-title">عجلون عبر الزمن</h1>
-        <h2 class="hero-subtitle">رحلة تاريخية في أعماق الحضارة</h2>
+        <h1 class="hero-title" data-fr="Ajloun à travers le temps">عجلون عبر الزمن</h1>
+        <h2 class="hero-subtitle" data-fr="Un voyage historique au cœur de la civilisation">رحلة تاريخية في أعماق الحضارة</h2>
         <div class="scroll-indicator" id="scrollIndicator">
-            <div class="scroll-text">اكتشف الرحلة</div>
+            <div class="scroll-text" data-fr="Découvrez le voyage">اكتشف الرحلة</div>
             <div class="scroll-arrow"></div>
         </div>
     </div>
@@ -50,86 +114,42 @@
 
             <div class="era theme-era-1" id="era-1">
                 <div class="era-point"></div>
-                <div class="era-date">العصر الحجري - 3000 ق.م</div>
+                <div class="era-date" data-fr="Âge de pierre - 3000 av. J.-C.">العصر الحجري - 3000 ق.م</div>
                 <div class="era-content theme-era-1">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRibgODqMFNZ4Tsl-J0O78zaZnvdx_mVAvSwhxFb6uc9tIdOQFNX6hmFQYM24mXzzQ_oY8&usqp=CAU" alt="البدايات الأولى في عجلون" class="era-image">
-                    <h2 class="era-title">البدايات الأولى</h2>
-                    <div class="era-period">العصر الحجري - 3000 ق.م</div>
-                    <p class="era-text">تأسست عجلون في العصور القديمة كحصن طبيعي بفضل موقعها الجبلي المميز. تشير الأدلة الأثرية إلى وجود استيطان بشري في المنطقة يعود إلى العصر الحجري الحديث. كانت الحياة تعتمد على الصيد وجمع الثمار قبل أن تتحول إلى الزراعة البدائية في السهول المحيطة بالمنطقة.</p>
+                    <h2 class="era-title" data-fr="Les débuts">البدايات الأولى</h2>
+                    <div class="era-period" data-fr="Âge de pierre - 3000 av. J.-C.">العصر الحجري - 3000 ق.م</div><br />
+                    <p class="era-text" data-fr="Ajloun fut établie dans l'Antiquité comme une forteresse naturelle grâce à sa position montagneuse stratégique. Les preuves archéologiques indiquent une présence humaine dans la région remontant au Néolithique. La vie reposait sur la chasse et la cueillette avant de passer à une agriculture rudimentaire dans les plaines environnantes.">تأسست عجلون في العصور القديمة كحصن طبيعي بفضل موقعها الجبلي المميز. تشير الأدلة الأثرية إلى وجود استيطان بشري في المنطقة يعود إلى العصر الحجري الحديث. كانت الحياة تعتمد على الصيد وجمع الثمار قبل أن تتحول إلى الزراعة البدائية في السهول المحيطة بالمنطقة.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">الموقع الاستراتيجي</h4>
-                            <p class="detail-text">الطبيعة الجبلية والارتفاع الكبير جعل من عجلون موقعاً دفاعياً محصناً بشكل طبيعي</p>
+                            <h4 class="detail-title" data-fr="Position stratégique">الموقع الاستراتيجي</h4>
+                            <p class="detail-text" data-fr="Le relief montagneux et l'altitude élevée ont fait d'Ajloun un site défensif naturellement fortifié.">الطبيعة الجبلية والارتفاع الكبير جعل من عجلون موقعاً دفاعياً محصناً بشكل طبيعي</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">الحياة البدائية</h4>
-                            <p class="detail-text">اعتمد السكان على الصيد والحرف اليدوية البسيطة وزراعة المحاصيل في الأودية</p>
+                            <h4 class="detail-title" data-fr="Vie primitive">الحياة البدائية</h4>
+                            <p class="detail-text" data-fr="Les habitants dépendaient de la chasse, de l'artisanat simple et de la culture des terres dans les vallées.">اعتمد السكان على الصيد والحرف اليدوية البسيطة وزراعة المحاصيل في الأودية</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="era theme-era-3" id="era-3">
-                <div class="era-point"></div>
-                <div class="era-date">636 م - 1099 م</div>
-                <div class="era-content theme-era-3">
-                    <img src="https://marayana.com/wp-content/uploads/2020/10/f_edited.jpg" alt="الفتح الإسلامي في عجلون" class="era-image">
-                    <h2 class="era-title">الفتح الإسلامي</h2>
-                    <div class="era-period">636 م - 1099 م</div>
-                    <p class="era-text">مع الفتح الإسلامي في القرن السابع الميلادي، دخلت عجلون في نطاق الدولة الإسلامية. أصبحت المنطقة مركزًا للعلم والثقافة في العصر الأموي. تم بناء المساجد والمدارس وازدهرت الزراعة بفضل نظم الري المتطورة التي أدخلها العرب المسلمون، وتطورت الحرف اليدوية.</p>
-                    <div class="era-details">
-                        <div class="detail-item">
-                            <h4 class="detail-title">المراكز العلمية</h4>
-                            <p class="detail-text">أصبحت عجلون مركزاً للعلم والثقافة مع إنشاء الكتاتيب والمدارس</p>
-                        </div>
-                        <div class="detail-item">
-                            <h4 class="detail-title">تطور الزراعة</h4>
-                            <p class="detail-text">تم إدخال نظم الري المتطورة وزراعة محاصيل جد对手 كالزيتون والعنب</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             <div class="era theme-era-2" id="era-2">
                 <div class="era-point"></div>
-                <div class="era-date">63 ق.م - 324 م</div>
+                <div class="era-date" data-fr="63 av. J.-C. - 324 ap. J.-C.">63 ق.م - 324 م</div>
                 <div class="era-content theme-era-2">
                     <img src="https://www.ajlounnews.net/wp-content/uploads/2021/02/33333333-1024x682.jpg" alt="العصر الروماني في عجلون" class="era-image">
-                    <h2 class="era-title">العصر الروماني</h2>
-                    <div class="era-period">63 ق.م - 324 م</div>
-                    <p class="era-text">خلال الحكم الروماني، أصبحت عجلون جزءًا من مقاطعة العربية البترائية. تم بناء العديد من المعابد والطرق التي لا تزال آثارها ظاهرة حتى اليوم. كانت المنطقة محطة مهمة على طريق التجارة بين الشام والجزيرة العربية، وشهدت ازدهاراً اقتصادياً وثقافياً كبيراً.</p>
+                    <h2 class="era-title" data-fr="L'ère romaine">العصر الروماني</h2>
+                    <div class="era-period" data-fr="63 av. J.-C. - 324 ap. J.-C.">63 ق.م - 324 م</div><br />
+                    <p class="era-text" data-fr="Sous la domination romaine, Ajloun intégra la province d'Arabie Pétrée. De nombreux temples et routes furent construits, dont les vestiges sont encore visibles aujourd'hui. La région était une étape clé sur la route commerciale reliant le Levant à la péninsule arabique, et connut une prospérité économique et culturelle significative.">خلال الحكم الروماني، أصبحت عجلون جزءًا من مقاطعة العربية البترائية. تم بناء العديد من المعابد والطرق التي لا تزال آثارها ظاهرة حتى اليوم. كانت المنطقة محطة مهمة على طريق التجارة بين الشام والجزيرة العربية، وشهدت ازدهاراً اقتصادياً وثقافياً كبيراً.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">الطرق الرومانية</h4>
-                            <p class="detail-text">تم شق شبكة من الطرق المعبدة التي ربطت عجلون بباقي أنحاء الإمبراطورية</p>
+                            <h4 class="detail-title" data-fr="Les routes romaines">الطرق الرومانية</h4>
+                            <p class="detail-text" data-fr="Un réseau de routes pavées fut construit, reliant Ajloun au reste de l'Empire.">تم شق شبكة من الطرق المعبدة التي ربطت عجلون بباقي أنحاء الإمبراطورية</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">الهندسة المعمارية</h4>
-
-                            <p class="detail-text">شيدت المعابد والأعمدة والمدرجات وفق الطراز الروماني الكلاسيكي</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-           
-
-
-            <div class="era theme-era-4" id="era-4">
-                <div class="era-point"></div>
-                <div class="era-date">1099 م - 1187 م</div>
-                <div class="era-content theme-era-4">
-                    <img src="https://hikayatajloun.com/wp-content/uploads/2023/10/%D9%82%D9%84%D8%B9%D8%A9-%D8%B5%D9%84%D8%A7%D8%AD-%D8%A7%D9%84%D8%AF%D9%8A%D9%86-%D8%A7%D9%84%D8%A3%D9%8A%D9%88%D8%A8%D9%8A.jpg" alt="حقبة الصليبيين في عجلون" class="era-image">
-                    <h2 class="era-title">حقبة الصليبيين</h2>
-                    <div class="era-period">1099 م - 1187 م</div>
-                    <p class="era-text">خلال القرن الثاني عشر، شهدت عجلون صراعات بين القوات الصليبية والجيوش الإسلامية. تم بناء قلعة عجلون الشهيرة في هذه الفترة بأمر من صلاح الدين الأيوبي لتكون حصنًا ضد الصليبيين ونقطة مراقبة على طرق المواصلات. لعبت القلعة دوراً محورياً في صد الهجمات وحماية المنطقة.</p>
-                    <div class="era-details">
-                        <div class="detail-item">
-                            <h4 class="detail-title">قلعة عجلون</h4>
-                            <p class="detail-text">شُيدت قلعة الربض عام 1184م بأمر من عز الدين أسامة، أحد قادة صلاح الدين</p>
-                        </div>
-                        <div class="detail-item">
-                            <h4 class="detail-title">أهمية استراتيجية</h4>
-                            <p class="detail-text">كانت القلعة مركزاً للدفاع ومراقبة طرق المواصلات ووادي الأردن</p>
+                            <h4 class="detail-title" data-fr="Architecture">الهندسة المعمارية</h4>
+                            <p class="detail-text" data-fr="Temples, colonnes et amphithéâtres furent ér Alimentés selon le style classique romain.">شيدت المعابد والأعمدة والمدرجات وفق الطراز الروماني الكلاسيكي</p>
                         </div>
                     </div>
                 </div>
@@ -137,41 +157,64 @@
 
             <div class="era theme-era-3" id="era-3">
                 <div class="era-point"></div>
-                <div class="era-date">636 م - 1099 م</div>
+                <div class="era-date" data-fr="636 ap. J.-C. - 1099 ap. J.-C.">636 م - 1099 م</div>
                 <div class="era-content theme-era-3">
                     <img src="https://marayana.com/wp-content/uploads/2020/10/f_edited.jpg" alt="الفتح الإسلامي في عجلون" class="era-image">
-                    <h2 class="era-title">الفتح الإسلامي</h2>
-                    <div class="era-period">636 م - 1099 م</div>
-                    <p class="era-text">مع الفتح الإسلامي في القرن السابع الميلادي، دخلت عجلون في نطاق الدولة الإسلامية. أصبحت المنطقة مركزًا للعلم والثقافة في العصر الأموي. تم بناء المساجد والمدارس وازدهرت الزراعة بفضل نظم الري المتطورة التي أدخلها العرب المسلمون، وتطورت الحرف اليدوية.</p>
+                    <h2 class="era-title" data-fr="La conquête islamique">الفتح الإسلامي</h2>
+                    <div class="era-period" data-fr="636 ap. J.-C. - 1099 ap. J.-C.">636 م - 1099 م</div><br />
+                    <p class="era-text" data-fr="Avec la conquête islamique au VIIe siècle, Ajloun intégra l'État islamique. La région devint un centre d'apprentissage et de culture sous les Omeyyades. Des mosquées et des écoles furent construites, et l'agriculture prospéra grâce à des systèmes d'irrigation avancés introduits par les Arabes musulmans, tandis que l'artisanat se développa.">مع الفتح الإسلامي في القرن السابع الميلادي، دخلت عجلون في نطاق الدولة الإسلامية. أصبحت المنطقة مركزًا للعلم والثقافة في العصر الأموي. تم بناء المساجد والمدارس وازدهرت الزراعة بفضل نظم الري المتطورة التي أدخلها العرب المسلمون، وتطورت الحرف اليدوية.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">المراكز العلمية</h4>
-                            <p class="detail-text">أصبحت عجلون مركزاً للعلم والثقافة مع إنشاء الكتاتيب والمدارس</p>
+                            <h4 class="detail-title" data-fr="Centres d'apprentissage">المراكز العلمية</h4>
+                            <p class="detail-text" data-fr="Ajloun devint un centre d'apprentissage et de culture avec la création d'écoles et de madrasas.">أصبحت عجلون مركزاً للعلم والثقافة مع إنشاء الكتاتيب والمدارس</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">تطور الزراعة</h4>
-                            <p class="detail-text">تم إدخال نظم الري المتطورة وزراعة محاصيل جد对手 كالزيتون والعنب</p>
+                            <h4 class="detail-title" data-fr="Progrès agricoles">تطور الزراعة</h4>
+                            <p class="detail-text" data-fr="Des systèmes d'irrigation avancés furent introduits, permettant la culture de nouvelles plantes comme l'olivier et le raisin.">تم إدخال نظم الري المتطورة وزراعة محاصيل جديدة كالزيتون والعنب</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="era theme-era-5" id="era-5">
+            <div class="era theme-era-4" id="era-4">
                 <div class="era-point"></div>
-                <div class="era-date">1250 م - 1517 م</div>
-                <div class="era-content theme-era-5">
-                    <img src="https://www.ich.gov.jo/sites/default/files/styles/large/public/left1.jpg?itok=R97IB14C" alt="العصر المملوكي في عجلون" class="era-image">
-                    <h2 class="era-title">العصر المملوكي</h2>
-                    <div class="era-period">1250 م - 1517 م</div>
-                    <p class="era-text">ازدهرت عجلون في العصر المملوكي حيث أصبحت محطة مهمة على طريق الحج الشامي. تم بناء المدارس والخانات وازدهرت التجارة في المنطقة. كانت عجلون مركزًا إداريًا مهمًا يشرف على القرى والبلدات المجاورة، وتميزت العمارة في هذه الفترة بالزخارف الإسلامية الجميلة.</p>
+                <div class="era-date" data-fr="1099 ap. J.-C. - 1187 ap. J.-C.">1099 م - 1187 م</div>
+                <div class="era-content theme-era-4">
+                    <img src="https://hikayatajloun.com/wp-content/uploads/2023/10/%D9%82%D9%84%D8%B9%D8%A9-%D8%B5%D9%84%D8%A7%D8%AD-%D8%A7%D9%84%D8%AF%D9%8A%D9%86-%D8%A7%D9%84%D8%A3%D9%8A%D9%88%D8%A8%D9%8A.jpg" alt="حقبة الصليبيين في عجلون" class="era-image">
+                    <h2 class="era-title" data-fr="L'ère des Croisades">حقبة الصليبيين</h2>
+                    <div class="era-period" data-fr="1099 ap. J.-C. - 1187 ap. J.-C.">1099 م - 1187 م</div><br />
+                    <p class="era-text" data-fr="Au XIIe siècle, Ajloun fut le théâtre de conflits entre les forces croisées et les armées islamiques. La célèbre forteresse d'Ajloun fut construite à cette époque sur ordre de Saladin pour servir de rempart contre les Croisés et de point d'observation des routes. La forteresse joua un rôle clé dans la défense de la région.">خلال القرن الثاني عشر، شهدت عجلون صراعات بين القوات الصليبية والجيوش الإسلامية. تم بناء قلعة عجلون الشهيرة في هذه الفترة بأمر من صلاح الدين الأيوبي لتكون حصنًا ضد الصليبيين ونقطة مراقبة على طرق المواصلات. لعبت القلعة دوراً محورياً في صد الهجمات وحماية المنطقة.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">الحركة التجارية</h4>
-                            <p class="detail-text">أصبحت عجلون محطة على طريق التجارة وقوافل الحج بين دمشق والحرمين</p>
+                            <h4 class="detail-title" data-fr="Forteresse d'Ajloun">قلعة عجلون</h4>
+                            <p class="detail-text" data-fr="Construite en 1184 sur ordre d'Izz al-Din Usama, l'un des généraux de Saladin.">شُيدت قلعة الربض عام 1184م بأمر من عز الدين أسامة، أحد قادة صلاح الدين</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">فن العمارة</h4>
-                            <p class="detail-text">تميزت العمارة المملوكية بالأقواس والقباب والزخارف الهندسية والنباتية</p>
+                            <h4 class="detail-title" data-fr="Importance stratégique">أهمية استراتيجية</h4>
+                            <p class="detail-text" data-fr="La forteresse servait de centre de défense et de surveillance des routes et de la vallée du Jourdain.">كانت القلعة مركزاً للدفاع ومراقبة طرق المواصلات ووادي الأردن</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div class="era theme-era-5" id="era-5">
+                <div class="era-point"></div>
+                <div class="era-date" data-fr="1250 ap. J.-C. - 1517 ap. J.-C.">1250 م - 1517 م</div>
+                <div class="era-content theme-era-5">
+                    <img src="https://www.ich.gov.jo/sites/default/files/styles/large/public/left1.jpg?itok=R97IB14C" alt="العصر المملوكي في عجلون" class="era-image">
+                    <h2 class="era-title" data-fr="L'ère mamelouke">العصر المملوكي</h2>
+                    <div class="era-period" data-fr="1250 ap. J.-C. - 1517 ap. J.-C.">1250 م - 1517 م</div><br />
+                    <p class="era-text" data-fr="Ajloun prospéra sous les Mamelouks, devenant une étape importante sur la route du pèlerinage syrien. Des écoles et des caravansérails furent construits, et le commerce fleurit. La région était un centre administratif clé supervisant les villages voisins, avec une architecture caractérisée par de magnifiques ornements islamiques.">ازدهرت عجلون في العصر المملوكي حيث أصبحت محطة مهمة على طريق الحج الشامي. تم بناء المدارس والخانات وازدهرت التجارة في المنطقة. كانت عجلون مركزًا إداريًا مهمًا يشرف على القرى والبلدات المجاورة، وتميزت العمارة في هذه الفترة بالزخارف الإسلامية الجميلة.</p>
+                    <div class="era-details">
+                        <div class="detail-item">
+                            <h4 class="detail-title" data-fr="Commerce">الحركة التجارية</h4>
+                            <p class="detail-text" data-fr="Ajloun devint une étape sur les routes commerciales et les caravanes de pèlerinage entre Damas et les lieux saints.">أصبحت عجلون محطة على طريق التجارة وقوافل الحج بين دمشق والحرمين</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4 class="detail-title" data-fr="Art architectural">فن العمارة</h4>
+                            <p class="detail-text" data-fr="L'architecture mamelouke se distinguait par ses arches, dômes et motifs géométriques et végétaux.">تميزت العمارة المملوكية بالأقواس والقباب والزخارف الهندسية والنباتية</p>
                         </div>
                     </div>
                 </div>
@@ -179,20 +222,20 @@
 
             <div class="era theme-era-6" id="era-6">
                 <div class="era-point"></div>
-                <div class="era-date">1517 م - 1918 م</div>
+                <div ими class="era-date" data-fr="1517 ap. J.-C. - 1918 ap. J.-C.">1517 م - 1918 م</div>
                 <div class="era-content theme-era-6">
                     <img src="http://www.jordanhistory.com/jhlibrary_thumb/cb0450ed-31f7-11e5-9088-005056a87fe8.jpg" alt="الحكم العثماني في عجلون" class="era-image">
-                    <h2 class="era-title">الحكم العثماني</h2>
-                    <div class="era-period">1517 م - 1918 م</div>
-                    <p class="era-text">دخلت عجلون تحت الحكم العثماني في القرن السادس عشر. أصبحت مركزًا إداريًا مهمًا وشهدت تطورًا في الزراعة وخاصة زراعة الزيتون. تم بناء السرايا الحكومية والمساجد العثمانية التي تميزت بالمآذن الرشيقة. عرفت الفترة أيضاً ببناء القناطر المائية وتطوير أنظمة الري.</p>
+                    <h2 class="era-title" data-fr="La domination ottomane">الحكم العثماني</h2>
+                    <div class="era-period" data-fr="1517 ap. J.-C. - 1918 ap. J.-C.">1517 م - 1918 م</div><br />
+                    <p class="era-text" data-fr="Au XVIe siècle, Ajloun passa sous la domination ottomane. Elle devint un centre administratif important et connut un développement agricole, notamment dans la culture de l'olivier. Des bâtiments administratifs et des mosquées ottomanes, caractérisées par leurs minarets élancés, furent construits, ainsi que des aqueducs et des systèmes d'irrigation.">دخلت عجلون تحت الحكم العثماني في القرن السادس عشر. أصبحت مركزًا إداريًا مهمًا وشهدت تطورًا في الزراعة وخاصة زراعة الزيتون. تم بناء السرايا الحكومية والمساجد العثمانية التي تميزت بالمآذن الرشيقة. عرفت الفترة أيضاً ببناء القناطر المائية وتطوير أنظمة الري.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">النظام الإداري</h4>
-                            <p class="detail-text">أصبحت عجلون مركزاً لناحية تابعة لولاية دمشق ثم سنجق عجلون</p>
+                            <h4 class="detail-title" data-fr="Administration">النظام الإداري</h4>
+                            <p class="detail-text" data-fr="Ajloun devint un centre administratif rattaché à la province de Damas, puis au sandjak d'Ajloun.">أصبحت عجلون مركزاً لناحية تابعة لولاية دمشق ثم سنجق عجلون</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">الزراعة والحرف</h4>
-                            <p class="detail-text">اشتهرت بزراعة الزيتون وإنتاج زيت الزيتون والصناعات اليدوية</p>
+                            <h4 class="detail-title" data-fr="Agriculture et artisanat">الزراعة والحرف</h4>
+                            <p class="detail-text" data-fr="La région était renommée pour la culture de l'olivier, la production d'huile d'olive et l'artisanat.">اشتهرت بزراعة الزيتون وإنتاج زيت الزيتون والصناعات اليدوية</p>
                         </div>
                     </div>
                 </div>
@@ -200,20 +243,20 @@
 
             <div class="era theme-era-7" id="era-7">
                 <div class="era-point"></div>
-                <div class="era-date">1921 م - 1946 م</div>
+                <div class="era-date" data-fr="1921 ap. J.-C. - 1946 ap. J.-C.">1921 م - 1946 م</div>
                 <div class="era-content theme-era-7">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Ajloun_Great_Mosque_05.jpg/960px-Ajloun_Great_Mosque_05.jpg" alt="عهد الإمارة في عجلون" class="era-image">
-                    <h2 class="era-title">عهد الإمارة</h2>
-                    <div class="era-period">1921 م - 1946 م</div>
-                    <p class="era-text">بعد تأسيس إمارة شرق الأردن عام 1921، أصبحت عجلون جزءًا من الإمارة الناشئة. شهدت هذه الفترة بداية تأسيس المؤسسات الحكومية الحديثة وإنشاء المدارس الحديثة. كان لسكان عجلون دور بارز في حركة النهضة العربية ومقاومة الاستعمار البريطاني.</p>
+                    <h2 class="era-title" data-fr="L'ère de l'Émirat">عهد الإمارة</h2>
+                    <div class="era-period" data-fr="1921 ap. J.-C. - 1946 ap. J.-C.">1921 م - 1946 م</div><br />
+                    <p class="era-text" data-fr="Après la fondation de l'Émirat de Transjordanie en 1921, Ajloun en devint une partie intégrante. Cette période vit l'émergence d'institutions gouvernementales modernes et la création d'écoles modernes. Les habitants d'Ajloun jouèrent un rôle important dans le mouvement de renaissance arabe et la résistance au colonialisme britannique.">بعد تأسيس إمارة شرق الأردن عام 1921، أصبحت عجلون جزءًا من الإمارة الناشئة. شهدت هذه الفترة بداية تأسيس المؤسسات الحكومية الحديثة وإنشاء المدارس الحديثة. كان لسكان عجلون دور بارز في حركة النهضة العربية ومقاومة الاستعمار البريطاني.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">التعليم الحديث</h4>
-                            <p class="detail-text">تأسست المدارس النظامية الحديثة وازداد الإقبال على التعليم</p>
+                            <h4 class="detail-title" data-fr="Éducation moderne">التعليم الحديث</h4>
+                            <p class="detail-text" data-fr="Des écoles modernes furent établies, et l'accès à l'éducation s'accrut.">تأسست المدارس النظامية الحديثة وازداد الإقبال على التعليم</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">البنية التحتية</h4>
-                            <p class="detail-text">بدأت مشاريع شق الطرق الحديثة وإدخال الخدمات الأساسية</p>
+                            <h4 class="detail-title" 橡يضيء data-fr="Infrastructures">البنية التحتية</h4>
+                            <p class="detail-text" data-fr="Des projets de construction de routes modernes et de services de base furent lancés.">بدأت مشاريع شق الطرق الحديثة وإدخال الخدمات الأساسية</p>
                         </div>
                     </div>
                 </div>
@@ -221,20 +264,20 @@
 
             <div class="era theme-era-8" id="era-8">
                 <div class="era-point"></div>
-                <div class="era-date">1946 م - 1999 م</div>
+                <div class="era-date" data-fr="1946 ap. J.-C. - 1999 ap. J.-C.">1946 م - 1999 م</div>
                 <div class="era-content theme-era-8">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk8QiNsaw1AqG-T8uToDIcHriODKjoGrs-IA&s" alt="المملكة الأردنية الهاشمية في عجلون" class="era-image">
-                    <h2 class="era-title">المملكة الأردنية الهاشمية</h2>
-                    <div class="era-period">1946 م - 1999 م</div>
-                    <p class="era-text">مع استقلال الأردن عام 1946، شهدت عجلون طفرة تنموية كبيرة خلال النصف الثاني من القرن العشرين. تم إنشاء المدارس والمستشفيات والبنية التحتية الحديثة. تم تصنيف قلعة عجلون كموقع تراثي وثقافي مهم وبدأت جهود ترميمها وتطويرها كوجهة سياحية.</p>
+                    <h2 class="era-title" data-fr="Le Royaume hachémite de Jordanie">المملكة الأردنية الهاشمية</h2>
+                    <div class="era-period" data-fr="1946 ap. J.-C. - 1999 ap. J.-C.">1946 م - 1999 م</div><br />
+                    <p class="era-text" data-fr="Avec l'indépendance de la Jordanie en 1946, Ajloun connut un essor considérable au cours de la seconde moitié du XXe siècle. Des écoles, des hôpitaux et des infrastructures modernes furent construits. La forteresse d'Ajloun fut classée site patrimonial et culturel, et des efforts de restauration et de développement touristique commencèrent.">مع استقلال الأردن عام 1946، شهدت عجلون طفرة تنموية كبيرة خلال النصف الثاني من القرن العشرين. تم إنشاء المدارس والمستشفيات والبنية التحتية الحديثة. تم تصنيف قلعة عجلون كموقع تراثي وثقافي مهم وبدأت جهود ترميمها وتطويرها كوجهة سياحية.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">التنمية الحديثة</h4>
-                            <p class="detail-text">تم إنشاء شبكات الكهرباء والماء والاتصالات والطرق المعبدة</p>
+                            <h4 class="detail-title" data-fr="Développement moderne">التنمية الحديثة</h4>
+                            <p class="detail-text" data-fr="Des réseaux d'électricité, d'eau, de communication et des routes pavées furent établis.">تم إنشاء شبكات الكهرباء والماء والاتصالات والطرق المعبدة</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">التراث والسياحة</h4>
-                            <p class="detail-text">بدأت مشاريع ترميم قلعة عجلون والمواقع الأثرية وتطوير السياحة</p>
+                            <h4 class="detail-title" data-fr="Patrimoine et tourisme">التراث والسياحة</h4>
+                            <p class="detail-text" data-fr="Des projets de restauration de la forteresse d'Ajloun et des sites archéologiques furent lancés, stimulant le tourisme.">بدأت مشاريع ترميم قلعة عجلون والمواقع الأثرية وتطوير السياحة</p>
                         </div>
                     </div>
                 </div>
@@ -242,20 +285,20 @@
 
             <div class="era theme-era-9" id="era-9">
                 <div class="era-point"></div>
-                <div class="era-date">1999 م - 2020 م</div>
+                <div class="era-date" data-fr="1999 ap. J.-C. - 2020 ap. J.-C.">1999 م - 2020 م</div>
                 <div class="era-content theme-era-9">
                     <img src="https://i0.wp.com/hikayatajloun.com/wp-content/uploads/2023/07/%D8%BA%D8%A7%D8%A8%D8%A7%D8%AA-%D8%B9%D8%AC%D9%84%D9%88%D9%86-%D8%A7%D9%84%D8%AC%D9%85%D9%8A%D9%84%D8%A9.jpg?fit=1000%2C631&ssl=1" alt="عهد الملك عبدالله الثاني في عجلون" class="era-image">
-                    <h2 class="era-title">عهد الملك عبدالله الثاني</h2>
-                    <div class="era-period">1999 م - 2020 م</div>
-                    <p class="era-text">في عهد الملك عبدالله الثاني، شهدت عجلون نهضة سياحية وثقافية كبيرة. تم إنشاء محمية غابات عجلون وتطوير المرافق السياحية. أصبحت وجهة مهمة للسياحة البيئية والثقافية. تم افتتاح جامعة عجلون الوطنية كصرح علمي يخدم المنطقة بأكملها.</p>
+                    <h2 class="era-title" data-fr="L'ère du roi Abdallah II">عهد الملك عبدالله الثاني</h2>
+                    <div class="era-period" data-fr="1999 ap. J.-C. - 2020 ap. J.-C.">1999 م - 2020 م</div><br />
+                    <p class="era-text" data-fr="Sous le règne du roi Abdallah II, Ajloun connut une renaissance touristique et culturelle. La réserve forestière d'Ajloun fut créée, et les infrastructures touristiques furent développées. La région devint une destination prisée pour le tourisme écologique et culturel. L'Université nationale d'Ajloun fut inaugurée, servant l'ensemble de la région.">في عهد الملك عبدالله الثاني، شهدت عجلون نهضة سياحية وثقافية كبيرة. تم إنشاء محمية غابات عجلون وتطوير المرافق السياحية. أصبحت وجهة مهمة للسياحة البيئية والثقافية. تم افتتاح جامعة عجلون الوطنية كصرح علمي يخدم المنطقة بأكملها.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">السياحة المستدامة</h4>
-                            <p class="detail-text">تأسست محمية غابات عجلون ومسارات السياحة البيئية والتنزه</p>
+                            <h4 class="detail-title" data-fr="Tourisme durable">السياحة المستدامة</h4>
+                            <p class="detail-text" data-fr="La réserve forestière d'Ajloun et des sentiers de randonnée écologique furent établis.">تأسست محمية غابات عجلون ومسارات السياحة البيئية والتنزه</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">التعليم العالي</h4>
-                            <p class="detail-text">افتتاح جامعة عجلون الوطنية و مؤسسات التعليم العالي المختلفة</p>
+                            <h4 class="detail-title" data-fr="Enseignement supérieur">التعليم العالي</h4>
+                            <p class="detail-text" data-fr="L'Université nationale d'Ajloun et diverses institutions d'enseignement supérieur furent ouvertes.">افتتاح جامعة عجلون الوطنية ومؤسسات التعليم العالي المختلفة</p>
                         </div>
                     </div>
                 </div>
@@ -263,20 +306,21 @@
 
             <div class="era theme-era-10" id="era-10">
                 <div class="era-point"></div>
-                <div class="era-date">2020 م - الحاضر</div>
+                <div class="era-date" data-fr="2020 ap. J.-C. - Présent">2020 م - الحاضر</div>
                 <div class="era-content theme-era-10">
                     <img src="https://nebrasnews.com/news/wp-content/uploads/2024/12/new_245001_9654_800.webp" alt="عجلون الآن" class="era-image">
-                    <h2 class="era-title">عجلون الآن</h2>
-                    <div class="era-period">2020 م - الحاضر</div>
-                    <p class="era-text">اليوم، تجمع عجلون بين الأصالة والحداثة، تتميز باقتصاد متنوع يعتمد على السياحة والزراعة والخدمات. تشهد المحافظة مشاريع تنموية مهمة تهدف إلى تحسين جودة الحياة للسكان المحليين وتعزيز جاذبيتها كوجهة سياحية. يستمر الاهتمام بالتراث والثقافة مع التطلع إلى المستقبل.</p>
+                    <h2 class="era-title" data-fr="Ajloun aujourd'hui">عجلون الآن</h2>
+                    <div class="era-period" data-fr="2020 ap. J.-C. - Présent">2020 م - الحاضر</div><br />
+
+                    <p class="era-text" data-fr="Aujourd'hui, Ajloun allie authenticité et modernité, avec une économie diversifiée reposant sur le tourisme, l'agriculture et les services. La province connaît d'importants projets de développement visant à améliorer la qualité de vie des habitants et à renforcer son attractivité touristique. L'accent reste mis sur la préservation du patrimoine et de la culture tout en regardant vers l'avenir.">اليوم، تجمع عجلون بين الأصالة والحداثة، تتميز باقتصاد متنوع يعتمد على السياحة والزراعة والخدمات. تشهد المحافظة مشاريع تنموية مهمة تهدف إلى تحسين جودة الحياة للسكان المحليين وتعزيز جاذبيتها كوجهة سياحية. يستمر الاهتمام بالتراث والثقافة مع التطلع إلى المستقبل.</p>
                     <div class="era-details">
                         <div class="detail-item">
-                            <h4 class="detail-title">التنمية المستدامة</h4>
-                            <p class="detail-text">مشاريع للطاقة المتجددة والسياحة المستدامة والحفاظ على البيئة</p>
+                            <h4 class="detail-title" data-fr="Développement durable">التنمية المستدامة</h4>
+                            <p class="detail-text" data-fr="Des projets d'énergie renouvelable, de tourisme durable et de préservation de l'environnement sont en cours.">مشاريع للطاقة المتجددة والسياحة المستدامة والحفاظ على البيئة</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title">مستقبل واعد</h4>
-                            <p class="detail-text">خطط لتعزيز البنية التحتية وجذب الاستثمارات والحفاظ على الهوية</p>
+                            <h4 class="detail-title" data-fr="Un avenir prometteur">مستقبل واعد</h4>
+                            <p class="detail-text" data-fr="Des plans pour renforcer les infrastructures, attirer les investissements et préserver l'identité culturelle.">خطط لتعزيز البنية التحتية وجذب الاستثمارات والحفاظ على الهوية</p>
                         </div>
                     </div>
                 </div>
@@ -286,39 +330,80 @@
 
     <div class="navigation">
         <div class="nav-dot" data-era="hero">
-            <div class="nav-tooltip">البداية</div>
+            <div class="nav-tooltip" data-fr="Début">البداية</div>
         </div>
         <div class="nav-dot" data-era="era-1">
-            <div class="nav-tooltip">البدايات الأولى</div>
+            <div class="nav-tooltip" data-fr="Les débuts">البدايات الأولى</div>
         </div>
         <div class="nav-dot" data-era="era-2">
-            <div class="nav-tooltip">العصر الروماني</div>
+            <div class="nav-tooltip" data-fr="L'ère romaine">العصر الروماني</div>
         </div>
         <div class="nav-dot" data-era="era-3">
-            <div class="nav-tooltip">الفتح الإسلامي</div>
+            <div class="nav-tooltip" data-fr="La conquête islamique">الفتح الإسلامي</div>
         </div>
         <div class="nav-dot" data-era="era-4">
-            <div class="nav-tooltip">حقبة الصليبيين</div>
+            <div class="nav-tooltip" data-fr="L'ère des Croisades">حقبة الصليبيين</div>
         </div>
         <div class="nav-dot" data-era="era-5">
-            <div class="nav-tooltip">العصر المملوكي</div>
+            <div class="nav-tooltip" data-fr="L'ère mamelouke">العصر المملوكي</div>
         </div>
         <div class="nav-dot" data-era="era-6">
-            <div class="nav-tooltip">الحكم العثماني</div>
+            <div class="nav-tooltip" data-fr="La domination ottomane">الحكم العثماني</div>
         </div>
         <div class="nav-dot" data-era="era-7">
-            <div class="nav-tooltip">عهد الإمارة</div>
+            <div class="nav-tooltip" data-fr="L'ère de l'Émirat">عهد الإمارة</div>
         </div>
         <div class="nav-dot" data-era="era-8">
-            <div class="nav-tooltip">المملكة الأردنية</div>
+            <div class="nav-tooltip" data-fr="Le Royaume hachémite de Jordanie">المملكة الأردنية</div>
         </div>
         <div class="nav-dot" data-era="era-9">
-            <div class="nav-tooltip">عهد الملك عبدالله</div>
+            <div class="nav-tooltip" data-fr="L'ère du roi Abdallah II">عهد الملك عبدالله</div>
         </div>
         <div class="nav-dot" data-era="era-10">
-            <div class="nav-tooltip">عجلون الآن</div>
+            <div class="nav-tooltip" data-fr="Ajloun aujourd'hui">عجلون الآن</div>
         </div>
     </div>
+
+ 
+    <div class="info-panel" id="infoPanel">
+        <div>
+            <h3 style="color: var(--gold-primary); margin-bottom: 10px;" data-fr="À propos de ce voyage">عن هذه الرحلة</h3>
+            <p data-fr="Le voyage « Ajloun à travers le temps » est une expérience interactive qui vous emmène dans un parcours historique à travers les époques clés de la région d’Ajloun, de l’Antiquité à nos jours.">رحلة "عجلون عبر الزمن" هي تجربة تفاعلية تأخذك في جولة تاريخية عبر أهم العصور والحقب التي مرت بها منطقة عجلون منذ العصور القديمة وحتى يومنا هذا.</p>
+        </div>
+    </div>
+
+    <button id="languageToggle">🇫🇷 Français</button>
+
+    <script>
+        let isArabic = true;
+
+        const elements = document.querySelectorAll("[data-fr]");
+        const originalArabic = new Map();
+
+        // حفظ النص العربي الأصلي
+        elements.forEach(el => {
+            originalArabic.set(el, el.innerHTML);
+        });
+
+        document.getElementById("languageToggle").addEventListener("click", () => {
+            elements.forEach(el => {
+                const french = el.getAttribute("data-fr");
+                const arabic = originalArabic.get(el);
+                el.innerHTML = isArabic ? french : arabic;
+            });
+
+            // ✅ تغيير الاتجاه (RTL ↔ LTR)
+            document.body.classList.toggle("ltr", isArabic);
+            document.body.classList.toggle("rtl", !isArabic);
+            document.body.setAttribute("dir", isArabic ? "ltr" : "rtl");
+
+            // ✅ تحديث زر اللغة
+            document.getElementById("languageToggle").innerText = isArabic ? "🇸🇦 العربية" : "🇫🇷 Français";
+
+            // تحديث الحالة
+            isArabic = !isArabic;
+        });
+    </script>
 
     <script>
         let currentEra = 'hero';

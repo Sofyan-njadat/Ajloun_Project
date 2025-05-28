@@ -36,8 +36,8 @@
                 <h1 class="hero-title" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Directorate of Culture" style="color:white;">مديرية ثقافة عجلون</h1>
                 <p class="hero-text" data-ar="نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي." data-en="We work to promote and disseminate culture and arts in Ajloun Governorate, support local talents, and preserve cultural heritage.">نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
                 <div class="hero-buttons">
-                    <a href="#about" class="btn btn-primary" data-ar="تعرف علينا" data-en="About Us">تعرف علينا</a>
-                    <a href="#contact" class="btn btn-outline" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a>
+                <a asp-controller="Home" asp-action="AboutUs" class="btn btn-primary" data-ar="تعرف علينا" data-en="About Us">تعرف علينا</a>
+                <a asp-controller="Home" asp-action="Contact" class="btn btn-outline" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a>
                 </div>
             </div>
             <a href="#about" class="scroll-down">
@@ -191,8 +191,8 @@
         </section>
 
     <!-- Statistics Section -->
-    <section class="section stats" style="height:28vw;">
-        <div class="container">
+   @*  <section class="section stats" style="height:20vw; z-index:-1;">
+        <div class="container" style="height:3vw!important;margin-top:-5vw!important; ">
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-number" data-count="120">0</div>
@@ -212,14 +212,16 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> *@
 
         <!-- Events Section -->
         <section class="section events" id="events">
             <div class="container">
                 <div class="events-header">
                     <h2 class="section-title" data-ar="الفعاليات القادمة" data-en="Upcoming Events">الفعاليات القادمة</h2> <br />
-                    <a href="#" class="btn btn-primary" data-ar="عرض الكل" data-en="View All">عرض الكل</a>
+                <a asp-controller="Events" asp-action="Events" class="btn btn-primary" data-ar="عرض الكل" data-en="View All">عرض الكل</a>
+                @* <a href="/Events/Events" class="btn btn-primary">عرض الكل</a> *@
+
                 </div>
 
                 <div class="events-slider">
@@ -250,10 +252,10 @@
     <section class="section artists" id="artists">
         <div class="container">
             <div class="services-header">
-                <h2 class="section-title" data-ar="فنانو عجلون" data-en="Ajloun Artists">فنانو عجلون</h2>
+                <h2 class="section-title" data-ar="أبرز الأعمال" data-en="Ajloun Artists">أبرز الأعمال</h2>
                 <br /><br />
-                <p data-ar="تعرف على أبرز الفنانين والمبدعين من محافظة عجلون" data-en="Meet the most prominent artists and creators from Ajloun Governorate">
-                    تعرف على أبرز الفنانين والمبدعين من محافظة عجلون
+                <p data-ar="تعرف على أبرز الأعمال الفنية في محافظة عجلون" data-en="Meet the most prominent artworks in Ajloun Governorate.">
+                    تعرف على أبرز الأعمال الفنية في محافظة عجلون
                 </p>
             </div>
 

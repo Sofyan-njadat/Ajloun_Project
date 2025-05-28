@@ -27,6 +27,74 @@ namespace Ajloun_Project.Controllers
         {
             return View();
         }
+
+        public IActionResult PendingArtworks()
+        {
+            var artworks = _context.Artworks
+                .Select(a => new AjlounProject.ViewModels.PendingArtworkViewModel
+                {
+                    ArtworkId = a.ArtworkId,
+                    Title = a.Title,
+                    ArtistName = a.ArtistName,
+                    Type = a.Type,
+                    Description = a.Description,
+                    ImageUrl = a.ImageUrl,
+                    Status = a.Status
+                })
+                .OrderByDescending(a => a.ArtworkId)
+                .ToList();
+
+            return View(artworks);
+        }
+
+        [HttpGet]
+        public IActionResult Approve(int id)
+        {
+            var artwork = _context.Artworks.Find(id);
+            if (artwork != null)
+            {
+                artwork.Status = "Approved";
+                _context.SaveChanges();
+            }
+            return RedirectToAction("PendingArtworks");
+        }
+
+        [HttpGet]
+        public IActionResult Reject(int id)
+        {
+            var artwork = _context.Artworks.Find(id);
+            if (artwork != null)
+            {
+                artwork.Status = "Rejected";
+                _context.SaveChanges();
+            }
+            return RedirectToAction("PendingArtworks");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteArtwork(int id)
+        {
+            var artwork = await _context.Artworks.FindAsync(id);
+            if (artwork != null)
+            {
+                // حذف الصورة من المجلد
+                if (!string.IsNullOrEmpty(artwork.ImageUrl))
+                {
+                    var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, artwork.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+
+                _context.Artworks.Remove(artwork);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "تم حذف العمل الفني بنجاح";
+            }
+            return RedirectToAction(nameof(PendingArtworks));
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////
         public IActionResult Handicrafts()
         {
@@ -468,5 +536,115 @@ namespace Ajloun_Project.Controllers
             return View(categories);
         }
 
+        // عرض جميع المستخدمين
+        public async Task<IActionResult> Users()
+        {
+            var users = await _context.Users.ToListAsync();
+            return View(users);
+        }
+
+        // عرض تفاصيل مستخدم
+        public async Task<IActionResult> UserDetails(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // إضافة فئة جديدة
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCategory(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                TempData["Error"] = "يرجى إدخال اسم المنطقة";
+                return RedirectToAction(nameof(ManageCategories));
+            }
+
+            try
+            {
+                var category = new AssociationCategory { Name = name };
+                _context.AssociationCategories.Add(category);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "تمت إضافة المنطقة بنجاح";
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "حدث خطأ أثناء إضافة المنطقة";
+            }
+
+            return RedirectToAction(nameof(ManageCategories));
+        }
+
+        // تعديل فئة
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCategory(int id, string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                TempData["Error"] = "يرجى إدخال اسم المنطقة";
+                return RedirectToAction(nameof(ManageCategories));
+            }
+
+            try
+            {
+                var category = await _context.AssociationCategories.FindAsync(id);
+                if (category == null)
+                {
+                    TempData["Error"] = "المنطقة غير موجودة";
+                    return RedirectToAction(nameof(ManageCategories));
+                }
+
+                category.Name = name;
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "تم تحديث المنطقة بنجاح";
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "حدث خطأ أثناء تحديث المنطقة";
+            }
+
+            return RedirectToAction(nameof(ManageCategories));
+        }
+
+        // حذف فئة
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            try
+            {
+                var category = await _context.AssociationCategories
+                    .Include(c => c.CulturalAssociations)
+                    .FirstOrDefaultAsync(c => c.CategoryId == id);
+
+                if (category == null)
+                {
+                    TempData["Error"] = "المنطقة غير موجودة";
+                    return RedirectToAction(nameof(ManageCategories));
+                }
+
+                if (category.CulturalAssociations.Any())
+                {
+                    TempData["Error"] = "لا يمكن حذف المنطقة لأنها تحتوي على هيئات ثقافية";
+                    return RedirectToAction(nameof(ManageCategories));
+                }
+
+                _context.AssociationCategories.Remove(category);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "تم حذف المنطقة بنجاح";
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "حدث خطأ أثناء حذف المنطقة";
+            }
+
+            return RedirectToAction(nameof(ManageCategories));
+        }
     }
 }

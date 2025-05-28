@@ -3,6 +3,7 @@ using Ajloun_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using Ajloun_Project.Services;
 
 namespace Ajloun_Project.Controllers
 {
@@ -10,11 +11,13 @@ namespace Ajloun_Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly MyDbContext _context; // ? ??? DbContext
+        private readonly IEmailService _emailService;
 
-        public HomeController(ILogger<HomeController> logger, MyDbContext context)
+        public HomeController(ILogger<HomeController> logger, MyDbContext context, IEmailService emailService)
         {
             _logger = logger;
             _context = context;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -95,6 +98,54 @@ namespace Ajloun_Project.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        // إضافة إجراء جديد لصفحة About Us
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact(ContactViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var emailBody = $@"
+                <h3>رسالة جديدة من نموذج الاتصال</h3>
+                <p><strong>الاسم:</strong> {model.Name}</p>
+                <p><strong>البريد الإلكتروني:</strong> {model.Email}</p>
+                <p><strong>رقم الهاتف:</strong> {model.Phone}</p>
+                <p><strong>الموضوع:</strong> {model.Subject}</p>
+                <p><strong>الرسالة:</strong></p>
+                <p>{model.Message}</p>";
+
+            var success = await _emailService.SendEmailAsync(
+                $"رسالة جديدة: {model.Subject}",
+                emailBody,
+                model.Email,
+                model.Name
+            );
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "تم إرسال رسالتك بنجاح. سنتواصل معك قريباً.";
+                return RedirectToAction(nameof(Contact));
+            }
+            else
+            {
+                ModelState.AddModelError("", "حدث خطأ أثناء إرسال الرسالة. الرجاء المحاولة مرة أخرى.");
+                return View(model);
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

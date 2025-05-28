@@ -19,7 +19,7 @@
                 <p class="mb-0">مديرية ثقافة عجلون</p>
             </div>
             <div class="col-md-4 text-end">
-                <a asp-action="CulturalAssociations" class="btn btn-light">
+                <a asp-controller="Admin" asp-action="CulturalAssociations" class="btn btn-light">
                     <i class="fas fa-arrow-right"></i> العودة إلى الهيئات الثقافية
                 </a>
             </div>
@@ -33,7 +33,7 @@
                     <h5 class="card-title mb-0">إضافة منطقة جديدة</h5>
                 </div>
                 <div class="card-body">
-                    <form asp-action="AddCategory" method="post">
+                    <form asp-controller="Admin" asp-action="AddCategory" method="post">
                         @Html.AntiForgeryToken()
                         <div class="mb-3">
                             <label for="Name" class="form-label">اسم المنطقة</label>
@@ -74,10 +74,14 @@
                                         <td>@category.CulturalAssociations.Count</td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="@Url.Action("EditCategory", "Admin", new { id = category.CategoryId })" class="btn btn-sm btn-primary">
+                                                <button type="button" class="btn btn-sm btn-primary edit-category" 
+                                                        data-id="@category.CategoryId" 
+                                                        data-name="@category.Name">
                                                     <i class="fas fa-edit"></i> تعديل
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-danger delete-category" data-id="@category.CategoryId" data-name="@category.Name">
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger delete-category" 
+                                                        data-id="@category.CategoryId" 
+                                                        data-name="@category.Name">
                                                     <i class="fas fa-trash"></i> حذف
                                                 </button>
                                             </div>
@@ -93,24 +97,48 @@
     </div>
 </div>
 
-@section Scripts {
-    <!-- نموذج حذف مخفي -->
-    <form id="deleteForm" asp-action="DeleteCategory" method="post" style="display: none;">
-        @Html.AntiForgeryToken()
-        <input type="hidden" id="categoryId" name="id" value="" />
-    </form>
+<!-- نموذج التعديل المنبثق -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تعديل المنطقة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editForm" asp-controller="Admin" asp-action="EditCategory" method="post">
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="editCategoryId" name="id" />
+                    <div class="mb-3">
+                        <label for="editName" class="form-label">اسم المنطقة</label>
+                        <input type="text" id="editName" name="name" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+<!-- نموذج الحذف -->
+<form id="deleteForm" asp-controller="Admin" asp-action="DeleteCategory" method="post" style="display: none;">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="categoryId" name="id" value="" />
+</form>
+
+@section Scripts {
     <script>
-        // إظهار رسائل النجاح والخطأ باستخدام SweetAlert
         $(document).ready(function () {
-            // تحقق من وجود رسائل نجاح أو خطأ
+            // رسائل النجاح والخطأ
             @if (TempData["Success"] != null)
             {
                 <text>
                 Swal.fire({
                     icon: 'success',
                     title: 'تم بنجاح',
-                    text: '',
                     confirmButtonText: 'حسناً'
                 });
                 </text>
@@ -121,33 +149,44 @@
                 <text>
                 Swal.fire({
                     icon: 'error',
-                    title: 'حدث خطأ',
-                    text: '',
+                    title: 'خطأ',
+                    text: 'تأكد من عدم وجود هيئات تابعة لهذه المنطقة قبل الحذف',
                     confirmButtonText: 'حسناً'
                 });
                 </text>
             }
-        });
 
-        // تفعيل SweetAlert لتأكيد الحذف
-        $('.delete-category').click(function () {
-            const categoryId = $(this).data('id');
-            const categoryName = $(this).data('name');
-            
-            Swal.fire({
-                title: 'هل أنت متأكد؟',
-                text: `هل تريد حذف المنطقة "${categoryName}"؟`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'نعم، احذف!',
-                cancelButtonText: 'إلغاء'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#categoryId').val(categoryId);
-                    $('#deleteForm').submit();
-                }
+            // تفعيل زر التعديل
+            $('.edit-category').click(function () {
+                const categoryId = $(this).data('id');
+                const categoryName = $(this).data('name');
+                
+                $('#editCategoryId').val(categoryId);
+                $('#editName').val(categoryName);
+                
+                new bootstrap.Modal($('#editModal')).show();
+            });
+
+            // تفعيل زر الحذف
+            $('.delete-category').click(function () {
+                const categoryId = $(this).data('id');
+                const categoryName = $(this).data('name');
+                
+                Swal.fire({
+                    title: 'هل أنت متأكد؟',
+                    text: `هل تريد حذف المنطقة "${categoryName}"؟`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'نعم، احذف!',
+                    cancelButtonText: 'إلغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#categoryId').val(categoryId);
+                        $('#deleteForm').submit();
+                    }
+                });
             });
         });
     </script>
