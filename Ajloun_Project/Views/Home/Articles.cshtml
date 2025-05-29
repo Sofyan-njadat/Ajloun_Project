@@ -5,7 +5,7 @@
 }
 @model List<Ajloun_Project.Models.Article>
 @{
-    ViewData["Title"] = "المقالات";
+    ViewData["Title"] = "المجلّة";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var categories = Model.Select(a => a.Category).Distinct().ToList();
 }
@@ -197,8 +197,8 @@
 <div class="modern-header">
     <div class="overlay">
         <div class="header-content">
-            <h1>المقالات</h1>
-            <p class="subtitle">المقالات الثقافية والأدبية والتاريخية</p>
+            <h1>المجلّة</h1>
+            <p class="subtitle">مجلة المعارف والفنون</p>
         </div>
     </div>
 </div>
@@ -207,7 +207,7 @@
         <!-- البحث -->
     <div class="search-container">
                 <form method="get" asp-controller="Home" asp-action="Articles" class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="🔍 ابحث عن مقال..." value="@(Context.Request.Query["search"])" />
+            <input type="text" name="search" class="form-control" placeholder="🔍 ابحث عن مجلّة..." value="@(Context.Request.Query["search"])" />
             <button type="submit" class="btn">بحث</button>
                 </form>
         </div>
@@ -254,6 +254,6 @@
         }
         else
         {
-            <div class="alert alert-info text-center">لا توجد مقالات لعرضها حاليًا.</div>
+        <div class="alert alert-info text-center">لا توجد مجلّات لعرضها حاليًا.</div>
         }
     </div>

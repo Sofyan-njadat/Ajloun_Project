@@ -336,13 +336,14 @@
         </form>
     </div>
 
-    <div class="d-flex justify-content-end mb-4">
+    <div class="d-flex justify-content-end gap-3 mb-4">
         <a href="@Url.Action("CreateAssociation")" class="join-request-btn">
             <i class="fas fa-plus-circle"></i>
             طلب انضمام هيئة جديدة
         </a>
-    </div>
 
+      
+    </div>
     <div class="associations-container">
         @foreach (var association in Model)
         {
