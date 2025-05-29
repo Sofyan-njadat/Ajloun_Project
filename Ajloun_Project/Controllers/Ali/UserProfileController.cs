@@ -101,7 +101,7 @@ namespace Ajloun_Project.Controllers.Ali
             return View(orders);
         }
 
-        public async Task<IActionResult> UserFestivalReservations()
+        public async Task<IActionResult> UserFestivalReservation()
         {
             var userId = GetUserId();
             if (userId == null)

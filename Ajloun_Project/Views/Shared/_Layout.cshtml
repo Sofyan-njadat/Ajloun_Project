@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     Layout = null;
     var userId = Context.Session.GetInt32("userId");
 }
@@ -90,43 +90,39 @@
 
         /* تعديلات للجوال */
         @@media (max-width: 991px) {
-            .auth-btn
-
-        {
-            width: 32px;
-            height: 32px;
-            font-size: 0.9rem !important;
-        }
-
-        /* تحسين الـ responsive للـ dropdown */
-        .dropdown {
-            position: relative;
-            width: 100%;
-        }
-
-        .dropdown-content {
-            position: relative; /* لتجنب مشاكل الموضع في الـ responsive */
-            width: 100%;
-            background-color: #2E3A2A; /* نفس لون الـ navbar */
-            color: #fff; /* لون النصوص */
-            z-index: 1001; /* نفس الـ z-index */
-        }
-
-            .dropdown-content a {
-                color: #fff !important;
-                padding: 10px 20px;
-                display: block;
-                text-align: right;
+            .auth-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem !important;
+            }
+            /* تحسين الـ responsive للـ dropdown */
+            .dropdown {
+                position: relative;
+                width: 100%;
             }
 
-        .dropdown:hover .dropdown-content {
-            display: none; /* لأننا في الجوال نعتمد على النقر */
-        }
+            .dropdown-content {
+                position: relative; /* لتجنب مشاكل الموضع في الـ responsive */
+                width: 100%;
+                background-color: #2E3A2A; /* نفس لون الـ navbar */
+                color: #fff; /* لون النصوص */
+                z-index: 1001; /* نفس الـ z-index */
+            }
 
-        .dropdown.active .dropdown-content {
-            display: block; /* يظهر عند النقر */
-        }
+                .dropdown-content a {
+                    color: #fff !important;
+                    padding: 10px 20px;
+                    display: block;
+                    text-align: right;
+                }
 
+            .dropdown:hover .dropdown-content {
+                display: none; /* لأننا في الجوال نعتمد على النقر */
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block; /* يظهر عند النقر */
+            }
         }
 
         .dropdown-content {
@@ -134,8 +130,10 @@
             position: absolute;
         }
 
-      
+        .dropdown-content {
+            overflow: visible!important;
         }
+
     </style>
 </head>
 <body>
@@ -149,8 +147,8 @@
             <div class="dropdown">
                 <a href="#">المكتبة</a>
                 <div class="dropdown-content">
-                    <a asp-controller="Library" asp-action="Index">عرض الكتب</a>
-                    <a asp-controller="Home" asp-action="Articles">المقالات</a>
+                    <a asp-controller="Library" asp-action="Index">المكتبة العامة</a>
+                    <a asp-controller="Home" asp-action="Articles">المجلة</a>
                     <a asp-controller="ArtWorks" asp-action="ArtWorks">الأعمال الفنية</a>
                 </div>
             </div>
@@ -158,8 +156,12 @@
             <div class="dropdown">
                 <a href="#">الدورات</a>
                 <div class="dropdown-content">
-                    <a asp-controller="Category" asp-action="Index">قائمة الدورات</a>
+                    <a asp-controller="Category" asp-action="Index">الورشات التدريبية</a>
                     <a asp-controller="UserProfile" asp-action="UserCourseApplications">دوراتي</a>
+                    <a asp-controller="UserPosts" asp-action="Create">بماذا تفكر</a>
+                    <a asp-controller="UserPosts" asp-action="PublicLibrary"> المشاركات الثقافية</a>
+
+
                 </div>
             </div>
 
@@ -167,7 +169,7 @@
                 <a href="#">الأنشطة الثقافية</a>
                 <div class="dropdown-content">
                     <a asp-controller="Festivals" asp-action="Festivals">المهرجانات</a>
-                    <a asp-controller="Association" asp-action="AllAssociation">الهيئات الثقافية</a>
+                    <a asp-controller="Association" asp-action="AllAssociation">نافذة على الهيئات الثقافية</a>
                     <a asp-controller="Events" asp-action="Events">الفعاليات</a>
                     <a asp-controller="Handicrafts" asp-action="Index">الحرف اليدوية</a>
                 </div>
@@ -176,12 +178,12 @@
             <div class="dropdown">
                 <a href="#">المحتوى</a>
                 <div class="dropdown-content">
-                    <a asp-controller="News" asp-action="Index">الأخبار</a>
+                    <a asp-controller="News" asp-action="Index">الإعلانات</a>
                     <a asp-controller="Gallery" asp-action="Gallery">معرض الصور</a>
                 </div>
             </div>
 
-            <a asp-controller="TimeLine" asp-action="TimeLine">سردية عجلون</a>
+            <a asp-controller="TimeLine" asp-action="TimeLine">عجلون عبر العصور</a>
 
             <!-- قسم تسجيل الدخول/الخروج -->
             <div class="mobile-auth translate-auth">
@@ -217,20 +219,20 @@
         <div class="footer-columns">
             <div class="footer-col">
                 <h4>المكتبة</h4>
-                <a href="/Library">عرض الكتب</a>
-                <a href="/Home/Articles">المقالات</a>
+                <a href="/Library"> المكتبة العامة</a>
+                <a href="/Home/Articles">المجلة</a>
                 <a href="/ArtWorks/Artिं:ArtWorks">الأعمال الفنية</a>
             </div>
             <div class="footer-col">
                 <h4>الدورات</h4>
-                <a href="/Category">قائمة الدورات</a>
+                <a href="/Category">الورشات التدريبية</a>
                 <a href="/UserProfile/UserCourseApplications">دوراتي</a>
             </div>
             <div class="footer-col">
                 <h4>روابط عامة</h4>
                 <a href="/">الرئيسية</a>
                 <a href="/TimeLine">الجدول الزمني</a>
-                <a href="/News">الأخبار</a>
+                <a href="/News">الإعلانات</a>
                 <a href="/Gallery">معرض الصور</a>
             </div>
         </div>

@@ -1,9 +1,9 @@
-﻿@model IEnumerable<Ajloun_Project.Models.BookReservation>
+﻿@model IEnumerable<Ajloun_Project.Models.FestivalReservation>
 @inject Ajloun_Project.Models.MyDbContext _context
 
 @{
     Layout = "~/Views/Shared/_LayoutUserProfile.cshtml";
-    ViewData["Title"] = "حجوزات الكتب";
+    ViewData["Title"] = "حجوزات المهرجانات";
 
     int userId = Context.Session.GetInt32("userId") ?? 1;
     var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
@@ -19,7 +19,7 @@
             --text-light: #4a4a6a;
         }
 
-        .book-card {
+        .festival-card {
             background-color: white;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -29,19 +29,19 @@
             transition: all 0.2s ease;
         }
 
-            .book-card:hover {
+            .festival-card:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
             }
-     
-        .book-title {
+
+        .festival-title {
             font-weight: 700;
             font-size: 18px;
             color: var(--primary);
             margin-bottom: 8px;
         }
 
-        .book-meta {
+        .festival-meta {
             color: var(--text-light);
             font-size: 14px;
             line-height: 1.6;
@@ -65,9 +65,9 @@
             color: #155724;
         }
 
-        .status-returned {
-            background-color: #E2E3E5;
-            color: #383D41;
+        .status-rejected {
+            background-color: #F8D7DA;
+            color: #721C24;
         }
 
         .page-title {
@@ -89,12 +89,12 @@
     </style>
 }
 
-<h2 class="page-title">حجوزات الكتب الخاصة بي</h2>
+<h2 class="page-title">حجوزات المهرجانات الخاصة بي</h2>
 
 @if (!Model.Any())
 {
     <div class="empty-message">
-        <i class="fas fa-book-open" style="font-size: 24px; color: var(--primary-light); margin-bottom: 12px;"></i>
+        <i class="fas fa-calendar-times" style="font-size: 24px; color: var(--primary-light); margin-bottom: 12px;"></i>
         <p style="margin: 0;">لا يوجد حجوزات حالياً.</p>
     </div>
 }
@@ -102,22 +102,24 @@ else
 {
     foreach (var item in Model)
     {
-        <div class="book-card">
+        <div class="festival-card">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <div class="book-title">@item.Book?.Title </div>
+                <div class="festival-title">@item.Festival?.Title</div>
                 <div class="status-badge @(item.Status switch {
                     "Pending" => "status-pending",
                     "Approved" => "status-approved",
-                    "Returned" => "status-returned",
+                    "Rejected" => "status-rejected",
                     _ => ""
                 })">
                     @item.Status
                 </div>
             </div>
-            <div class="book-meta">
-                <div><i class="far fa-calendar-alt" style="margin-left: 6px;"></i> تاريخ الحجز: @(item.ReservationDate?.ToString("dd/MM/yyyy") )</div>
-                <div><i class="fas fa-calendar-check" style="margin-left: 6px;"></i> تاريخ الاستلام: @(item.PickupDate?.ToString("dd/MM/yyyy") )</div>
-                <div><i class="fas fa-calendar-times" style="margin-left: 6px;"></i> تاريخ الإرجاع: @(item.ReturnDate?.ToString("dd/MM/yyyy") )</div>
+            <div class="festival-meta">
+                <div><i class="far fa-calendar-alt" style="margin-left: 6px;"></i> تاريخ الحجز: @(item.ReservationDate?.ToString("dd/MM/yyyy"))</div>
+                <div><i class="fas fa-map-marker-alt" style="margin-left: 6px;"></i> المكان: @item.Festival?.Location</div>
+                <div>
+                    <i class="far fa-clock" style="margin-left: 6px;"></i> تاريخ المهرجان: @(item.Festival?.StartDate.HasValue == true ? item.Festival.StartDate.Value.ToString("dd/MM/yyyy") : "")
+                </div>
             </div>
         </div>
     }

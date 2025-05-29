@@ -85,6 +85,9 @@
 
         .era-period{color:darkgoldenrod}
 
+
+
+
     </style>
 
 </head>
@@ -100,7 +103,7 @@
     <div id="timeline-progress"></div>
 
     <div class="hero" id="hero">
-        <h1 class="hero-title" data-fr="Ajloun à travers le temps">عجلون عبر الزمن</h1>
+        <h1 class="hero-title" data-fr="Ajloun à travers le temps">صفحات من تاريخ عجلون</h1>
         <h2 class="hero-subtitle" data-fr="Un voyage historique au cœur de la civilisation">رحلة تاريخية في أعماق الحضارة</h2>
         <div class="scroll-indicator" id="scrollIndicator">
             <div class="scroll-text" data-fr="Découvrez le voyage">اكتشف الرحلة</div>
@@ -372,7 +375,7 @@
         </div>
     </div>
 
-    <button id="languageToggle">🇫🇷 Français</button>
+    @* <button id="languageToggle">🇫🇷 Français</button> *@
 
     <script>
         let isArabic = true;
@@ -503,14 +506,14 @@
                     gsap.to('.hero-title', {
                         onComplete: () => document.querySelector('.hero-title').classList.add('visible')
                     });
-                    gsap.to('.hero-subtitle', {
-                        opacity: 1,
-                        y: 0,
-                        duration: 1,
-                        delay: 0.8,
-                        ease: 'power2.out',
-                        onComplete: () => document.querySelector('.hero-subtitle').classList.add('visible')
-                    });
+                    // gsap.to('.hero-subtitle', {
+                    //     opacity: 1,
+                    //     y: 0,
+                    //     duration: 1,
+                    //     delay: 0.8,
+                    //     ease: 'power2.out',
+                    //     onComplete: () => document.querySelector('.hero-subtitle').classList.add('visible')
+                    // });
                     gsap.to('.scroll-indicator', {
                         opacity: 1,
                         y: 0,

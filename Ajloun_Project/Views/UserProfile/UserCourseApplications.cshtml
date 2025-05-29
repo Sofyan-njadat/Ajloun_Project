@@ -142,7 +142,7 @@ else
     {
         <div class="course-card">
             <div class="course-header">
-                <h3 class="course-title">@item.Course?.Name ?? "دورة غير معروفة"</h3>
+                <h3 class="course-title">@item.Course?.Name </h3>
                 <div class="status-badge @(item.Status switch {
                     "Approved" => "status-approved",
                     "Rejected" => "status-rejected",
@@ -166,11 +166,11 @@ else
             <div class="course-meta">
                 <div class="meta-item">
                     <i class="fas fa-users"></i>
-                    <span>الفئة العمرية: @item.Course?.AgeRange ?? "-"</span>
+                    <span>الفئة العمرية: @item.Course?.AgeRange </span>
                 </div>
                 <div class="meta-item">
                     <i class="far fa-calendar-alt"></i>
-                    <span>تاريخ التقديم: @(item.SubmittedAt?.ToString("dd/MM/yyyy") ?? "-")</span>
+                    <span>تاريخ التقديم: @(item.SubmittedAt?.ToString("dd/MM/yyyy")) </span>
                 </div>
             </div>
         </div>
