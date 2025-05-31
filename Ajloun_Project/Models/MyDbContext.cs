@@ -59,6 +59,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<UserPost> UserPosts { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=DESKTOP-GTJ4IDU;Database=AjlounCultureDB;Trusted_Connection=True;TrustServerCertificate=True;");
@@ -404,6 +406,28 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.PasswordHash).HasMaxLength(255);
             entity.Property(e => e.Phone).HasMaxLength(20);
             entity.Property(e => e.ProfileImage).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<UserPost>(entity =>
+        {
+            entity.HasKey(e => e.PostId).HasName("PK__UserPost__AA126018853DA23B");
+
+            entity.Property(e => e.Category).HasMaxLength(100);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.FilePath)
+                .HasMaxLength(300)
+                .HasDefaultValue("");
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .HasDefaultValue("Draft");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserPosts)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__UserPosts__UserI__18EBB532");
         });
 
         OnModelCreatingPartial(modelBuilder);
