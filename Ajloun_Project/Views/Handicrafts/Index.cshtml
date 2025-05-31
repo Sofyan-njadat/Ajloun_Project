@@ -60,8 +60,8 @@
 <div class="modern-header">
     <div class="overlay">
         <div class="header-content">
-            <h1>الحرف اليدوية</h1>
-            <p class="subtitle">اكتشف الحرف اليدوية التقليدية في محافظة عجلون</p>
+            <h1>الصناعات الثقافية </h1>
+            <p class="subtitle">اكتشف الحرفيين المهرة في محافظة عجلون</p>
         </div>
     </div>
 </div>
@@ -85,7 +85,6 @@
                 </div>
             }
 
-
             <!-- Filter by Category -->
             <div class="category-filter text-center mb-4">
                 <form method="get" action="@Url.Action("Index")" class="d-flex justify-content-center">
@@ -99,11 +98,6 @@
                         }
                     </select>
                 </form>
-                <div class="text-center mt-4">
-                    <a href="@Url.Action("MyOrders")" class="btn btn-secondary view-orders-btn">
-                        <i class="fas fa-shopping-bag"></i> طلباتي
-                    </a>
-                </div>
             </div>
         </div>
     </div>
@@ -126,17 +120,9 @@
                     <div class="craft-info">
                         <h3>@item.Title</h3>
                         <div class="category-tag">@item.Category</div>
-                        <div class="price">@item.Price jd</div>
-                        <p class="stock @(item.Stock > 0 ? "in-stock" : "out-of-stock")">
-                            @if (item.Stock > 0)
-                            {
-                                <span>متوفر (@item.Stock قطعة)</span>
-                            }
-                            else
-                            {
-                                <span>غير متوفر</span>
-                            }
-                        </p>
+                        <div class="craft-description">
+                            <p>@item.Description</p>
+                        </div>
                         <a href="@Url.Action("Details", new { id = item.CraftId })" class="btn btn-primary view-details-btn">
                             عرض التفاصيل
                         </a>
@@ -152,8 +138,6 @@
             <h3 class="text-muted">لا توجد حرف يدوية في هذه الفئة</h3>
         </div>
     }
-
-
 </div>
 
 <style>
@@ -213,24 +197,11 @@
         margin-bottom: 10px;
     }
 
-    .price {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: var(--primary, #1E2F23);
-        margin-bottom: 15px;
-    }
-
-    .stock {
+    .craft-description {
         margin-bottom: 20px;
-        font-weight: 500;
-    }
-
-    .in-stock {
-        color: #4CAF50;
-    }
-
-    .out-of-stock {
-        color: #F44336;
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.5;
     }
 
     .view-details-btn {
@@ -269,18 +240,6 @@
         background-position: right 15px center;
         background-size: 20px;
         padding-right: 45px;
-    }
-
-    .view-orders-btn {
-        padding: 10px 25px;
-        border-radius: 25px;
-        font-weight: 500;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
-    }
-
-    .view-orders-btn:hover {
-        transform: translateY(-2px);
     }
 
     @@media (max-width: 768px) {
