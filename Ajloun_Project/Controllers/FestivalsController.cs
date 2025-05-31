@@ -245,13 +245,23 @@ namespace Ajloun_Project.Areas.Admin.Controllers
 
             reservation.UserId = userId.Value;
 
+            // ✅ التحقق من وجود حجز سابق لنفس المستخدم في نفس التاريخ والمهرجان
+            bool alreadyBooked = await _context.FestivalReservations
+                .AnyAsync(r => r.UserId == reservation.UserId
+                            && r.FestivalId == reservation.FestivalId
+                            && r.AttendanceDate == reservation.AttendanceDate);
+
+            if (alreadyBooked)
+            {
+                TempData["ErrorMessage"] = "لقد قمت بالفعل بالحجز لهذا التاريخ.";
+                return RedirectToAction("Festivals");
+            }
+
+            // إذا لم يكن هناك حجز مسبق
             _context.FestivalReservations.Add(reservation);
             await _context.SaveChangesAsync();
 
-            ViewBag.UserId = HttpContext.Session.GetInt32("userId");
-
             TempData["SuccessMessage"] = "تم تسجيل مشاركتك بنجاح في المهرجان!";
-
             return RedirectToAction("Festivals");
         }
     }

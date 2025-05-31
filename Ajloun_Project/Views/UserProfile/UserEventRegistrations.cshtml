@@ -114,16 +114,16 @@ else
     {
         <div class="assoc-event-card">
             <div class="assoc-event-header">
-                <h3 class="assoc-event-title">@item.AssocEvent?.Title ?? "فعالية غير معروفة"</h3>
+                <h3 class="assoc-event-title">@item.AssocEvent?.Title </h3>
             </div>
             <div class="assoc-event-meta">
                 <div class="meta-item">
                     <i class="far fa-calendar-check"></i>
-                    <span>تاريخ الحجز: @(item.RegisteredAt?.ToString("dd/MM/yyyy") ?? "-")</span>
+                    <span>تاريخ الحجز: @(item.RegisteredAt?.ToString("dd/MM/yyyy") )</span>
                 </div>
                 <div class="meta-item">
                     <i class="fas fa-calendar-day"></i>
-                    <span>تاريخ الفعالية: @(item.AssocEvent?.Date.ToString("dd/MM/yyyy") ?? "-")</span>
+                    <span>تاريخ الفعالية: @(item.AssocEvent?.Date.ToString("dd/MM/yyyy") )</span>
                 </div>
             </div>
         </div>

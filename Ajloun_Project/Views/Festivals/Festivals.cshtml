@@ -204,6 +204,12 @@
                             @TempData["SuccessMessage"]
                         </div>
                     }
+                    else if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">تأكيد الحجز</button>
                     </div>
@@ -271,12 +277,13 @@
 
         $(document).ready(function() {
             var successMessage = '@TempData["SuccessMessage"]';
-            if (successMessage) {
+            var errorMessage = '@TempData["ErrorMessage"]';
+            if (successMessage || errorMessage) {
                 $('#reservationModal').modal('show');
 
                 setTimeout(function() {
                     $('#reservationModal').modal('hide');
-                }, 1500);
+                }, 2000);
             }
         });
     </script>

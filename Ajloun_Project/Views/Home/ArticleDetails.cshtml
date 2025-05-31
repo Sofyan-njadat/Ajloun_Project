@@ -31,7 +31,7 @@
     <main class="article-details container">
         <h1>@Model.Title</h1>
         <p class="article-meta">الفئة: @Model.Category | الكاتب: @Model.AuthorName | @Model.PublishDate.ToString("dd MMMM yyyy")</p>
-        <img src="@Model.CoverImageUrl" alt="صورة المقال" class="article-cover" />
+        <img src="@Model.CoverImageUrl" alt="صورة المجلّة" class="article-cover" />
         <div class="article-content">
             @Html.Raw(Model.Content)
         </div>

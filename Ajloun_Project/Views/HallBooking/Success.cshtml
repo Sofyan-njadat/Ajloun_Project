@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "تم الإرسال";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-success mt-5 text-center">
+    <h4 class="alert-heading">✅ تم إرسال طلب الحجز بنجاح!</h4>
+    <p class="mt-3">سيتم تحويلك تلقائيًا إلى صفحة حجز المسرح بعد لحظات...</p>
+</div>
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            window.location.href = '/HallBooking/Create';
+        }, 3000);
+    </script>
+}
