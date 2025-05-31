@@ -179,8 +179,10 @@ namespace Ajloun_Project.Controllers.Ali
             {
                 content = post.Content,
                 category = post.Category,
-                user = new { fullName = post.User?.FullName,
-                 email = post.User?.Email,
+                user = new
+                {
+                    fullName = post.User?.FullName,
+                    email = post.User?.Email,
                     phone = post.User?.Phone
                 },
                 filePath = post.FilePath,
