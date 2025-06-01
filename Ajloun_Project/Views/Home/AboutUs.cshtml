@@ -24,16 +24,189 @@
 
     <link rel="stylesheet" href="~/css/index.css">
 
+    <style>
+        .modern-header {
+            background: linear-gradient(135deg, #1E2F23 0%, #355E3B 50%, #4f9d69 100%);
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            border-top: 25px solid #1E2F23;
+            border-bottom: 25px solid #1E2F23;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .overlay {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(53, 94, 59, 0.8);
+        }
+
+        .header-content {
+            color: white;
+            z-index: 1;
+            padding: 0 20px;
+        }
+
+        .header-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #FFE15D;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .header-content .subtitle {
+            font-size: 1.5rem;
+            color: white;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-weight: 600;
+        }
+
+        @@media (max-width: 768px) {
+            .modern-header {
+                height: 200px;
+                margin-bottom: 20px;
+            }
+
+            .header-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .header-content .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.1);
+        }
+
+        .service-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .service-icon {
+            width: 65px;
+            height: 65px;
+            background: #186a30;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .service-icon i {
+                font-size: 40px;
+                color: #ffda00;
+        }
+
+        .service-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+
+        .service-content p {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 0;
+            flex: 1;
+        }
+
+        @@media (max-width: 1200px) {
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @@media (max-width: 992px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .service-card {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+
 </head>
 <body class="lang-ar">
 
     <!-- Hero Section -->
-    <section class="hero" id="aboutus-hero" style="margin-top:-2vw;">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h3 class="hero-subtitle" data-ar="مرحبا بكم في" data-en="Welcome to">مرحبا بكم في</h3>
-            <h1 class="hero-title" data-ar="صفحة من نحن" data-en="About Us Page" style="color:white;">صفحة من نحن</h1>
-            <p class="hero-text" data-ar="نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي." data-en="We work to promote and disseminate culture and arts in Ajloun Governorate, support local talents, and preserve cultural heritage.">نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
+    <section class="modern-header">
+        <div class="overlay">
+            <div class="header-content">
+                <h1>من نحن</h1>
+                <p class="subtitle">تعمل المديرية على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
+            </div>
         </div>
     </section>
 
@@ -95,25 +268,27 @@
     <section class="section services" id="aboutus-services">
         <div class="container">
             <div class="services-header">
-                <h2 class="section-title" data-ar="خدماتنا الثقافية" data-en="Our Cultural Services">خدماتنا الثقافية</h2><br /> <br />
+                <h2 class="section-title" data-ar="الخدمات الثقافية" data-en="Our Cultural Services">الخدمات الثقافية</h2><br /> <br />
                 <p data-ar="نقدم مجموعة متنوعة من الخدمات الثقافية والفنية لأهالي محافظة عجلون" data-en="We provide a variety of cultural and artistic services for the people of Ajloun Governorate">نقدم مجموعة متنوعة من الخدمات الثقافية والفنية لأهالي محافظة عجلون</p>
             </div>
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Art Exhibitions" />
+                        <img src="https://library.yu.edu.jo/images/Library/Art/pic15.jpg" alt="Art Exhibitions" />
                     </div>
                     <div class="service-content">
-                        <div class="service-icon">
-                            <i class="fas fa-paint-brush"></i>
+                        <div class="service-header">
+                            <div class="service-icon">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <h3 class="service-title">المعارض الفنية</h3>
                         </div>
-                        <h3 class="service-title" data-ar="المعارض الفنية" data-en="Art Exhibitions">المعارض الفنية</h3>
-                        <p data-ar="تنظيم معارض للفنون التشكيلية والخط العربي والتصوير الفوتوغرافي لعرض أعمال الفنانين المحليين." data-en="Organizing exhibitions of fine arts, Arabic calligraphy and photography to display the works of local artists.">تنظيم معارض للفنون التشكيلية والخط العربي والتصوير الفوتوغرافي لعرض أعمال الفنانين المحليين.</p>
+                        <p>تنظيم معارض للفنون التشكيلية والخط العربي والتصوير الفوتوغرافي لعرض أعمال الفنانين المحليين.</p>
                     </div>
                 </div>
                 <div class="service-card">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Festivals" />
+                        <img src="https://culture.gov.jo/EBV4.0/Root_Storage/AR/EBnews/16-12-2024-2.jpg" alt="Cultural Festivals" />
                     </div>
                     <div class="service-content">
                         <div class="service-icon">
@@ -125,7 +300,7 @@
                 </div>
                 <div class="service-card">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Training Courses" />
+                        <img src="https://www.lifeskillsinstitute.org/wp-content/uploads/2019/06/DSC07959-1024x576-1-1024x576.jpg" alt="Training Courses" />
                     </div>
                     <div class="service-content">
                         <div class="service-icon">
@@ -149,7 +324,7 @@
                 </div>
                 <div class="service-card">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Workshops" />
+                        <img src="https://sis.gov.eg/Content/Upload/slider/7201725134254339.jpg" alt="Cultural Workshops" />
                     </div>
                     <div class="service-content">
                         <div class="service-icon">
@@ -161,7 +336,7 @@
                 </div>
                 <div class="service-card">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Events" />
+                        <img src="https://alghad.com/Content/Upload/Large/7202418215453369278790.jpg" alt="Cultural Events" />
                     </div>
                     <div class="service-content">
                         <div class="service-icon">
@@ -174,30 +349,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Statistics Section -->
-    @* <section class="section stats" style="height:28vw;"> *@
-    @*     <div class="container"> *@
-    @*         <div class="stats-grid"> *@
-    @*             <div class="stat-item"> *@
-    @*                 <div class="stat-number" data-count="120">0</div> *@
-    @*                 <div class="stat-text" data-ar="فعالية سنوياً" data-en="Annual Events">فعالية سنوياً</div> *@
-    @*             </div> *@
-    @*             <div class="stat-item"> *@
-    @*                 <div class="stat-number" data-count="50">0</div> *@
-    @*                 <div class="stat-text" data-ar="ورشة عمل" data-en="Workshops">ورشة عمل</div> *@
-    @*             </div> *@
-    @*             <div class="stat-item"> *@
-    @*                 <div class="stat-number" data-count="200">0</div> *@
-    @*                 <div class="stat-text" data-ar="فنان مشارك" data-en="Participating Artists">فنان مشارك</div> *@
-    @*             </div> *@
-    @*             <div class="stat-item"> *@
-    @*                 <div class="stat-number" data-count="10">0</div> *@
-    @*                 <div class="stat-text" data-ar="مهرجان سنوي" data-en="Annual Festivals">مهرجان سنوي</div> *@
-    @*             </div> *@
-    @*         </div> *@
-    @*     </div> *@
-    @* </section> *@
 
 </body>
 </html> 

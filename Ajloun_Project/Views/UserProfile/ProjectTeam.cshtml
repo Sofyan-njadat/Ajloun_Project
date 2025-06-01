@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Students";
+	ViewData["Title"] = "Students";
 }
 
 <!-- Bootstrap CSS -->
@@ -10,368 +10,418 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 
 <style>
-    :root {
-        --primary: #355E3B; /* Forest Green */
-        --secondary: #A9BA9D; /* Moss Green */
-        --accent: #E3D26F; /* Light Gold */
-        --dark: #1E2F23; /* Deep Earth */
-        --light: #EFF5EC; /* Mint White */
-        --text: #2D2D2D; /* Dark Gray Text */
-        --text-light: #6B6B6B; /* Light Gray Text */
-        --white: #FFFFFF;
-        --black: #000000;
-        --overlay: rgba(0, 0, 0, 0.5);
-    }
+	:root {
+		--primary: #355E3B; /* Forest Green */
+		--secondary: #A9BA9D; /* Moss Green */
+		--accent: #E3D26F; /* Light Gold */
+		--dark: #1E2F23; /* Deep Earth */
+		--light: #EFF5EC; /* Mint White */
+		--text: #2D2D2D; /* Dark Gray Text */
+		--text-light: #6B6B6B; /* Light Gray Text */
+		--white: #FFFFFF;
+		--black: #000000;
+		--overlay: rgba(0, 0, 0, 0.5);
+	}
 
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
-        min-height: 100vh;
-        position: relative;
-        overflow-x: hidden;
-    }
+	body {
+		font-family: 'Poppins', sans-serif;
+		background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+		min-height: 100vh;
+		position: relative;
+		overflow-x: hidden;
+	}
 
-    /* Particle background */
-    .particles {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 1;
-    }
+	/* Particle background */
+	.particles {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
+	}
 
-    .particle {
-        position: absolute;
-        background: var(--accent);
-        border-radius: 50%;
-        opacity: 0.6;
-    }
+	.particle {
+		position: absolute;
+		background: var(--accent);
+		border-radius: 50%;
+		opacity: 0.6;
+	}
 
-    .container {
-        position: relative;
-        z-index: 2;
-        padding: 4rem 0;
-    }
+	.container {
+		position: relative;
+		z-index: 2;
+		padding: 4rem 0;
+	}
 
-    .section-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 3rem;
-        font-weight: 700;
-        color: var(--light);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        position: relative;
-        margin-bottom: 4rem;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-    }
+	.project-description {
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		border-radius: 15px;
+		padding: 2rem;
+		margin-bottom: 3rem;
+		color: var(--light);
+		text-align: center;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+	}
 
-        .section-title::after {
-            content: '';
-            width: 100px;
-            height: 5px;
-            background: linear-gradient(to right, var(--accent), var(--secondary));
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 3px;
-        }
+		.project-description h3 {
+			font-family: 'Playfair Display', serif;
+			font-size: 2rem;
+			margin-bottom: 1rem;
+			color: var(--accent);
+		}
 
-    .card {
-        border: none;
-        border-radius: 20px;
-        overflow: hidden;
-        background: var(--light);
-        position: relative;
-        transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
+		.project-description p {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			margin-bottom: 0;
+		}
 
-        .card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3) !important;
-        }
+	.section-title {
+		font-family: 'Playfair Display', serif;
+		font-size: 3rem;
+		font-weight: 700;
+		color: var(--light);
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		position: relative;
+		margin-bottom: 4rem;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+	}
 
-    .card-img-top {
-        height: 230px;
-        object-fit: cover;
-        transition: transform 0.4s ease;
-    }
+		.section-title::after {
+			content: '';
+			width: 100px;
+			height: 5px;
+			background: linear-gradient(to right, var(--accent), var(--secondary));
+			position: absolute;
+			bottom: -15px;
+			left: 50%;
+			transform: translateX(-50%);
+			border-radius: 3px;
+		}
 
-    .card-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 230px;
-        background: var(--overlay);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--accent);
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
+	.card {
+		border: none;
+		border-radius: 15px;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.95);
+		position: relative;
+		transition: all 0.4s ease;
+		backdrop-filter: blur(10px);
+		max-width: 280px;
+		margin: 0 auto;
+	}
 
-    .card:hover .card-overlay {
-        opacity: 1;
-    }
+		.card:hover {
+			transform: translateY(-10px) scale(1.02);
+			box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3) !important;
+		}
 
-    .card:hover .card-img-top {
-        transform: scale(1.1);
-    }
+	.card-img-top {
+		height: 200px;
+		object-fit: cover;
+		transition: transform 0.4s ease;
+	}
 
-    .card-body {
-        padding: 2rem;
-        text-align: center;
-    }
+	.card-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 250px;
+		background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--accent);
+		font-size: 1.2rem;
+		font-weight: 600;
+	}
 
-    .card-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--dark);
-        margin-bottom: 0.5rem;
-        position: relative;
-    }
+	.card:hover .card-overlay {
+		opacity: 1;
+	}
 
-        .card-title::before {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 50%;
-            background: var(--accent);
-            transition: width 0.3s ease, left 0.3s ease;
-        }
+	.card:hover .card-img-top {
+		transform: scale(1.1);
+	}
 
-    .card:hover .card-title::before {
-        width: 50%;
-        left: 25%;
-    }
+	.card-body {
+		padding: 1.5rem;
+		text-align: center;
+		background: linear-gradient(to bottom, var(--white), var(--light));
+	}
 
-    .card-text {
-        font-size: 1rem;
-        color: var(--text-light);
-        margin-bottom: 1.5rem;
-    }
+	.card-title {
+		font-family: 'Playfair Display', serif;
+		font-size: 1.4rem;
+		font-weight: 600;
+		color: var(--dark);
+		margin-bottom: 0.5rem;
+		position: relative;
+	}
 
-    .social-icons {
-        margin-top: 1rem;
-    }
+		.card-title::before {
+			content: '';
+			position: absolute;
+			width: 0;
+			height: 2px;
+			bottom: -5px;
+			left: 50%;
+			background: var(--accent);
+			transition: width 0.3s ease, left 0.3s ease;
+		}
 
-        .social-icons a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: var(--light);
-            font-size: 1.2rem;
-            margin: 0 0.5rem;
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
+	.card:hover .card-title::before {
+		width: 50%;
+		left: 25%;
+	}
 
-            .social-icons a:hover {
-                transform: scale(1.2);
-                background: var(--accent);
-            }
+	.card-text {
+		font-size: 0.9rem;
+		color: var(--text-light);
+		margin-bottom: 1rem;
+	}
+
+	.social-icons {
+		margin-top: 0.5rem;
+	}
+
+		.social-icons a {
+			display: inline-block;
+			width: 35px;
+			height: 35px;
+			line-height: 35px;
+			border-radius: 50%;
+			background: var(--primary);
+			color: var(--light);
+			font-size: 1rem;
+			margin: 0 0.3rem;
+			transition: all 0.3s ease;
+		}
+
+			.social-icons a:hover {
+				transform: scale(1.2) rotate(360deg);
+				background: var(--accent);
+				color: var(--dark);
+			}
+
+	.academy-badge {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		background: var(--accent);
+		color: var(--dark);
+		padding: 5px 10px;
+		border-radius: 20px;
+		font-size: 0.8rem;
+		font-weight: 600;
+		z-index: 1;
+	}
+
+	.row {
+		justify-content: center;
+		gap: 1.5rem;
+	}
+
+	.col {
+		padding: 0;
+		margin-bottom: 1.5rem;
+	}
+
+	@@media (max-width: 768px) {
+		.card {
+			max-width: 240px;
+		}
+		
+		.card-img-top {
+			height: 180px;
+		}
+	}
 </style>
 
 <!-- Particle background -->
 <div class="particles">
-    <div class="particle" style="width: 8px; height: 8px; left: 10%;"></div>
-    <div class="particle" style="width: 6px; height: 6px; left: 20%;"></div>
-    <div class="particle" style="width: 10px; height: 10px; left: 30%;"></div>
-    <div class="particle" style="width: 7px; height: 7px; left: 40%;"></div>
-    <div class="particle" style="width: 9px; height: 9px; left: 50%;"></div>
-    <div class="particle" style="width: 5px; height: 5px; left: 60%;"></div>
-    <div class="particle" style="width: 8px; height: 8px; left: 70%;"></div>
-    <div class="particle" style="width: 6px; height: 6px; left: 80%;"></div>
+	<div class="particle" style="width: 8px; height: 8px; left: 10%;"></div>
+	<div class="particle" style="width: 6px; height: 6px; left: 20%;"></div>
+	<div class="particle" style="width: 10px; height: 10px; left: 30%;"></div>
+	<div class="particle" style="width: 7px; height: 7px; left: 40%;"></div>
+	<div class="particle" style="width: 9px; height: 9px; left: 50%;"></div>
+	<div class="particle" style="width: 5px; height: 5px; left: 60%;"></div>
+	<div class="particle" style="width: 8px; height: 8px; left: 70%;"></div>
+	<div class="particle" style="width: 6px; height: 6px; left: 80%;"></div>
 </div>
 
 <div class="container">
-    <h2 class="section-title text-center">Our Fullstack Web Developers</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Toqa (Girl) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Toqa">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Toqa</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div class="project-description">
+		<h1 style="color:#e3d26f; padding-bottom:15px; font-weight:900"> فريق المطورين</h1>
+		<p>
+			تم تطوير هذا المشروع من قبل فريق طلاب أكاديمية أورانج للبرمجة - إربد، كجزء من برنامج التدريب العملي
+			<br />
+			يهدف المشروع إلى رقمنة وإدارة الأنشطة الثقافية والفعاليات في مديرية الثقافة - محافظة عجلون
+		</p>
+	</div>
 
-        <!-- Ali (Boy) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Ali">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Ali</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+		<!-- Toqa (Girl) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Toqa">
+				<div class="card-body">
+					<h5 class="card-title">Toqa Khashashneh</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Sofyan (Boy) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Sofyan">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Sofyan</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<!-- Ali (Boy) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Ali">
+				<div class="card-body">
+					<h5 class="card-title">Ali Smadi</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Firas (Boy) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Firas">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Firas</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<!-- Sofyan -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://media.licdn.com/dms/image/v2/D4E03AQEcV3rccBvEfg/profile-displayphoto-shrink_800_800/B4EZcpnsIbHAAc-/0/1748749962231?e=1754524800&v=beta&t=nbi0bhTtcCDelEbqrxrQuNRFtg8j8Ago0WF9MBbOYpQ" class="card-img-top" alt="Sofyan">
+				<div class="card-body">
+					<h5 class="card-title">Sofyan Njadat</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="https://www.linkedin.com/in/sofyan-njadat" target="_blank">
+							<i class="fab fa-linkedin"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Ahmad (Boy) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Ahmad">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Ahmad</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<!-- Firas (Boy) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Firas">
+				<div class="card-body">
+					<h5 class="card-title">Firas Abu Mallouh</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Hazem (Boy) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Hazem">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Hazem</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<!-- Ahmad (Boy) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Ahmad">
+				<div class="card-body">
+					<h5 class="card-title">Ahmad Bani Younis</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Nada (Girl) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Nada">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Nada</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<!-- Hazem (Boy) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Hazem">
+				<div class="card-body">
+					<h5 class="card-title">Hazem Frehat</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Amal (Girl) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Amal">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Amal</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<!-- Nada (Girl) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Nada">
+				<div class="card-body">
+					<h5 class="card-title">Nada Qdesat</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Mona (Girl) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Mona">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Mona</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<!-- Amal (Girl) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Amal">
+				<div class="card-body">
+					<h5 class="card-title">Amal Dlqamoni</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Sura (Girl) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Sura">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Sura</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<!-- Mona (Girl) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Mona">
+				<div class="card-body">
+					<h5 class="card-title">Mona Tamimi</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Sara (Girl) -->
-        <div class="col">
-            <div class="card h-100 shadow">
-                <img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Sara">
-                <div class="card-overlay">View Profile</div>
-                <div class="card-body">
-                    <h5 class="card-title">Sara</h5>
-                    <p class="card-text">Fullstack Web Developer</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<!-- Sura (Girl) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Sura">
+				<div class="card-body">
+					<h5 class="card-title">Sura Hailat</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Sara (Girl) -->
+		<div class="col">
+			<div class="card h-100 shadow">
+				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Sara">
+				<div class="card-body">
+					<h5 class="card-title">Sara Harahsheh</h5>
+					<p class="card-text">Fullstack Web Developer</p>
+					<div class="social-icons">
+						<a href="#"><i class="fab fa-linkedin"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
