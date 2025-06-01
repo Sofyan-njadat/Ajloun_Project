@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -104,7 +103,7 @@
 
     <div class="hero" id="hero">
         <h1 class="hero-title" data-fr="Ajloun à travers le temps">صفحات من تاريخ عجلون</h1>
-        <h2 class="hero-subtitle" data-fr="Un voyage historique au cœur de la civilisation">صفحات من تاريخ عجلون(رحلة عبر العصور)</h2>
+        <h2 class="hero-subtitle" data-fr="Un voyage historique au cœur de la civilisation">رحلة عبر العصور</h2>
         <div class="scroll-indicator" id="scrollIndicator">
             <div class="scroll-text" data-fr="Découvrez le voyage">اكتشف الرحلة</div>
             <div class="scroll-arrow"></div>
@@ -225,7 +224,7 @@
 
             <div class="era theme-era-6" id="era-6">
                 <div class="era-point"></div>
-                <div ими class="era-date" data-fr="1517 ap. J.-C. - 1918 ap. J.-C.">1517 م - 1918 م</div>
+                <div class="era-date" data-fr="1517 ap. J.-C. - 1918 ap. J.-C.">1517 م - 1918 م</div>
                 <div class="era-content theme-era-6">
                     <img src="http://www.jordanhistory.com/jhlibrary_thumb/cb0450ed-31f7-11e5-9088-005056a87fe8.jpg" alt="الحكم العثماني في عجلون" class="era-image">
                     <h2 class="era-title" data-fr="La domination ottomane">الحكم العثماني</h2>
@@ -258,7 +257,7 @@
                             <p class="detail-text" data-fr="Des écoles modernes furent établies, et l'accès à l'éducation s'accrut.">تأسست المدارس النظامية الحديثة وازداد الإقبال على التعليم</p>
                         </div>
                         <div class="detail-item">
-                            <h4 class="detail-title" 橡يضيء data-fr="Infrastructures">البنية التحتية</h4>
+                            <h4 class="detail-title" data-fr="Infrastructures">البنية التحتية</h4>
                             <p class="detail-text" data-fr="Des projets de construction de routes modernes et de services de base furent lancés.">بدأت مشاريع شق الطرق الحديثة وإدخال الخدمات الأساسية</p>
                         </div>
                     </div>
@@ -371,7 +370,7 @@
     <div class="info-panel" id="infoPanel">
         <div>
             <h3 style="color: var(--gold-primary); margin-bottom: 10px;" data-fr="À propos de ce voyage">عن هذه الرحلة</h3>
-            <p data-fr="Le voyage « Ajloun à travers le temps » est une expérience interactive qui vous emmène dans un parcours historique à travers les époques clés de la région d’Ajloun, de l’Antiquité à nos jours.">رحلة "عجلون عبر الزمن" هي تجربة تفاعلية تأخذك في جولة تاريخية عبر أهم العصور والحقب التي مرت بها منطقة عجلون منذ العصور القديمة وحتى يومنا هذا.</p>
+            <p data-fr="Le voyage « Ajloun à travers le temps » est une expérience interactive qui vous emmène dans un parcours historique à travers les époques clés de la région d'Ajloun, de l'Antiquité à nos jours.">رحلة "عجلون عبر الزمن" هي تجربة تفاعلية تأخذك في جولة تاريخية عبر أهم العصور والحقب التي مرت بها منطقة عجلون منذ العصور القديمة وحتى يومنا هذا.</p>
         </div>
     </div>
 
@@ -487,33 +486,9 @@
                     document.getElementById('loading').style.display = 'none';
                     isLoading = false;
 
-                    const titleWords = document.querySelector('.hero-title').textContent.split(' ');
-                    document.querySelector('.hero-title').innerHTML = '';
-                    titleWords.forEach((word, index) => {
-                        const wordSpan = document.createElement('span');
-                        wordSpan.className = 'title-animation';
-                        wordSpan.textContent = word + ' ';
-                        document.querySelector('.hero-title').appendChild(wordSpan);
-                        gsap.to(wordSpan, {
-                            y: 0,
-                            opacity: 1,
-                            duration: 0.8,
-                            delay: 0.2 * index,
-                            ease: 'power2.out'
-                        });
-                    });
+                    // إزالة تأثيرات الحركة على العنوان
+                    document.querySelector('.hero-title').classList.add('visible');
 
-                    gsap.to('.hero-title', {
-                        onComplete: () => document.querySelector('.hero-title').classList.add('visible')
-                    });
-                    // gsap.to('.hero-subtitle', {
-                    //     opacity: 1,
-                    //     y: 0,
-                    //     duration: 1,
-                    //     delay: 0.8,
-                    //     ease: 'power2.out',
-                    //     onComplete: () => document.querySelector('.hero-subtitle').classList.add('visible')
-                    // });
                     gsap.to('.scroll-indicator', {
                         opacity: 1,
                         y: 0,
