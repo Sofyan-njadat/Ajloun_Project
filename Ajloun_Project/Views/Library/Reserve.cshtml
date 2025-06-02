@@ -4,305 +4,592 @@
 }
 
 @section Styles {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <style>
         :root {
-            --primary: #2C6E49;
-            --secondary: #F2E8CF;
-            --accent: #C7AD8F;
-            --background: #FAFAF7;
-            --text-dark: #1B1B2F;
-            --text-muted: #777;
-            --success: #4CAF50;
-            --danger: #E53935;
+            --primary-color: #2C6E49;
+            --primary-dark: #1e4d32;
+            --secondary-color: #4C9F70;
+            --light-color: #F8F9FA;
+            --accent-color: #FF9E1B;
+            --error-color: #e63946;
+            --dark-color: #212529;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         }
 
         body {
-            background-color: var(--background);
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
-            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0);
-            background-size: 40px 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            font-family: 'Cairo', sans-serif;
+            min-height: 100vh;
         }
 
-        .reserve-container {
-            max-width: 600px;
+        .form-container {
+            max-width: 800px;
             margin: 50px auto;
-            background-color: white;
+            background: #ffffff;
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.6s ease-out;
             position: relative;
-            border-top: 5px solid var(--accent);
+            overflow: hidden;
         }
 
-            .reserve-container:before {
-                content: "";
+            .form-container::before {
+                content: '';
                 position: absolute;
                 top: 0;
-                left: 0;
                 right: 0;
-                height: 5px;
-                background: linear-gradient(90deg, var(--accent), var(--primary));
+                width: 100%;
+                height: 8px;
+                background: var(--gradient-primary);
             }
 
-        .reserve-header {
+        h2 {
             text-align: center;
-            margin-bottom: 30px;
+            color: var(--primary-dark);
+            margin-bottom: 35px;
+            font-weight: 800;
             position: relative;
+            padding-bottom: 15px;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
         }
 
-            .reserve-header h2 {
-                color: var(--primary);
-                font-size: 1.8rem;
-                margin-bottom: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
+            h2::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 120px;
+                height: 4px;
+                background: var(--accent-color);
+                border-radius: 4px;
+                box-shadow: 0 2px 8px rgba(255, 158, 27, 0.4);
             }
 
-            .reserve-header p {
-                color: var(--text-muted);
-                font-size: 0.95rem;
+        label {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1.05rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e0e6ed;
+            padding: 14px 18px;
+            font-size: 1rem;
+            transition: all 0.4s;
+            height: auto;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+            .form-control:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 4px rgba(44, 110, 73, 0.2);
+                outline: none;
             }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 28px;
             position: relative;
         }
 
-        label {
+            .form-group i {
+                position: absolute;
+                left: 15px;
+                top: 45px;
+                color: var(--secondary-color);
+                font-size: 1.2rem;
+            }
+
+        .text-danger {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            margin-top: 8px;
             display: block;
-            margin-bottom: 8px;
             font-weight: 600;
-            color: var(--text-dark);
+        }
+
+        .terms-container {
+            margin: 30px 0;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background: linear-gradient(to bottom, #f9f9f9 0%, #ffffff 100%);
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+            .terms-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--gradient-primary);
+            }
+
+        .terms-title {
+            color: var(--primary-dark);
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .terms-content {
+            line-height: 1.8;
+            color: #4a5568;
             font-size: 0.95rem;
         }
 
-        .date-input-container {
-            position: relative;
-        }
-
-        .date-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--secondary);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-            .date-input:focus {
-                outline: none;
-                border-color: var(--accent);
-                box-shadow: 0 2px 12px rgba(199, 173, 143, 0.2);
+            .terms-content ol {
+                padding-right: 25px;
             }
 
-        .date-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--accent);
-            pointer-events: none;
-        }
+            .terms-content li {
+                margin-bottom: 12px;
+                position: relative;
+                padding-right: 15px;
+            }
 
-        .submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--primary), #24553a);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-top: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+                .terms-content li::before {
+                    content: '';
+                    position: absolute;
+                    right: -5px;
+                    top: 10px;
+                    width: 8px;
+                    height: 8px;
+                    background: var(--accent-color);
+                    border-radius: 50%;
+                }
+
+        .form-check {
+            margin-top: 25px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(44, 110, 73, 0.2);
+            padding: 15px;
+            background: rgba(44, 110, 73, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s;
         }
 
-            .submit-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(44, 110, 73, 0.3);
+            .form-check:hover {
+                background: rgba(44, 110, 73, 0.1);
+            }
+
+        .form-check-input {
+            width: 22px;
+            height: 22px;
+            margin-left: 12px;
+            margin-top: 0;
+            accent-color: var(--primary-color);
+            cursor: pointer;
+            border: 2px solid #ced4da;
+            transition: all 0.3s;
+        }
+
+            .form-check-input:checked {
+                margin-left: 12px;
+                background-color: var(--primary-color);
+                border-color: var(--primary-color);
+            }
+
+        .form-check-label {
+            font-size: 1rem;
+            color: var(--dark-color);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-submit {
+            margin-top: 30px;
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            transition: all 0.4s;
+            box-shadow: 0 6px 20px rgba(44, 110, 73, 0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-submit:hover {
+                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(44, 110, 73, 0.5);
+            }
+
+            .btn-submit:active {
+                transform: translateY(1px);
+            }
+
+            .btn-submit:disabled {
+                background: #adb5bd;
+                transform: none;
+                box-shadow: none;
+                cursor: not-allowed;
+            }
+
+            .btn-submit::after {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -50%;
+                width: 40px;
+                height: 200%;
+                background: rgba(255, 255, 255, 0.2);
+                transform: rotate(30deg);
+                transition: all 0.5s;
+            }
+
+            .btn-submit:hover::after {
+                right: 120%;
             }
 
         .alert {
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+            padding: 18px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid #f5c6cb;
+            font-weight: 600;
+            animation: shakeX 0.5s;
         }
 
-        .alert-danger {
-            background-color: rgba(229, 57, 53, 0.1);
-            color: var(--danger);
-            border-left: 4px solid var(--danger);
-        }
-
-        .text-danger {
-            color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 5px;
-            display: block;
-        }
-
-        /* تنسيق التقويم */
+        /* Datepicker styling */
         .ui-datepicker {
             font-family: 'Cairo', sans-serif;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 2px solid #e0e6ed;
+            animation: fadeIn 0.3s;
         }
 
         .ui-datepicker-header {
-            background: var(--primary);
+            background: var(--gradient-primary);
             color: white;
-            border-radius: 8px 8px 0 0;
+            border-radius: 10px 10px 0 0;
+            border: none;
+            font-weight: 700;
+        }
+
+        .ui-datepicker-prev, .ui-datepicker-next {
+            color: white !important;
+            top: 8px !important;
+        }
+
+        .ui-datepicker-title {
+            font-size: 1.1rem;
         }
 
         .ui-datepicker-calendar th {
-            color: var(--primary);
+            color: var(--primary-color);
+            font-weight: 700;
         }
 
-        .ui-datepicker-calendar a.ui-state-active {
-            background: var(--primary);
-            color: white;
+        .ui-datepicker-calendar td a {
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
 
-       
+            .ui-datepicker-calendar td a:hover {
+                background: var(--secondary-color) !important;
+                color: white !important;
+            }
+
+        .ui-datepicker-current-day .ui-state-active {
+            background: var(--primary-color) !important;
+            color: white !important;
+            font-weight: 700;
+        }
+
+        /* Floating labels effect */
+        .floating-label {
+            position: relative;
+        }
+
+            .floating-label label {
+                position: absolute;
+                right: 20px;
+                top: 15px;
+                transition: all 0.3s;
+                pointer-events: none;
+                color: #6c757d;
+                background: white;
+                padding: 0 5px;
+            }
+
+            .floating-label .form-control:focus + label,
+            .floating-label .form-control:not(:placeholder-shown) + label {
+                top: -10px;
+                right: 15px;
+                font-size: 0.85rem;
+                color: var(--primary-color);
+                font-weight: 700;
+            }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .form-container {
+                margin: 30px 15px;
+                padding: 30px;
+            }
+
+            h2 {
+                font-size: 1.7rem;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .form-container {
+                padding: 25px 20px;
+            }
+
+            .form-control {
+                padding: 12px 15px;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 10px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--primary-color);
+            }
+
+        .form-check .form-check-input {
+            float: left;
+            margin-left: 1.5em!important;
+        }
     </style>
 }
 
-<div class="reserve-container">
-    <div class="reserve-header">
-        <h2>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-            </svg>
-            حجز كتاب
-        </h2>
-        <p>املأ النموذج التالي لتأكيد حجز الكتاب</p>
-    </div>
+<div class="form-container animate__animated animate__fadeIn">
+    <h2>نموذج حجز كتاب</h2>
 
     @if (ViewBag.Error != null)
     {
-        <div class="alert alert-danger">@ViewBag.Error</div>
+        <div class="alert animate__animated animate__shakeX">@ViewBag.Error</div>
     }
 
     <form asp-action="Reserve" method="post" id="reservationForm">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="BookId" />
 
-        <div class="form-group">
+        <div class="form-group floating-label">
+            <input asp-for="PickupDate" class="form-control datepicker" autocomplete="off" placeholder=" " id="PickupDate" />
             <label asp-for="PickupDate">تاريخ الاستلام</label>
-            <div class="date-input-container">
-                <input asp-for="PickupDate" type="text" class="date-input" id="pickupDate" autocomplete="off" />
-                <span class="date-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                </span>
-            </div>
             <span asp-validation-for="PickupDate" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
+        <div class="form-group floating-label">
+            <input asp-for="ReturnDate" class="form-control datepicker" autocomplete="off" placeholder=" " id="ReturnDate" />
             <label asp-for="ReturnDate">تاريخ الإرجاع</label>
-            <div class="date-input-container">
-                <input asp-for="ReturnDate" type="text" class="date-input" id="returnDate" autocomplete="off" />
-                <span class="date-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                </span>
-            </div>
             <span asp-validation-for="ReturnDate" class="text-danger"></span>
         </div>
-        <div class="alert alert-warning" style="background-color: rgba(255, 193, 7, 0.15); color: #856404; border-left: 4px solid #ffc107; border-radius: 8px; padding: 15px; font-size: 0.9rem; margin-top: 30px;">
-            <h5 style="color: #856404;"><i class="fas fa-gavel me-2"></i> الشروط القانونية لاستعارة كتاب</h5>
-            <ul style="margin-top: 10px; padding-right: 20px;">
-                <li>مدة الاستعارة تبدأ من تاريخ الاستلام حتى تاريخ الإرجاع المحدد.</li>
-                <li>في حال التأخر عن إرجاع الكتاب، يتم اتخاذ الإجراءات القانونية المعتمدة.</li>
-                <li>الكتاب يجب أن يُعاد بحالة جيدة كما تم استلامه.</li>
-                <li>في حال فقدان أو تلف الكتاب، يُلزم المستعير بتعويض قيمته أو نسخه البديلة.</li>
-                <li>لا يجوز إعارة الكتاب لشخص آخر خلال فترة الحجز دون علم الإدارة.</li>
-                <li>يُمنع نسخ أو تصوير الكتاب بدون إذن مسبق من المكتبة.</li>
-            </ul>
+
+        <!-- قسم الشروط القانونية -->
+        <div class="terms-container">
+            <h4 class="terms-title">شروط وتعهدات حجز الكتاب</h4>
+            <div class="terms-content">
+                <ol>
+                    <li>أتعهد بالحفاظ على الكتاب المستعار وحمايته من التلف أو الفقدان.</li>
+                    <li>في حالة فقدان أو تلف الكتاب، أتحمل المسؤولية الكاملة عن تعويض المكتبة بقيمة الكتاب.</li>
+                    <li>أوافق على إرجاع الكتاب في الموعد المحدد دون تأخير، مع دفع غرامة تأخير 1 دينار عن كل يوم تأخير.</li>
+                    <li>لا يحق لي إعارة الكتاب لشخص آخر دون موافقة إدارة المكتبة.</li>
+                    <li>أوافق على استخدام البيانات المقدمة لأغراض إدارة الحجز فقط وفقاً لسياسة الخصوصية.</li>
+                    <li>في حالة عدم استلام الكتاب خلال 3 أيام من تاريخ الحجز، يتم إلغاء الحجز تلقائياً.</li>
+                    <li>يحق للمكتبة إلغاء الحجز في أي وقت مع إبلاغ المستفيد قبل 24 ساعة.</li>
+                </ol>
+                <p>بموافقتي على هذه الشروط، أقر بأني قد قرأت وفهمت جميع البنود أعلاه وأتعهد بالالتزام بها.</p>
+            </div>
         </div>
 
-        <button type="submit" class="submit-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-            </svg>
-            تأكيد الحجز
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="termsCheck" required />
+            <label class="form-check-label" for="termsCheck">
+                أوافق على جميع الشروط والأحكام المذكورة أعلاه وأتعهد بالالتزام بها
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-submit" id="submitBtn" disabled>
+            <span>تأكيد الحجز</span>
         </button>
     </form>
 </div>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <script>
-        $(function() {
-            // تهيئة التقويم مع تنسيق التاريخ يوم/شهر/سنة
-            $.datepicker.setDefaults({
-                dateFormat: 'dd/mm/yy',
-                showAnim: 'fadeIn',
-                firstDay: 6, // السبت أول أيام الأسبوع
-                monthNames: ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'],
-                dayNamesMin: ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
-                prevText: 'السابق',
-                nextText: 'التالي',
-                currentText: 'اليوم'
-            });
-
-            $("#pickupDate").datepicker({
-                minDate: 1, // لا يمكن اختيار تاريخ قبل غد
-                onSelect: function(selectedDate) {
-                    // عند اختيار تاريخ الاستلام، يتم تحديد الحد الأدنى لتاريخ الإرجاع
-                    $("#returnDate").datepicker("option", "minDate", selectedDate);
-                }
-            });
-
-            $("#returnDate").datepicker({
-                minDate: "+1d" // الحد الأدنى هو غد (يوم بعد تاريخ الاستلام)
-            });
-
-            // التحقق من التواريخ عند إرسال النموذج
-            $("#reservationForm").submit(function(e) {
-                var pickupDate = $("#pickupDate").datepicker("getDate");
-                var returnDate = $("#returnDate").datepicker("getDate");
-                var today = new Date();
-                today.setHours(0, 0, 0, 0);
-
-                if (pickupDate <= today) {
-                    alert("يجب أن يكون تاريخ الاستلام بعد تاريخ اليوم");
-                    return false;
-                }
-
-                if (returnDate <= pickupDate) {
-                    alert("يجب أن يكون تاريخ الإرجاع بعد تاريخ الاستلام");
-                    return false;
-                }
-
-                return true;
-            });
+<script>
+    $(function () {
+        // تهيئة التاريخ مع الربط بين تاريخ الاستلام والإرجاع
+        $(".datepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            minDate: 0,
+            showAnim: "fadeIn",
+            firstDay: 6,
+            dayNamesMin: ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
+            monthNames: ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'],
+            onSelect: function (dateText, inst) {
+                $(this).val(dateText); // ضروري لضمان حفظ التاريخ
+                $(this).trigger("change");
+            },
+            beforeShow: function (input, inst) {
+                setTimeout(function () {
+                    inst.dpDiv.css({
+                        'opacity': 0,
+                        'transform': 'translateY(20px)',
+                        'display': 'block'
+                    });
+                    inst.dpDiv.animate({
+                        'opacity': 1,
+                        'transform': 'translateY(0)'
+                    }, 200);
+                }, 10);
+            }
         });
-    </script>
+
+        // عند اختيار تاريخ الاستلام، نحدد أقل تاريخ ممكن للإرجاع
+        $("#PickupDate").on("change", function () {
+            var pickup = $(this).datepicker("getDate");
+            if (pickup) {
+                var minReturnDate = new Date(pickup.getTime());
+                minReturnDate.setDate(minReturnDate.getDate() + 1);
+                $("#ReturnDate").datepicker("option", "minDate", minReturnDate);
+            }
+        });
+
+        // تفعيل زر التأكيد عند الموافقة على الشروط
+        $("#termsCheck").change(function () {
+            if (this.checked) {
+                $("#submitBtn").prop("disabled", false)
+                    .addClass("animate__animated animate__pulse");
+                setTimeout(() => {
+                    $("#submitBtn").removeClass("animate__animated animate__pulse");
+                }, 1000);
+            } else {
+                $("#submitBtn").prop("disabled", true);
+            }
+        });
+
+        // التحقق من التواريخ قبل الإرسال
+        $("#reservationForm").submit(function (e) {
+            var pickupDate = $("#PickupDate").datepicker("getDate");
+            var returnDate = $("#ReturnDate").datepicker("getDate");
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (!pickupDate) {
+                showError($("#PickupDate"), "الرجاء تحديد تاريخ الاستلام");
+                e.preventDefault();
+                return;
+            }
+
+            if (!returnDate) {
+                showError($("#ReturnDate"), "الرجاء تحديد تاريخ الإرجاع");
+                e.preventDefault();
+                return;
+            }
+
+            if (returnDate <= pickupDate) {
+                showError($("#ReturnDate"), "يجب أن يكون تاريخ الإرجاع بعد تاريخ الاستلام");
+                e.preventDefault();
+                return;
+            }
+
+            if (pickupDate < today) {
+                showError($("#PickupDate"), "لا يمكن اختيار تاريخ استلام في الماضي");
+                e.preventDefault();
+                return;
+            }
+        });
+
+        // تأثيرات التركيز على الحقول
+        $("input").focus(function () {
+            $(this).parent().addClass("animate__animated animate__pulse");
+            setTimeout(() => {
+                $(this).parent().removeClass("animate__animated animate__pulse");
+            }, 500);
+        });
+
+        // فحص الحقول الفارغة عند التغيير أو فقدان التركيز
+        $("input").on("blur change", function () {
+            let value = $(this).val();
+            if (!value || value.trim() === "") {
+                $(this).addClass("is-invalid");
+                $(this).parent().addClass("animate__animated animate__shakeX");
+                setTimeout(() => {
+                    $(this).parent().removeClass("animate__animated animate__shakeX");
+                }, 500);
+            } else {
+                $(this).removeClass("is-invalid");
+            }
+        });
+
+        // إزالة الخطأ عند تعديل تاريخ الإرجاع
+        $("#ReturnDate").on("change", function () {
+            $(this).removeClass("is-invalid");
+            $(this).next(".text-danger").fadeOut(200);
+        });
+
+        // دالة عرض الأخطاء
+        function showError(element, message) {
+            element.addClass("is-invalid")
+                .parent().addClass("animate__animated animate__shakeX");
+
+            setTimeout(() => {
+                element.parent().removeClass("animate__animated animate__shakeX");
+            }, 500);
+
+            let errorElement = element.next(".text-danger");
+            if (errorElement.length === 0) {
+                errorElement = $("<span>").addClass("text-danger");
+                element.after(errorElement);
+            }
+
+            errorElement.text(message)
+                .hide()
+                .fadeIn(300);
+        }
+    });
+</script>
 }
