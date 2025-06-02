@@ -156,7 +156,7 @@ namespace Ajloun_Project.Controllers.Hazem
             var userId = HttpContext.Session.GetInt32("userId");
             if (!userId.HasValue)
             {
-                return RedirectToAction("Login", "Account", new { returnUrl = Url.Action("Apply", new { id = courseId }) });
+                return RedirectToAction("SignIn" , "User");
             }
 
             var user = await _context.Users.FindAsync(userId.Value);
