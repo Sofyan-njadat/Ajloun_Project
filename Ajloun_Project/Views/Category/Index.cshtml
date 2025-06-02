@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الدورات المتاحة في مديرية الثقافة - عجلون</title>
+    <title>الورشات التدريبية في مديرية الثقافة - عجلون</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -66,7 +66,7 @@
             font-size: 4rem;
             font-weight: 900;
             margin-bottom: 1rem;
-            color: #FFE15D;
+                color: #ffd700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             font-family: 'Cairo', sans-serif;
         }
@@ -334,8 +334,8 @@
     <div class="modern-header">
         <div class="overlay">
             <div class="header-content">
-                <h1>الدورات</h1>
-                <p class="subtitle">اكتشف الدورات المتاحة في مديرية ثقافة عجلون</p>
+                <h1>الورشات التدريبية</h1>
+                <p class="subtitle">اكتشف الورشات التدريبية المتاحة في مديرية ثقافة عجلون</p>
             </div>
         </div>
     </div>
@@ -355,66 +355,17 @@
                         <h2>@course.Name</h2>
                         <p>@course.Description</p>
                         <p class="font-medium">الفئة العمرية: @course.AgeRange سنة</p>
-                        <button onclick="openModal(@course.CourseId, '@course.Name')">تقدم بطلب</button>
+                        <a href="@Url.Action("Apply", "Category", new { id = course.CourseId })"
+                           class="block text-center bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-semibold py-3 rounded-lg transition duration-300 hover:bg-[var(--dark)] hover:-translate-y-1">
+                            تقدم بطلب
+                        </a>
                     </div>
                 </div>
             }
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="applyModal" class="hidden">
-        <div class="modal-content">
-            <h2 id="modalCourseName"></h2>
-            <form id="applyForm" asp-action="Apply" asp-controller="Category" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="courseId" id="courseId">
+   
 
-                <div class="mb-6">
-                    <label for="birthCertificateImage">
-                        <i class="fas fa-file-image text-[var(--primary)]"></i>
-                        صورة شهادة الميلاد
-                    </label>
-                    <input type="file" id="birthCertificateImage" name="birthCertificateImage" accept="image/*" required>
-                </div>
-
-                <div class="mb-6">
-                    <label class="flex items-center">
-                        <input type="checkbox" name="agreement" class="mr-2" required>
-                        <span><i class="fas fa-check-circle text-[var(--primary)] mr-1"></i>أوافق على الشروط والأحكام</span>
-                    </label>
-                </div>
-
-                <button type="submit" id="submitBtn">إرسال الطلب</button>
-                <button type="button" onclick="closeModal()">إغلاق</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        function openModal(courseId, courseName) {
-            document.getElementById('applyModal').classList.add('show');
-            document.getElementById('modalCourseName').textContent = courseName;
-            document.getElementById('courseId').value = courseId;
-        }
-
-        function closeModal() {
-            document.getElementById('applyModal').classList.remove('show');
-            document.getElementById('applyForm').reset();
-        }
-
-        // تأثير التحميل عند إرسال النموذج
-        document.getElementById('applyForm').addEventListener('submit', function (e) {
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'جاري الإرسال...';
-        });
-    </script>
-
-    @if (TempData["Success"] != null)
-    {
-        <script>
-            alert('@TempData["Success"]');
-        </script>
-    }
 </body>
 </html>

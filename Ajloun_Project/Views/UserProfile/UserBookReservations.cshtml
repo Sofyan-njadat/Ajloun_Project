@@ -115,9 +115,9 @@ else
                 </div>
             </div>
             <div class="book-meta">
-                <div><i class="far fa-calendar-alt" style="margin-left: 6px;"></i> تاريخ الحجز: @(item.ReservationDate?.ToString("dd/MM/yyyy") ?? "-")</div>
-                <div><i class="fas fa-calendar-check" style="margin-left: 6px;"></i> تاريخ الاستلام: @(item.PickupDate?.ToString("dd/MM/yyyy") ?? "-")</div>
-                <div><i class="fas fa-calendar-times" style="margin-left: 6px;"></i> تاريخ الإرجاع: @(item.ReturnDate?.ToString("dd/MM/yyyy") ?? "-")</div>
+                <div><i class="far fa-calendar-alt" style="margin-left: 6px;"></i> تاريخ الحجز: @(item.ReservationDate?.ToString("dd/MM/yyyy") )</div>
+                <div><i class="fas fa-calendar-check" style="margin-left: 6px;"></i> تاريخ الاستلام: @(item.PickupDate?.ToString("dd/MM/yyyy") )</div>
+                <div><i class="fas fa-calendar-times" style="margin-left: 6px;"></i> تاريخ الإرجاع: @(item.ReturnDate?.ToString("dd/MM/yyyy") )</div>
             </div>
         </div>
     }

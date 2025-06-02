@@ -40,4 +40,6 @@ public partial class User
     public virtual ICollection<CulturalEventReservation> CulturalEventReservations { get; set; } = new List<CulturalEventReservation>();
 
     public virtual ICollection<FestivalReservation> FestivalReservations { get; set; } = new List<FestivalReservation>();
+
+    public virtual ICollection<UserPost> UserPosts { get; set; } = new List<UserPost>();
 }

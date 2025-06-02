@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿    @{Layout = "_Layout";}
+
+
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="utf-8" />
@@ -40,19 +43,14 @@
                 <a href="@Url.Action("UserCourseApplications", "UserProfile")">
                     <i class="fas fa-book-open"></i> طلبات الدورات
                 </a>
-                <a href="@Url.Action("UserAssociationJoinRequests", "UserProfile")">
-                    <i class="fas fa-users"></i> طلبات الجمعيات
-                </a>
                 <a href="@Url.Action("UserEventRegistrations", "UserProfile")">
                     <i class="fas fa-calendar-check"></i> حضور الفعاليات
                 </a>
                 <a href="@Url.Action("UserBookReservations", "UserProfile")">
                     <i class="fas fa-book"></i> حجوزات الكتب
                 </a>
-                <a href="@Url.Action("UserCraftOrders", "UserProfile")">
-                    <i class="fas fa-paint-brush"></i> طلبات الحرف
-                </a>
-                <a href="@Url.Action("UserFestivalReservations", "UserProfile")">
+               
+                <a href="@Url.Action("UserFestivalReservation", "UserProfile")">
                     <i class="fas fa-music"></i> المهرجانات
                 </a>
                 <a href="@Url.Action("UserCulturalEventReservations", "UserProfile")">
@@ -60,6 +58,9 @@
                 </a>
                 <a href="@Url.Action("ChangeUserPassword", "UserProfile")">
                     <i class="fas fa-key"></i> تغيير كلمة المرور
+                </a>
+                <a href="@Url.Action("Index", "Home")">
+                    <i class="fas fa-home"></i> الرئيسية
                 </a>
             </div>
 

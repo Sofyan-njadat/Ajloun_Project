@@ -58,6 +58,8 @@ namespace Ajloun_Project.Controllers
             ViewBag.Categories = await _context.AssociationCategories.ToListAsync();
             return View(association);
         }
+
+
+
     }
 }
-

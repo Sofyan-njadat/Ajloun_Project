@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Http;
     using System;
     using System.IO;
+    using System.Globalization;
 
     public class LibraryController : Controller
     {
@@ -56,48 +57,58 @@
         }
 
         // 3. نموذج حجز كتاب
+        [HttpGet]
         public async Task<IActionResult> Reserve(int id)
         {
             var book = await _context.Books.FindAsync(id);
-            if (book == null || book.AvailableCopies == 0)
+            if (book == null || !book.IsAvailable)
                 return NotFound();
 
-            var reservation = new BookReservation
-            {
-                BookId = id
-            };
-
-            return View(reservation);
+            var model = new BookReservation { BookId = id };
+            return View(model);
         }
 
-
-        // 4. تنفيذ الحجز
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reserve(BookReservation reservation)
         {
             var userId = HttpContext.Session.GetInt32("userId");
 
-            // إذا المستخدم غير مسجل دخول، رجعه على تسجيل الدخول مع رسالة
             if (!userId.HasValue)
             {
                 TempData["LoginRequired"] = "يرجى تسجيل الدخول أولاً لإتمام الحجز.";
                 return RedirectToAction("signIn", "User", new { returnUrl = Url.Action("Reserve", new { id = reservation.BookId }) });
             }
 
-            // تأكيد وجود الكتاب
+            var culture = new CultureInfo("ar-JO"); // يدعم dd/MM/yyyy
+            DateOnly? pickupDate = null;
+            DateOnly? returnDate = null;
+
+            if (DateTime.TryParseExact(Request.Form["PickupDate"], "dd/MM/yyyy", culture, DateTimeStyles.None, out var pickup))
+                pickupDate = DateOnly.FromDateTime(pickup);
+
+            if (DateTime.TryParseExact(Request.Form["ReturnDate"], "dd/MM/yyyy", culture, DateTimeStyles.None, out var returned))
+                returnDate = DateOnly.FromDateTime(returned);
+
+            if (pickupDate == null || returnDate == null || returnDate <= pickupDate)
+            {
+                ViewBag.Error = "تأكد من صحة التواريخ: يجب أن يكون تاريخ الإرجاع بعد تاريخ الاستلام.";
+                return View(reservation);
+            }
+
             var book = await _context.Books.FindAsync(reservation.BookId);
             if (book == null || book.AvailableCopies <= 0)
                 return NotFound();
 
-            // تعبئة بيانات الحجز
             reservation.UserId = userId.Value;
+            reservation.PickupDate = pickupDate;
+            reservation.ReturnDate = returnDate;
             reservation.Agreement = true;
             reservation.ReservationDate = DateTime.Now;
             reservation.Status = "Pending";
 
             _context.BookReservations.Add(reservation);
 
-            // تقليل عدد النسخ المتاحة
             book.AvailableCopies--;
             if (book.AvailableCopies == 0)
                 book.IsAvailable = false;
@@ -106,7 +117,6 @@
 
             return RedirectToAction("ReservationSuccess");
         }
-
         public IActionResult ReservationSuccess()
         {
             return View();

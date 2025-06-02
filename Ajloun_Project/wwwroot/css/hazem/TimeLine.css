@@ -93,6 +93,13 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    opacity: 1;
+    transform: none;
+}
+
+.hero-title.visible {
+    opacity: 1;
+    transform: none;
 }
 
 .hero-subtitle {
@@ -437,9 +444,9 @@ body {
 }
 
 .title-animation {
-    display: inline-block;
-    transform: translateY(50px);
-    opacity: 0;
+    display: inline;
+    transform: none;
+    opacity: 1;
 }
 
 .info-panel {

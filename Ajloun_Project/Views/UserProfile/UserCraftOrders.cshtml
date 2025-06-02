@@ -133,7 +133,7 @@ else
     {
         <div class="craft-card">
             <div class="craft-header">
-                <h3 class="craft-title">@item.Craft?.Title ?? "حرفة غير معروفة"</h3>
+                <h3 class="craft-title">@item.Craft?.Title </h3>
                 <div class="status-badge @(item.Status switch {
                     "Approved" => "status-approved",
                     "Rejected" => "status-rejected",
@@ -161,7 +161,7 @@ else
                 </div>
                 <div class="meta-item">
                     <i class="far fa-calendar-alt"></i>
-                    <span>تاريخ الطلب: @(item.OrderDate?.ToString("dd/MM/yyyy") ?? "-")</span>
+                    <span>تاريخ الطلب: @(item.OrderDate?.ToString("dd/MM/yyyy") )</span>
                 </div>
             </div>
         </div>

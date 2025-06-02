@@ -1,6 +1,6 @@
 ﻿@model List<CulturalAssociation>
 @{
-    ViewData["Title"] = "الهيئات الثقافية";
+    ViewData["Title"] = "نافذة على الهيئات الثقافية";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -56,7 +56,7 @@
             font-size: 4rem;
             font-weight: 900;
             margin-bottom: 1rem;
-            color: #FFE15D;
+                color: #ffd700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             font-family: 'Cairo', sans-serif;
         }
@@ -305,7 +305,7 @@
 <div class="modern-header">
     <div class="overlay">
         <div class="header-content">
-            <h1>الهيئات الثقافية</h1>
+            <h1> نافذة على الهيئات الثقافية</h1>
             <p class="subtitle">تعرف على الهيئات الثقافية في محافظة عجلون</p>
         </div>
     </div>
@@ -336,13 +336,14 @@
         </form>
     </div>
 
-    <div class="d-flex justify-content-end mb-4">
+    <div class="d-flex justify-content-end gap-3 mb-4">
         <a href="@Url.Action("CreateAssociation")" class="join-request-btn">
             <i class="fas fa-plus-circle"></i>
-            طلب تسجيل هيئة جديدة
+            طلب انضمام هيئة جديدة
         </a>
-    </div>
 
+      
+    </div>
     <div class="associations-container">
         @foreach (var association in Model)
         {

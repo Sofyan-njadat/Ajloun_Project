@@ -1,0 +1,416 @@
+﻿@model IEnumerable<Ajloun_Project.Models.UserPost>
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .dashboard-header {
+            background-color: #1A3C5A; /* Updated color from the image */
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+            width: 100%;
+        }
+
+            .table thead {
+                background-color: #1A3C5A; /* Updated color for table header */
+                color: white;
+            }
+
+            .table th {
+                font-weight: 600;
+                text-align: center;
+                vertical-align: middle;
+                padding: 1rem;
+            }
+
+            .table td {
+                vertical-align: middle;
+                text-align: center;
+                padding: 0.75rem;
+                border-top: 1px solid #dee2e6;
+            }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .btn-details {
+            background-color: #1A3C5A; /* Updated color for buttons */
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+            .btn-details:hover {
+                background-color: #15344F; /* Slightly darker shade for hover */
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+        .btn-group-sm .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .post-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .category-badge {
+            background-color: #e9ecef;
+            color: #1A3C5A; /* Updated color for consistency */
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(26, 60, 90, 0.05); /* Updated color for hover effect */
+        }
+
+        .content-preview {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+            .action-buttons .btn {
+                min-width: 80px;
+            }
+
+        /* Enhanced Modal Styles for SweetAlert2 */
+        .swal2-popup {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .swal2-title {
+            color: #1A3C5A; /* Updated color for consistency */
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .swal2-content {
+            color: #6c757d;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .swal2-html-container {
+            padding: 1rem !important;
+        }
+
+        .swal2-textarea, .swal2-input {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+            .swal2-textarea:focus, .swal2-input:focus {
+                border-color: #1A3C5A; /* Updated color for consistency */
+                box-shadow: 0 0 5px rgba(26, 60, 90, 0.3);
+                outline: none;
+            }
+
+        .swal2-confirm, .swal2-cancel {
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .swal2-confirm {
+            background-color: #1A3C5A; /* Updated color for consistency */
+        }
+
+            .swal2-confirm:hover {
+                background-color: #15344F; /* Slightly darker shade for hover */
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+        .swal2-cancel {
+            background-color: #6c757d;
+        }
+
+            .swal2-cancel:hover {
+                background-color: #5a6268;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+        .info-group {
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+            .info-group h6 {
+                color: #495057;
+                margin-bottom: 8px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .info-group p {
+                margin: 0;
+                color: #6c757d;
+                font-size: 0.95rem;
+            }
+
+            .info-group i {
+                color: #1A3C5A; /* Updated color for consistency */
+            }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <div class="dashboard-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-3">إدارة المشاركات المجتمعية</h1>
+                    <p class="mb-0">مديرية ثقافة عجلون</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th width="80px">الصورة</th>
+                        <th>المحتوى</th>
+                        <th>التصنيف</th>
+                        <th>المستخدم</th>
+                        <th>الحالة</th>
+                        <th width="250px">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var post in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(post.FilePath))
+                                {
+                                    <img src="@post.FilePath" class="post-image" alt="صورة المشاركة">
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">بدون صورة</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="content-preview" title="@post.Content">
+                                    @post.Content?.Substring(0, Math.Min(50, post.Content.Length))...
+                                </span>
+                            </td>
+                            <td>
+                                <span class="category-badge">@post.Category</span>
+                            </td>
+                            <td>@post.User?.FullName</td>
+                            <td>
+                                @{
+                                    var statusClass = post.Status switch
+                                    {
+                                        "موافق عليه" => "status-approved",
+                                        "مرفوض" => "status-rejected",
+                                        _ => "status-pending"
+                                    };
+                                }
+                                <span class="status-badge @statusClass">@post.Status</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-details btn-sm" onclick="showPostDetails(@post.PostId)">
+                                        <i class="fas fa-eye me-1"></i> التفاصيل
+                                    </button>
+                                    <form asp-action="Approve" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@post.PostId" />
+                                        <button type="submit" class="btn btn-success btn-sm" @(post.Status == "موافق عليه" ? "disabled" : "")>
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-action="Reject" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@post.PostId" />
+                                        <button type="submit" class="btn btn-danger btn-sm" @(post.Status == "مرفوض" ? "disabled" : "")>
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-warning btn-sm" onclick="editPost(@post.PostId, `@post.Content.Replace("`", "'")`, `@post.Category`)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function editPost(id, content, category) {
+            Swal.fire({
+                title: 'تعديل المشاركة',
+                html: `
+                    <div class="info-group">
+                        <h6><i class="fas fa-file-alt"></i> المحتوى</h6>
+                        <textarea id="swal-content" class="swal2-textarea" placeholder="المحتوى">${content}</textarea>
+                    </ SINGdiv>
+                    <div class="info-group">
+                        <h6><i class="fas fa-tag"></i> التصنيف</h6>
+                        <input id="swal-category" class="swal2-input" value="${category}" placeholder="التصنيف">
+                    </div>`,
+                confirmButtonText: 'حفظ التعديلات',
+                showCancelButton: true,
+                cancelButtonText: 'إلغاء',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const updatedContent = document.getElementById('swal-content').value;
+                    const updatedCategory = document.getElementById('swal-category').value;
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/UserPosts/EditPost';
+
+                    const inputId = document.createElement('input');
+                    inputId.type = 'hidden';
+                    inputId.name = 'id';
+                    inputId.value = id;
+
+                    const inputContent = document.createElement('input');
+                    inputContent.type = 'hidden';
+                    inputContent.name = 'content';
+                    inputContent.value = updatedContent;
+
+                    const inputCategory = document.createElement('input');
+                    inputCategory.type = 'hidden';
+                    inputCategory.name = 'category';
+                    inputCategory.value = updatedCategory;
+
+                    form.appendChild(inputId);
+                    form.appendChild(inputContent);
+                    form.appendChild(inputCategory);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+
+        function showPostDetails(postId) {
+            fetch(`/UserPosts/GetPostDetails/${postId}`)
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        title: `تفاصيل المشاركة #${postId}`,
+                        html: `
+                            <div class="info-group">
+                                <h6><i class="fas fa-file-alt"></i> المحتوى الكامل</h6>
+                                <p>${data.content || 'لا يوجد محتوى'}</p>
+                            </div>
+                            <div class="info-group">
+                                <h6><i class="fas fa-tag"></i> التصنيف</h6>
+                                <p>${data.category || 'غير محدد'}</p>
+                            </div>
+                                   <div class="info-group">
+            <h6><i class="fas fa-user"></i> المستخدم</h6>
+            <p>${data.user?.fullName || 'غير معروف'}</p>
+        </div>
+        <div class="info-group">
+            <h6><i class="fas fa-envelope"></i> الإيميل</h6>
+            <p>${data.user?.email || 'غير متوفر'}</p>
+        </div>
+        <div class="info-group">
+            <h6><i class="fas fa-phone"></i> رقم الهاتف</h6>
+            <p>${data.user?.phone || 'غير متوفر'}</p>
+        </div>
+
+                            <div class="info-group">
+                                <h6><i class="fas fa-image"></i> الصورة</h6>
+                                ${data.filePath ? `<img src="${data.filePath}" class="post-image" alt="صورة المشاركة">` : '<p class="text-muted">بدون صورة</p>'}
+                            </div>
+                            <div class="info-group">
+                                <h6><i class="fas fa-info-circle"></i> الحالة</h6>
+                                <span class="status-badge ${data.status === 'موافق عليه' ? 'status-approved' : data.status === 'مرفوض' ? 'status-rejected' : 'status-pending'}">
+                                    ${data.status || 'غير محدد'}
+                                </span>
+                            </div>`,
+                        confirmButtonText: 'حسناً',
+                        width: '600px'
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'خطأ',
+                        text: 'حدث خطأ أثناء جلب تفاصيل المشاركة: ' + error,
+                        icon: 'error',
+                        confirmButtonText: 'حسناً'
+                    });
+                });
+        }
+    </script>
+</body>
+</html>
