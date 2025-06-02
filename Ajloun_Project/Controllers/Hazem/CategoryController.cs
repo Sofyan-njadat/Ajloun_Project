@@ -32,7 +32,7 @@ namespace Ajloun_Project.Controllers.Hazem
                 .ToListAsync();
             return View("Category", bookCategories);
         }
-        
+
         // POST: /Category/AddCategory
         [HttpPost]
         // [Authorize(Roles = "Admin")]
@@ -49,7 +49,7 @@ namespace Ajloun_Project.Controllers.Hazem
             TempData["Error"] = "حدث خطأ أثناء إضافة التصنيف";
             return RedirectToAction(nameof(ManageCategories));
         }
-        
+
         // GET: /Category/EditCategory/5
         // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditCategory(int id)
@@ -59,10 +59,10 @@ namespace Ajloun_Project.Controllers.Hazem
             {
                 return NotFound();
             }
-            
+
             return View(category);
         }
-        
+
         // POST: /Category/EditCategory
         [HttpPost]
         // [Authorize(Roles = "Admin")]
@@ -73,7 +73,7 @@ namespace Ajloun_Project.Controllers.Hazem
             {
                 return NotFound();
             }
-            
+
             if (ModelState.IsValid)
             {
                 try
@@ -98,7 +98,7 @@ namespace Ajloun_Project.Controllers.Hazem
             TempData["Error"] = "حدث خطأ أثناء تحديث التصنيف";
             return View(category);
         }
-        
+
         // POST: /Category/DeleteCategory
         [HttpPost]
         // [Authorize(Roles = "Admin")]
@@ -108,27 +108,27 @@ namespace Ajloun_Project.Controllers.Hazem
             var category = await _context.BookCategories
                 .Include(c => c.Books)
                 .FirstOrDefaultAsync(c => c.CategoryId == id);
-                
+
             if (category == null)
             {
                 return NotFound();
             }
-            
+
             if (category.Books != null && category.Books.Any())
             {
                 TempData["Error"] = "لا يمكن حذف التصنيف لأنه مرتبط بكتب";
                 return RedirectToAction(nameof(ManageCategories));
             }
-            
+
             _context.BookCategories.Remove(category);
             await _context.SaveChangesAsync();
             TempData["Success"] = "تم حذف التصنيف بنجاح";
-            
+
             return RedirectToAction(nameof(ManageCategories));
         }
 
         // GET: /Category/Apply/1
-       
+
         public async Task<IActionResult> Apply(int id)
         {
             var course = await _context.Courses.FindAsync(id);
@@ -141,7 +141,7 @@ namespace Ajloun_Project.Controllers.Hazem
         }
 
         // POST: /Category/Apply
-      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Apply(int courseId, IFormFile birthCertificateImage, bool agreement)

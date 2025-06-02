@@ -236,7 +236,7 @@ public partial class AjlounCultureDbContext : DbContext
         {
             entity.HasKey(e => e.OrderId).HasName("PK__CraftOrd__C3905BCF18F381BA");
 
-            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            //entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(20);
 
             entity.HasOne(d => d.Craft).WithMany(p => p.CraftOrders)
