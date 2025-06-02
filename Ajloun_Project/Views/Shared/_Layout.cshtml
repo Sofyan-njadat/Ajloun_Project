@@ -123,6 +123,8 @@
             .dropdown.active .dropdown-content {
                 display: block; /* يظهر عند النقر */
             }
+
+
         }
 
         .dropdown-content {
@@ -133,7 +135,7 @@
         .dropdown-content {
             overflow: visible!important;
         }
-
+        
     </style>
 </head>
 <body>
@@ -160,8 +162,10 @@
                 <div class="dropdown-content">
                     <a asp-controller="Festivals" asp-action="Festivals">المهرجانات</a>
                     <a asp-controller="Events" asp-action="Events">الفعاليات</a>
-                    <a asp-controller="Handicrafts" asp-action="Index">الحرف اليدوية</a>
+                    <a asp-controller="Handicrafts" asp-action="Index">الصناعات الثقافية</a>
                     <a asp-controller="ArtWorks" asp-action="ArtWorks">الأعمال الفنية</a>
+                    <a asp-controller="UserPosts" asp-action="Create"> شاركنا أفكارك</a>
+
                     <a asp-controller="UserPosts" asp-action="PublicLibrary"> المشاركات الثقافية</a>
                 </div>
             </div>
