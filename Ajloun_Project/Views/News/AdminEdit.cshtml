@@ -147,4 +147,12 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Content', {
+            contentsLangDirection: 'rtl',     
+            contentsLanguage: 'ar',         
+            language: 'ar',                    
+        });
+    </script>
 }

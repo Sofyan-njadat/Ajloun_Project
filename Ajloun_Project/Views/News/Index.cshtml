@@ -189,6 +189,11 @@
 			flex-wrap: wrap;
 		}
 
+		span{
+			direction: rtl;
+			text-align: right;
+		}
+
 		.tab-btn {
 			padding: 8px 20px;
 			border-radius: 25px;
@@ -280,6 +285,8 @@
 			margin-bottom: 20px;
 			line-height: 1.7;
 			flex: 1;
+			direction: rtl;
+			text-align: right;
 		}
 
 		.card-meta {
@@ -636,7 +643,17 @@
 				<div class="card-content">
 					<span class="card-category">@item.Category</span>
 					<h3 class="card-title">@item.Title</h3>
-					<p class="card-excerpt">@((item.Content?.Length ?? 0) > 150 ? item.Content.Substring(0, 150) + "..." : item.Content)</p>
+					<p class="card-excerpt">
+						@if (!string.IsNullOrEmpty(item.Content) && item.Content.Length > 150)
+						{
+							var shortened = item.Content.Substring(0, 150) + "...";
+							@Html.Raw(shortened)
+						}
+						else
+						{
+							@Html.Raw(item.Content)
+						}
+					</p>
 					<div class="card-meta">
 						<span class="card-date">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
