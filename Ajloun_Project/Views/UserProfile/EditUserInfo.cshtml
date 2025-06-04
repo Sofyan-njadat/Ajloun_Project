@@ -163,7 +163,10 @@
     <form asp-action="EditUserInfo" asp-controller="UserProfile" method="post" enctype="multipart/form-data">
         <div class="text-center mb-4">
             <div class="image-upload-container">
-                <img src="~/images/users/@Model.ProfileImage" class="current-img" id="profileImagePreview" />
+                @{
+                    var imageFileName = string.IsNullOrEmpty(Model.ProfileImage) ? "default.jpg" : Model.ProfileImage;
+                }
+                <img src="/images/users/@imageFileName" class="current-img" alt="صورة المستخدم" id="profileImagePreview">
                 <label for="ProfileImageFile" class="upload-icon">
                     <i class="fas fa-camera"></i>
                 </label>
