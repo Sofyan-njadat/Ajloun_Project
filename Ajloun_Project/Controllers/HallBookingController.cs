@@ -14,6 +14,12 @@ namespace Ajloun_Project.Controllers
 
         public IActionResult Create()
         {
+            // جلب قائمة الهيئات فقط بالأسماء
+            ViewBag.Associations = _context.CulturalAssociations
+                .Where(a => !string.IsNullOrEmpty(a.Name))
+                .Select(a => a.Name)
+                .ToList();
+
             return View();
         }
 

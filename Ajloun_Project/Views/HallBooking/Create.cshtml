@@ -43,11 +43,16 @@
             <label class="form-label">نوع المسرح</label>
             <input asp-for="HallType" class="form-control" required />
         </div>
-
-        <div class="col-md-6">
-            <label class="form-label">الجهة الطالبة</label>
-            <input asp-for="RequestingParty" class="form-control" required />
-        </div>
+<div class="col-md-6">
+    <label class="form-label">الجهة الطالبة</label>
+    <select asp-for="RequestingParty" class="form-select" required>
+        <option value="">-- اختر جهة --</option>
+        @foreach (var name in ViewBag.Associations as List<string>)
+        {
+                    <option value="@name" selected="@(Model?.RequestingParty == name ? "selected" : null)">@name</option>
+                }
+    </select>
+</div>
 
         <div class="col-md-6">
             <label class="form-label">تاريخ الفعالية</label>
