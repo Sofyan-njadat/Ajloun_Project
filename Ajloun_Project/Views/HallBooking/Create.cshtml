@@ -4,157 +4,373 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="mb-4 text-center">طلب حجز مسرح</h2>
+@section Styles {
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #355E3B;
+            --secondary: #A9BA9D;
+            --accent: #FFE15D;
+            --dark: #1E2F23;
+            --light: #EFF5EC;
+            --text: #2D2D2D;
+            --text-light: #6B6B6B;
+            --white: #FFFFFF;
+            --black: #000000;
+            --overlay: rgba(0, 0, 0, 0.75);
+        }
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success text-end">@TempData["Success"]</div>
-}
+        .page-title {
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-family: 'Cairo', sans-serif;
+        }
 
-<partial name="_ValidationScriptsPartial" />
+        .form-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
 
-@if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
-{
-    <div asp-validation-summary="All" class="alert alert-danger"></div>
-}
+        .card-header {
+            background: var(--primary) !important;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: none;
+        }
 
-@if (ViewBag.Conflicts != null)
-{
-    <div class="alert alert-warning text-end mt-3">
-        <strong>🕒 المواعيد المحجوزة في هذا اليوم:</strong>
-        <ul class="mt-2">
-            @foreach (var item in ViewBag.Conflicts)
-            {
-                <li>
-                    <span class="text-dark">
-                        من @item.StartTime?.ToString(@"hh\:mm") إلى @item.EndTime?.ToString(@"hh\:mm")
-                    </span> – <strong>@item.EventTitle</strong> (@item.RequestingParty)
-                </li>
+        .card-header h2 {
+            color: var(--accent);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 2.5rem;
+            background: var(--white);
+        }
+
+        .form-label {
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .form-control, .form-select {
+            padding: 0.875rem 1.25rem;
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(53, 94, 59, 0.2);
+            outline: none;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23355E3B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-position: left 1.25rem center;
+            padding-left: 3rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border: 2px solid var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--white);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(53, 94, 59, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            border: 2px solid var(--light);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(53, 94, 59, 0.3);
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        .alert {
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border: none;
+        }
+
+        .alert-success {
+            background-color: rgba(53, 94, 59, 0.1);
+            color: var(--primary);
+            border-right: 4px solid var(--primary);
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 225, 93, 0.1);
+            color: var(--dark);
+            border-right: 4px solid var(--accent);
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border-right: 4px solid #dc3545;
+        }
+
+        .form-check {
+            padding-right: 1.5rem;
+        }
+
+        .form-check-input {
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-top: 0.2rem;
+            border: 2px solid var(--primary);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-label {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        @@media (max-width: 768px) {
+            .card-body {
+                padding: 1.5rem;
             }
-        </ul>
-    </div>
+
+            .btn {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
 }
 
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="form-card">
+                <div class="card-header">
+                    <h2>طلب حجز مسرح</h2>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success text-end">@TempData["Success"]</div>
+                    }
 
+                    <partial name="_ValidationScriptsPartial" />
 
-<div class="container" style="max-width: 950px; margin: auto; padding: 20px;">
-    <form asp-action="Create" method="post" class="row g-3" onsubmit="return validateForm()">
-        <div class="col-md-6">
-            <label class="form-label">نوع المسرح</label>
-            <input asp-for="HallType" class="form-control" required />
+                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+                    {
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+                    }
+
+                    @if (ViewBag.Conflicts != null)
+                    {
+                        <div class="alert alert-warning text-end mt-3">
+                            <strong>🕒 المواعيد المحجوزة في هذا اليوم:</strong>
+                            <ul class="mt-2">
+                                @foreach (var item in ViewBag.Conflicts)
+                                {
+                                    <li>
+                                        <span class="text-dark">
+                                            من @item.StartTime?.ToString(@"hh\:mm") إلى @item.EndTime?.ToString(@"hh\:mm")
+                                        </span> – <strong>@item.EventTitle</strong> (@item.RequestingParty)
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <form asp-action="Create" method="post" class="row g-3" onsubmit="return validateForm()">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">نوع المسرح</label>
+                                <input asp-for="HallType" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">الجهة الطالبة</label>
+                                <select asp-for="RequestingParty" class="form-select" required>
+                                    <option value="">-- اختر جهة --</option>
+                                    @foreach (var name in ViewBag.Associations as List<string>)
+                                    {
+                                        <option value="@name" selected="@(Model?.RequestingParty == name ? "selected" : null)">@name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">تاريخ الفعالية</label>
+                                <input asp-for="EventDate" type="date" class="form-control" required id="eventDate" />
+                                <span asp-validation-for="EventDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">وقت البدء</label>
+                                <input asp-for="StartTime" type="time" class="form-control" id="startTime" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">وقت الانتهاء</label>
+                                <input asp-for="EndTime" type="time" class="form-control" id="endTime" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">نوع الفعالية</label>
+                                <input asp-for="EventType" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label class="form-label">عنوان الفعالية</label>
+                                <input asp-for="EventTitle" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label class="form-label">ضيف الشرف</label>
+                                <input asp-for="GuestOfHonor" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label class="form-label">الأنشطة المصاحبة</label>
+                                <input asp-for="AccompanyingActivities" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label class="form-label">عدد الحضور المتوقع</label>
+                                <input asp-for="GuestCount" type="number" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">اسم المنسق</label>
+                                <input asp-for="CoordinatorName" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label">اسم المسؤول</label>
+                                <input asp-for="ResponsibleName" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label class="form-label">ملاحظات تقنية أخرى</label>
+                                <input asp-for="OtherTechnicalNeeds" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <h5 class="mb-3">الاحتياجات التقنية</h5>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="NeedsScreens" value="true" class="form-check-input" @(Model?.NeedsScreens == true ? "checked" : "") />
+                                <label class="form-check-label">شاشات عرض</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="NeedsProjector" value="true" class="form-check-input" @(Model?.NeedsProjector == true ? "checked" : "") />
+                                <label class="form-check-label">جهاز عرض (بروجكتر)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="NeedsAudienceInteraction" value="true" class="form-check-input" @(Model?.NeedsAudienceInteraction == true ? "checked" : "") />
+                                <label class="form-check-label">تفاعل مع الجمهور</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="NeedsFilm" value="true" class="form-check-input" @(Model?.NeedsFilm == true ? "checked" : "") />
+                                <label class="form-check-label">عرض فيلم</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="NeedsDocumentation" value="true" class="form-check-input" @(Model?.NeedsDocumentation == true ? "checked" : "") />
+                                <label class="form-check-label">توثيق الحدث</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary mx-2">إرسال الطلب</button>
+                                <a asp-action="Index" class="btn btn-secondary mx-2">رجوع</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-<div class="col-md-6">
-    <label class="form-label">الجهة الطالبة</label>
-    <select asp-for="RequestingParty" class="form-select" required>
-        <option value="">-- اختر جهة --</option>
-        @foreach (var name in ViewBag.Associations as List<string>)
-        {
-                    <option value="@name" selected="@(Model?.RequestingParty == name ? "selected" : null)">@name</option>
-                }
-    </select>
+    </div>
 </div>
 
-        <div class="col-md-6">
-            <label class="form-label">تاريخ الفعالية</label>
-            <input asp-for="EventDate" type="date" class="form-control" required id="eventDate" />
-            <span asp-validation-for="EventDate" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-6">
-            <label class="form-label">وقت البدء</label>
-            <input asp-for="StartTime" type="time" class="form-control" id="startTime" />
-        </div>
-
-        <div class="col-md-6">
-            <label class="form-label">وقت الانتهاء</label>
-            <input asp-for="EndTime" type="time" class="form-control" id="endTime" />
-        </div>
-
-        <div class="col-md-6">
-            <label class="form-label">نوع الفعالية</label>
-            <input asp-for="EventType" class="form-control" />
-        </div>
-
-        <div class="col-md-12">
-            <label class="form-label">عنوان الفعالية</label>
-            <input asp-for="EventTitle" class="form-control" />
-        </div>
-
-        <div class="col-md-12">
-            <label class="form-label">ضيف الشرف</label>
-            <input asp-for="GuestOfHonor" class="form-control" />
-        </div>
-
-        <div class="col-md-12">
-            <label class="form-label">الأنشطة المصاحبة</label>
-            <input asp-for="AccompanyingActivities" class="form-control" />
-        </div>
-
-        <div class="col-md-4">
-            <label class="form-label">عدد الحضور المتوقع</label>
-            <input asp-for="GuestCount" type="number" class="form-control" />
-        </div>
-
-        <div class="col-md-6">
-            <label class="form-label">اسم المنسق</label>
-            <input asp-for="CoordinatorName" class="form-control" />
-        </div>
-
-        <div class="col-md-6">
-            <label class="form-label">اسم المسؤول</label>
-            <input asp-for="ResponsibleName" class="form-control" />
-        </div>
-
-        <div class="col-md-12">
-            <label class="form-label">ملاحظات تقنية أخرى</label>
-            <input asp-for="OtherTechnicalNeeds" class="form-control" />
-        </div>
-        <div class="col-12">
-            <h5>الاحتياجات التقنية</h5>
-        </div>
-
-        <div class="col-md-3">
-            <div class="d-flex justify-content-end align-items-center gap-2 flex-row-reverse">
-                <input type="checkbox" name="NeedsScreens" value="true" class="form-check-input" @(Model?.NeedsScreens == true ? "checked" : "") />
-                <label class="form-check-label">شاشات عرض</label>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="d-flex justify-content-end align-items-center gap-2 flex-row-reverse">
-                <input type="checkbox" name="NeedsProjector" value="true" class="form-check-input" @(Model?.NeedsProjector == true ? "checked" : "") />
-                <label class="form-check-label">جهاز عرض (بروجكتر)</label>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="d-flex justify-content-end align-items-center gap-2 flex-row-reverse">
-                <input type="checkbox" name="NeedsAudienceInteraction" value="true" class="form-check-input" @(Model?.NeedsAudienceInteraction == true ? "checked" : "") />
-                <label class="form-check-label">تفاعل مع الجمهور</label>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="d-flex justify-content-end align-items-center gap-2 flex-row-reverse">
-                <input type="checkbox" name="NeedsFilm" value="true" class="form-check-input" @(Model?.NeedsFilm == true ? "checked" : "") />
-                <label class="form-check-label">عرض فيلم</label>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="d-flex justify-content-end align-items-center gap-2 flex-row-reverse">
-                <input type="checkbox" name="NeedsDocumentation" value="true" class="form-check-input" @(Model?.NeedsDocumentation == true ? "checked" : "") />
-                <label class="form-check-label">توثيق الحدث</label>
-            </div>
-        </div>
-
-
-
-        <div class="col-12 mt-3">
-            <button type="submit" class="btn w-100" style="background-color: #006BFF; color: white;">إرسال الطلب</button>
-        </div>
-    </form>
-</div>
 @section Scripts {
     <script>
         function disableFormInputs(exceptions = []) {

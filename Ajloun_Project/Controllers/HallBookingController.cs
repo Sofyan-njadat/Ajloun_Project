@@ -85,7 +85,7 @@ namespace Ajloun_Project.Controllers
             _context.SaveChanges();
 
             TempData["Success"] = "تم إرسال طلب الحجز بنجاح.";
-            return RedirectToAction("Success");
+            return RedirectToAction("Create");
         }
 
         public IActionResult Success()
