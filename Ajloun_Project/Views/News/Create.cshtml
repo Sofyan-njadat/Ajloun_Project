@@ -60,7 +60,7 @@
 
                     <div class="form-group">
                         <label asp-for="Content" class="form-label">المحتوى</label>
-                        <textarea asp-for="Content" class="form-control" rows="6"></textarea>
+                        <textarea asp-for="Content" class="form-control" rows="6" id="Content"></textarea>
                         <span asp-validation-for="Content" class="validation-message"></span>
         </div>
 
@@ -91,4 +91,15 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#Content'), {
+                language: 'ar'
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
 }

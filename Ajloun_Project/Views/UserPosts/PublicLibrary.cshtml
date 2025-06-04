@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #355E3B; /* لون خلفية أخضر فاتح */
@@ -21,7 +22,7 @@
         }
 
         body {
-            font-family: 'Tajawal', 'Arial', sans-serif;
+            font-family: 'Cairo', sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--light-bg);
@@ -31,21 +32,23 @@
         /* Hero Section */
         .hero-section {
             background-color: var(--primary-color); /* أخضر فاتح */
-            color: var(--secondary-color); /* أصفر ذهبي */
+            color: #ffd700; /* أصفر ذهبي */
             text-align: center;
             padding: 40px 20px; /* تقليل السمك ليتناسب الصورة */
             margin-bottom: 30px;
             position: relative;
             border-top: 30px solid var(--dark-border); /* إطار علوي داكن */
             border-bottom: 30px solid var(--dark-border); /* إطار سفلي داكن */
+            font-family: 'Cairo', sans-serif;
         }
 
             .hero-section h1 {
                 font-size: 3.5rem;
                 margin: 0;
-                font-weight: 800;
+                font-weight: 900;
                 position: relative;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+                font-family: 'Cairo', sans-serif;
             }
 
             .hero-section p {
@@ -64,6 +67,7 @@
             text-align: center;
             margin: 30px 0;
             position: relative;
+            padding: 0 20px;
         }
 
             .filter-section::after {
@@ -76,6 +80,7 @@
             }
 
             .filter-section select {
+                width: 100%;
                 padding: 12px 30px 12px 15px;
                 font-size: 1.1rem;
                 border-radius: 30px;
@@ -90,13 +95,43 @@
                 background-size: 1.2em;
                 transition: all 0.3s ease;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-                min-width: 250px;
+                height: 50px;
             }
 
                 .filter-section select:focus {
                     outline: none;
                     box-shadow: 0 0 0 3px rgba(26, 60, 52, 0.2);
                 }
+
+        .think-btn {
+            background: var(--primary-color);
+            color: var(--light-text);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 50px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .think-btn:hover {
+            background: #2D5E4E;
+            color: var(--light-text);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .think-btn i {
+            font-size: 1.2rem;
+        }
 
         /* Posts Section */
         .posts-container {
@@ -354,6 +389,14 @@
             padding: 20px;
         }
 
+        .filter-section .row {
+            gap: 15px;
+        }
+        
+        .filter-section select,
+        .think-btn {
+            width: 100%;
+        }
         }
 
         /* Floating Button */
@@ -401,18 +444,29 @@
     <!-- Hero Section -->
     <div class="hero-section">
         <h1>المشاركات الثقافية</h1>
-        <p>مشاركات أبناء عجلون</p>
+        <p>مساحة لعرض مشاركات أبناء عجلون</p>
     </div>
 
     <!-- Filter Section -->
     <div class="filter-section">
-        <select id="categoryFilter" onchange="filterCategories()">
-            <option value="all">جميع الفئات</option>
-            @foreach (var category in ViewBag.GroupedPosts.Keys)
-            {
-                <option value="@category">@category</option>
-            }
-        </select>
+        <div>
+            <div class="row justify-content-center">
+                <div class="col-md-5 text-end">
+                    <select id="categoryFilter" onchange="filterCategories()">
+                        <option value="all">جميع الفئات</option>
+                        @foreach (var category in ViewBag.GroupedPosts.Keys)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-5 text-start">
+                    <a asp-controller="UserPosts" asp-action="Create" class="btn btn-primary think-btn">
+                        <i class="fas fa-pen-fancy"></i> بماذا تفكر؟
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Posts Section -->
@@ -463,11 +517,6 @@
         </div>
     </div>
 
-    <!-- Floating Button -->
-    <div class="floating-btn" onclick="scrollToTop()">
-        <i class="fas fa-arrow-up"></i>
-    </div>
-
     <script>
         function filterCategories() {
             var selectedCategory = document.getElementById("categoryFilter").value;
@@ -510,12 +559,6 @@
             document.body.style.overflow = "auto";
         }
 
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
 
         // Show all categories by default
         document.addEventListener("DOMContentLoaded", function () {

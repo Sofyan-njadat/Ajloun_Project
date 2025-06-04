@@ -1,197 +1,319 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مديرية ثقافة عجلون | Ajloun Directorate of Culture</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>مديرية ثقافة عجلون | Ajloun Directorate of Culture</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+	<!-- Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<!-- Icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Libraries -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.5/dist/ScrollTrigger.min.js"></script>
+	<!-- Libraries -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.11.5/dist/gsap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.11.5/dist/ScrollTrigger.min.js"></script>
 
-    <link rel="stylesheet" href="~/css/index.css">
+	<link rel="stylesheet" href="~/css/index.css">
 
-    </head>
-    <body class="lang-ar">
-    
+	<style>
+		.services-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 30px;
+			margin-top: 40px;
+		}
 
-        <!-- Hero Section -->
-        <section class="hero" id="home" style="margin-top:-2vw;">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-                <h3 class="hero-subtitle" data-ar="مرحبا بكم في" data-en="Welcome to">مرحبا بكم في</h3>
-                <h1 class="hero-title" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Directorate of Culture" style="color:white;">مديرية ثقافة عجلون</h1>
-                <p class="hero-text" data-ar="نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي." data-en="We work to promote and disseminate culture and arts in Ajloun Governorate, support local talents, and preserve cultural heritage.">نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
-                <div class="hero-buttons">
-                <a asp-controller="Home" asp-action="AboutUs" class="btn btn-primary" data-ar="تعرف علينا" data-en="About Us">تعرف علينا</a>
-                <a asp-controller="Home" asp-action="Contact" class="btn btn-outline" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a>
-                </div>
-            </div>
-            <a href="#about" class="scroll-down">
-                <i class="fas fa-chevron-down"></i>
-            </a>
-        </section>
+		.service-card {
+			background: var(--white);
+			border-radius: 15px;
+			overflow: hidden;
+			box-shadow: var(--shadow-md);
+			transition: var(--transition);
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
 
-        <!-- About Section -->
-        <section class="section about" id="about">
-            <div class="container">
-                <div class="about-content">
-                    <div class="about-image">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Ajlun_Castle_in_2009.jpg" alt="About Ajloun Culture">
-                    </div>
-                    <div class="about-text">
-                        <h2 data-ar="عن مديريتنا" data-en="About Our Directorate">عن مديريتنا</h2><br />
-                        <p data-ar="مديرية ثقافة عجلون هي إحدى مديريات وزارة الثقافة الأردنية، تأسست عام 1998 بهدف نشر الثقافة والفنون في محافظة عجلون ودعم المبدعين والمثقفين." data-en="The Ajloun Directorate of Culture is one of the directorates of the Jordanian Ministry of Culture, established in 1998 with the aim of spreading culture and arts in Ajloun Governorate and supporting creators and intellectuals.">مديرية ثقافة عجلون هي إحدى مديريات وزارة الثقافة الأردنية، تأسست عام 1998 بهدف نشر الثقافة والفنون في محافظة عجلون ودعم المبدعين والمثقفين.</p>
-                        <p data-ar="ننظم العديد من الفعاليات الثقافية والفنية على مدار العام، بما في ذلك المعارض والمهرجانات وورش العمل والدورات التدريبية في مختلف المجالات الثقافية والفنية." data-en="We organize many cultural and artistic events throughout the year, including exhibitions, festivals, workshops and training courses in various cultural and artistic fields.">ننظم العديد من الفعاليات الثقافية والفنية على مدار العام، بما في ذلك المعارض والمهرجانات وورش العمل والدورات التدريبية في مختلف المجالات الثقافية والفنية.</p>
+			.service-card:hover {
+				transform: translateY(-5px);
+				box-shadow: var(--shadow-lg);
+			}
 
-                        <div class="about-features">
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class="fas fa-bullseye"></i>
-                                </div>
-                                <div class="feature-text">
-                                    <h4 data-ar="رؤيتنا" data-en="Our Vision">رؤيتنا</h4>
-                                    <p data-ar="مجتمع مبدع مثقف يحافظ على تراثه" data-en="A creative, cultured society that preserves its heritage">مجتمع مبدع مثقف يحافظ على تراثه</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class="fas fa-flag"></i>
-                                </div>
-                                <div class="feature-text">
-                                    <h4 data-ar="رسالتنا" data-en="Our Mission">رسالتنا</h4>
-                                    <p data-ar="نشر الثقافة والفنون في محافظة عجلون" data-en="Spreading culture and arts in Ajloun Governorate">نشر الثقافة والفنون في محافظة عجلون</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <div class="feature-text">
-                                    <h4 data-ar="قيمنا" data-en="Our Values">قيمنا</h4>
-                                    <p data-ar="الإبداع، التميز، الاحتراف" data-en="Creativity, Excellence, Professionalism">الإبداع، التميز، الاحتراف</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class="fas fa-trophy"></i>
-                                </div>
-                                <div class="feature-text">
-                                    <h4 data-ar="إنجازاتنا" data-en="Our Achievements">إنجازاتنا</h4>
-                                    <p data-ar="أكثر من 100 فعالية سنوياً" data-en="More than 100 events annually">أكثر من 100 فعالية سنوياً</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+		.service-image {
+			height: 200px;
+			overflow: hidden;
+		}
 
-        <!-- Services Section -->
-        <section class="section services" id="services">
-            <div class="container">
-                <div class="services-header">
-                    <h2 class="section-title" data-ar="الخدمات الثقافية" data-en="Our Cultural Services">الخدمات الثقافية</h2><br /> <br />
-                    <p data-ar="نقدم مجموعة متنوعة من الخدمات الثقافية والفنية لأهالي محافظة عجلون" data-en="We provide a variety of cultural and artistic services for the people of Ajloun Governorate">نقدم مجموعة متنوعة من الخدمات الثقافية والفنية لأهالي محافظة عجلون</p>
-                </div>
+			.service-image img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				transition: var(--transition);
+			}
 
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Art Exhibitions">
-                        </div>
-                        <div class="service-content">
-                            <div class="service-icon">
-                                <i class="fas fa-paint-brush"></i>
-                            </div>
-                            <h3 class="service-title" data-ar="المعارض الفنية" data-en="Art Exhibitions">المعارض الفنية</h3>
-                            <p data-ar="تنظيم معارض للفنون التشكيلية والخط العربي والتصوير الفوتوغرافي لعرض أعمال الفنانين المحليين." data-en="Organizing exhibitions of fine arts, Arabic calligraphy and photography to display the works of local artists.">تنظيم معارض للفنون التشكيلية والخط العربي والتصوير الفوتوغرافي لعرض أعمال الفنانين المحليين.</p>
-                        </div>
-                    </div>
+		.service-card:hover .service-image img {
+			transform: scale(1.1);
+		}
 
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Festivals">
-                        </div>
-                        <div class="service-content">
-                            <div class="service-icon">
-                                <i class="fas fa-music"></i>
-                            </div>
-                            <h3 class="service-title" data-ar="المهرجانات الثقافية" data-en="Cultural Festivals">المهرجانات الثقافية</h3>
-                            <p data-ar="إقامة مهرجانات ثقافية وفنية سنوية تعكس تراث وثقافة محافظة عجلون." data-en="Holding annual cultural and artistic festivals that reflect the heritage and culture of Ajloun Governorate.">إقامة مهرجانات ثقافية وفنية سنوية تعكس تراث وثقافة محافظة عجلون.</p>
-                        </div>
-                    </div>
+		.service-content {
+			padding: 25px;
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+		}
 
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Training Courses">
-                        </div>
-                        <div class="service-content">
-                            <div class="service-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <h3 class="service-title" data-ar="الدورات التدريبية" data-en="Training Courses">الدورات التدريبية</h3>
-                            <p data-ar="عقد دورات تدريبية في مختلف المجالات الثقافية والفنية مثل الخط العربي والرسم والموسيقى." data-en="Conducting training courses in various cultural and artistic fields such as Arabic calligraphy, drawing and music.">عقد دورات تدريبية في مختلف المجالات الثقافية والفنية مثل الخط العربي والرسم والموسيقى.</p>
-                        </div>
-                    </div>
+		.service-header {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			margin-bottom: 15px;
+		}
 
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1453&q=80" alt="Library Services">
-                        </div>
-                        <div class="service-content">
-                            <div class="service-icon">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <h3 class="service-title" data-ar="خدمات المكتبة" data-en="Library Services">خدمات المكتبة</h3>
-                            <p data-ar="توفير مكتبة ثقافية تحتوي على آلاف الكتب والمصادر في مختلف المجالات المعرفية." data-en="Providing a cultural library containing thousands of books and resources in various fields of knowledge.">توفير مكتبة ثقافية تحتوي على آلاف الكتب والمصادر في مختلف المجالات المعرفية.</p>
-                        </div>
-                    </div>
+		.service-icon {
+			width: 65px;
+			height: 65px;
+			background: #186a30;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+		}
 
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Workshops">
-                        </div>
-                        <div class="service-content">
-                            <div class="service-icon">
-                                <i class="fas fa-hands-helping"></i>
-                            </div>
-                            <h3 class="service-title" data-ar="ورش العمل" data-en="Workshops">ورش العمل</h3>
-                            <p data-ar="تنظيم ورش عمل متخصصة في التراث الشعبي والحرف اليدوية التقليدية." data-en="Organizing specialized workshops in folk heritage and traditional handicrafts.">تنظيم ورش عمل متخصصة في التراث الشعبي والحرف اليدوية التقليدية.</p>
-                        </div>
-                    </div>
+			.service-icon i {
+				font-size: 40px;
+				color: #ffda00;
+			}
 
-                    <div class="service-card">
-                        <div class="service-image">
-                            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cultural Events">
-                        </div>
-                        <div class="service-content">
-                            <div class="service-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <h3 class="service-title" data-ar="الفعاليات الثقافية" data-en="Cultural Events">الفعاليات الثقافية</h3>
-                            <p data-ar="إقامة أمسيات شعرية وندوات ثقافية وعروض مسرحية ومواهب شابة." data-en="Holding poetry evenings, cultural seminars, theatrical performances and young talents.">إقامة أمسيات شعرية وندوات ثقافية وعروض مسرحية ومواهب شابة.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+		.service-title {
+			font-size: 1.4rem;
+			font-weight: 700;
+			color: var(--primary-dark);
+			margin: 0;
+		}
 
-    <!-- Statistics Section -->
-   @*  <section class="section stats" style="height:20vw; z-index:-1;">
+		.service-content p {
+			color: var(--text-light);
+			line-height: 1.6;
+			margin: 0;
+			flex: 1;
+		}
+
+		@@media (max-width: 1200px) {
+			.services-grid {
+				grid-template-columns: repeat(3, 1fr);
+				gap: 20px;
+			}
+		}
+
+		@@media (max-width: 992px) {
+			.services-grid {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+		@@media (max-width: 768px) {
+			.services-grid {
+				grid-template-columns: 1fr;
+				gap: 20px;
+			}
+
+			.service-card {
+				max-width: 500px;
+				margin: 0 auto;
+			}
+		}
+	</style>
+
+</head>
+<body class="lang-ar">
+
+
+	<!-- Hero Section -->
+	<section class="hero" id="home" style="margin-top:-2vw;">
+		<div class="hero-bg"></div>
+		<div class="hero-content">
+			<h3 class="hero-subtitle" data-ar="مرحبا بكم في" data-en="Welcome to">مرحبا بكم في</h3>
+			<h1 class="hero-title" data-ar="مديرية ثقافة عجلون" data-en="Ajloun Directorate of Culture" style="color:white;">مديرية ثقافة عجلون</h1>
+			<p class="hero-text" data-ar="نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي." data-en="We work to promote and disseminate culture and arts in Ajloun Governorate, support local talents, and preserve cultural heritage.">نحن نعمل على تعزيز ونشر الثقافة والفنون في محافظة عجلون، ودعم المواهب المحلية، والحفاظ على التراث الثقافي.</p>
+			<div class="hero-buttons">
+				<a asp-controller="Home" asp-action="AboutUs" class="btn btn-primary" data-ar="تعرف علينا" data-en="About Us">تعرف علينا</a>
+				<a asp-controller="Home" asp-action="Contact" class="btn btn-outline" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a>
+			</div>
+		</div>
+		<a href="#about" class="scroll-down">
+			<i class="fas fa-chevron-down"></i>
+		</a>
+	</section>
+
+	<!-- About Section -->
+	<section class="section about" id="about">
+		<div class="container">
+			<div class="about-content">
+				<div class="about-image">
+					<img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Ajlun_Castle_in_2009.jpg" alt="About Ajloun Culture">
+				</div>
+				<div class="about-text">
+					<h2 data-ar="عن مديريتنا" data-en="About Our Directorate">عن مديريتنا</h2><br />
+					<p data-ar="مديرية ثقافة عجلون هي إحدى مديريات وزارة الثقافة الأردنية، تأسست عام 1998 بهدف نشر الثقافة والفنون في محافظة عجلون ودعم المبدعين والمثقفين." data-en="The Ajloun Directorate of Culture is one of the directorates of the Jordanian Ministry of Culture, established in 1998 with the aim of spreading culture and arts in Ajloun Governorate and supporting creators and intellectuals.">مديرية ثقافة عجلون هي إحدى مديريات وزارة الثقافة الأردنية، تأسست عام 1998 بهدف نشر الثقافة والفنون في محافظة عجلون ودعم المبدعين والمثقفين.</p>
+					<p data-ar="ننظم العديد من الفعاليات الثقافية والفنية على مدار العام، بما في ذلك المعارض والمهرجانات وورش العمل والدورات التدريبية في مختلف المجالات الثقافية والفنية." data-en="We organize many cultural and artistic events throughout the year, including exhibitions, festivals, workshops and training courses in various cultural and artistic fields.">ننظم العديد من الفعاليات الثقافية والفنية على مدار العام، بما في ذلك المعارض والمهرجانات وورش العمل والدورات التدريبية في مختلف المجالات الثقافية والفنية.</p>
+
+					<div class="about-features">
+						<div class="feature-item">
+							<div class="feature-icon">
+								<i class="fas fa-bullseye"></i>
+							</div>
+							<div class="feature-text">
+								<h4 data-ar="رؤيتنا" data-en="Our Vision">رؤيتنا</h4>
+								<p data-ar="نحو ثقافة أردنية مجتمعية مدنية ذات بُعد إنساني" data-en="Towards a Jordanian civil, autonomous, and humane society">نحو ثقافة أردنية مجتمعية مدنية ذات بُعد إنساني</p>
+							</div>
+						</div>
+						<div class="feature-item">
+							<div class="feature-icon">
+								<i class="fas fa-flag"></i>
+							</div>
+							<div class="feature-text">
+								<h4 data-ar="رسالتنا" data-en="Our Mission">رسالتنا</h4>
+								<p data-ar="تعزيز الفعل الثقافي الأردني في بيئة إبداعية حرة، وبناء قدرات المجتمعات المحلية لإدارته وتوظيفه لتحسين نوعية الحياة، مع احترام التنوع الثقافي وترسيخ قيم الحوار والعيش المشترك."
+								   data-en="Promoting Jordanian cultural activity in a free, creative environment, and building the capacity of local communities to manage and utilize it to improve quality of life, while respecting cultural diversity and consolidating the values ​​of dialogue and coexistence.">تعزيز الفعل الثقافي الأردني في بيئة إبداعية حرة، وبناء قدرات المجتمعات المحلية لإدارته وتوظيفه لتحسين نوعية الحياة، مع احترام التنوع الثقافي وترسيخ قيم الحوار والعيش المشترك.</p>
+							</div>
+						</div>
+						@* <div class="feature-item"> *@
+						@* 	<div class="feature-icon"> *@
+						@* 		<i class="fas fa-star"></i> *@
+						@* 	</div> *@
+						@* 	<div class="feature-text"> *@
+						@* 		<h4 data-ar="قيمنا" data-en="Our Values">قيمنا</h4> *@
+						@* 		<p data-ar="الإبداع، التميز، الاحتراف" data-en="Creativity, Excellence, Professionalism">الإبداع، التميز، الاحتراف</p> *@
+						@* 	</div> *@
+						@* </div> *@
+						@* <div class="feature-item"> *@
+						@* 	<div class="feature-icon"> *@
+						@* 		<i class="fas fa-trophy"></i> *@
+						@* 	</div> *@
+						@* 	<div class="feature-text"> *@
+						@* 		<h4 data-ar="إنجازاتنا" data-en="Our Achievements">إنجازاتنا</h4> *@
+						@* 		<p data-ar="أكثر من 100 فعالية سنوياً" data-en="More than 100 events annually">أكثر من 100 فعالية سنوياً</p> *@
+						@* 	</div> *@
+						@* </div> *@
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Services Section -->
+	<section class="section services" id="services">
+		<div class="container">
+			<div class="services-header">
+				<h2 class="section-title" data-ar="الخدمات الثقافية" data-en="Our Cultural Services">الخدمات الثقافية</h2>
+				<br /> <br />
+				<p data-ar="نقدم مجموعة متنوعة من الخدمات الثقافية والفنية لأهالي محافظة عجلون" data-en="We provide a variety of cultural and artistic services for the people of Ajloun Governorate">نقدم مجموعة متنوعة من الخدمات الثقافية والفنية لأهالي محافظة عجلون</p>
+			</div>
+
+			<div class="services-grid">
+				<div class="service-card">
+					<div class="service-image">
+						<img src="https://library.yu.edu.jo/images/Library/Art/pic15.jpg" alt="Art Exhibitions">
+					</div>
+					<div class="service-content">
+						<div class="service-header">
+							<div class="service-icon">
+								<i class="fas fa-paint-brush"></i>
+							</div>
+							<h3 class="service-title">المعارض الفنية</h3>
+						</div>
+						<p>تنظيم معارض للفنون التشكيلية والخط العربي والتصوير الفوتوغرافي لعرض أعمال الفنانين المحليين.</p>
+					</div>
+				</div>
+
+				<div class="service-card">
+					<div class="service-image">
+						<img src="https://culture.gov.jo/EBV4.0/Root_Storage/AR/EBnews/16-12-2024-2.jpg" alt="Cultural Festivals">
+					</div>
+					<div class="service-content">
+						<div class="service-header">
+							<div class="service-icon">
+								<i class="fas fa-music"></i>
+							</div>
+							<h3 class="service-title">المهرجانات الثقافية</h3>
+						</div>
+						<p>إقامة مهرجانات ثقافية وفنية سنوية تعكس تراث وثقافة محافظة عجلون.</p>
+					</div>
+				</div>
+
+				<div class="service-card">
+					<div class="service-image">
+						<img src="https://www.lifeskillsinstitute.org/wp-content/uploads/2019/06/DSC07959-1024x576-1-1024x576.jpg" alt="Training Courses">
+					</div>
+					<div class="service-content">
+						<div class="service-header">
+							<div class="service-icon">
+								<i class="fas fa-graduation-cap"></i>
+							</div>
+							<h3 class="service-title">الدورات التدريبية</h3>
+						</div>
+						<p>عقد دورات تدريبية في مختلف المجالات الثقافية والفنية مثل الخط العربي والرسم والموسيقى.</p>
+					</div>
+				</div>
+
+				<div class="service-card">
+					<div class="service-image">
+						<img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1453&q=80" alt="Library Services" />
+					</div>
+					<div class="service-content">
+						<div class="service-icon">
+							<i class="fas fa-book"></i>
+						</div>
+						<h3 class="service-title" data-ar="خدمات المكتبة" data-en="Library Services">خدمات المكتبة</h3>
+						<p data-ar="توفير مكتبة ثقافية تحتوي على آلاف الكتب والمصادر في مختلف المجالات المعرفية." data-en="Providing a cultural library containing thousands of books and resources in various fields of knowledge.">توفير مكتبة ثقافية تحتوي على آلاف الكتب والمصادر في مختلف المجالات المعرفية.</p>
+					</div>
+				</div>
+
+				<div class="service-card">
+					<div class="service-image">
+						<img src="https://sis.gov.eg/Content/Upload/slider/7201725134254339.jpg" alt="Cultural Workshops">
+					</div>
+					<div class="service-content">
+						<div class="service-header">
+							<div class="service-icon">
+								<i class="fas fa-hands-helping"></i>
+							</div>
+							<h3 class="service-title">ورش العمل</h3>
+						</div>
+						<p>تنظيم ورش عمل متخصصة في التراث الشعبي والحرف اليدوية التقليدية.</p>
+					</div>
+				</div>
+
+				<div class="service-card">
+					<div class="service-image">
+						<img src="https://alghad.com/Content/Upload/Large/7202418215453369278790.jpg" alt="Cultural Events">
+					</div>
+					<div class="service-content">
+						<div class="service-header">
+							<div class="service-icon">
+								<i class="fas fa-calendar-alt"></i>
+							</div>
+							<h3 class="service-title">الفعاليات الثقافية</h3>
+						</div>
+						<p>إقامة أمسيات شعرية وندوات ثقافية وعروض مسرحية ومواهب شابة.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Statistics Section -->
+	@*  <section class="section stats" style="height:20vw; z-index:-1;">
         <div class="container" style="height:3vw!important;margin-top:-5vw!important; ">
             <div class="stats-grid">
                 <div class="stat-item">
@@ -214,73 +336,73 @@
         </div>
     </section> *@
 
-        <!-- Events Section -->
-        <section class="section events" id="events">
-            <div class="container">
-                <div class="events-header">
-                <h2 class="section-title" data-ar="بانوراما الفعاليات" data-en="Panorama of Events">بانوراما الفعاليات </h2> <br />
-                <a asp-controller="Events" asp-action="Events" class="btn btn-primary" data-ar="عرض الكل" data-en="View All">عرض الكل</a>
-                @* <a href="/Events/Events" class="btn btn-primary">عرض الكل</a> *@
+	<!-- Events Section -->
+	<section class="section events" id="events">
+		<div class="container">
+			<div class="events-header">
+				<h2 class="section-title" data-ar="بانوراما الفعاليات" data-en="Panorama of Events">بانوراما الفعاليات </h2> <br />
+				<a asp-controller="Events" asp-action="Events" class="btn btn-primary" data-ar="عرض الكل" data-en="View All">عرض الكل</a>
+				@* <a href="/Events/Events" class="btn btn-primary">عرض الكل</a> *@
 
-                </div>
+			</div>
 
-                <div class="events-slider">
-                <div class="swiper-wrapper">
-                    @foreach (var item in ViewBag.UpcomingEvents)
-                    {
-                        <div class="swiper-slide">
-                            <div class="event-card">
-                                <div class="event-image">
-                                    <img src="@(string.IsNullOrEmpty(item.PosterUrl) ? "https://i.pinimg.com/736x/67/60/2e/67602e1c5677ddad5d78a9096e2ee0ed.jpg" : item.PosterUrl)" alt="@item.Title">
-                                </div>
-                                <div class="event-content">
-                                    <span class="event-date">قريبًا</span>
-                                    <h3 class="event-title">@item.Title</h3>
-                                    <p>@item.Description</p>
-                                    @* <a href="#" class="event-link">التفاصيل <i class="fas fa-arrow-left"></i></a> *@
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
+			<div class="events-slider">
+				<div class="swiper-wrapper">
+					@foreach (var item in ViewBag.UpcomingEvents)
+					{
+						<div class="swiper-slide">
+							<div class="event-card">
+								<div class="event-image">
+									<img src="@(string.IsNullOrEmpty(item.PosterUrl) ? "https://i.pinimg.com/736x/67/60/2e/67602e1c5677ddad5d78a9096e2ee0ed.jpg" : item.PosterUrl)" alt="@item.Title">
+								</div>
+								<div class="event-content">
+									<span class="event-date">قريبًا</span>
+									<h3 class="event-title">@item.Title</h3>
+									<p>@item.Description</p>
+									@* <a href="#" class="event-link">التفاصيل <i class="fas fa-arrow-left"></i></a> *@
+								</div>
+							</div>
+						</div>
+					}
+				</div>
 
-                </div>
-            </div>
-        </section>
+			</div>
+		</div>
+	</section>
 
-    <!-- Artists Section -->
-    <section class="section artists" id="artists">
-        <div class="container">
-            <div class="services-header">
-                <h2 class="section-title" data-ar="ألبوم المشاركات" data-en="Ajloun Artists">ألبوم المشاركات</h2>
-                <br /><br />
-                <p data-ar="تعرف على ألبوم المشاركات الفنية في محافظة عجلون" data-en="Learn about the album of artistic contributions in Ajloun Governorate.">
-                    تعرف على ألبوم المشاركات الفنية في محافظة عجلون
-                </p>
-            </div>
+	<!-- Artists Section -->
+	<section class="section artists" id="artists">
+		<div class="container">
+			<div class="services-header">
+				<h2 class="section-title" data-ar="ألبوم المشاركات" data-en="Ajloun Artists">ألبوم المشاركات</h2>
+				<br /><br />
+				<p data-ar="تعرف على ألبوم المشاركات الفنية في محافظة عجلون" data-en="Learn about the album of artistic contributions in Ajloun Governorate.">
+					تعرف على ألبوم المشاركات الفنية في محافظة عجلون
+				</p>
+			</div>
 
-            <div class="artists-grid">
-                @foreach (var artist in ViewBag.Artists)
-                {
-                    <div class="artist-card">
-                        <img src="@artist.ImageUrl" alt="@artist.ArtistName" class="artist-image" />
-                        <div class="artist-overlay">
-                            <h3 class="artist-name">@artist.ArtistName</h3>
-                            <span class="artist-specialty">@artist.ArtistEmail</span>
-                            @* <p>@artist.Description</p> *@
-                            <div class="artist-social">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </section>
+			<div class="artists-grid">
+				@foreach (var artist in ViewBag.Artists)
+				{
+					<div class="artist-card">
+						<img src="@artist.ImageUrl" alt="@artist.ArtistName" class="artist-image" />
+						<div class="artist-overlay">
+							<h3 class="artist-name">@artist.ArtistName</h3>
+							<span class="artist-specialty">@artist.ArtistEmail</span>
+							@* <p>@artist.Description</p> *@
+							<div class="artist-social">
+								<a href="#"><i class="fab fa-facebook-f"></i></a>
+								<a href="#"><i class="fab fa-instagram"></i></a>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</section>
 
-        <!-- Newsletter Section -->
-     @*    <section class="section newsletter">
+	<!-- Newsletter Section -->
+	@*    <section class="section newsletter">
             <div class="container">
                 <h2 class="section-title text-center" data-ar="اشترك في نشرتنا البريدية" data-en="Subscribe to Our Newsletter">اشترك في نشرتنا البريدية</h2> <br /><br />
                 <p class="text-center" data-ar="ابق على اطلاع بآخر الفعاليات والأنشطة الثقافية في عجلون" data-en="Stay updated with the latest cultural events and activities in Ajloun">ابق على اطلاع بآخر الفعاليات والأنشطة الثقافية في عجلون</p>
@@ -292,237 +414,237 @@
             </div>
         </section>
  *@
-      
-        <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-        <script>
-            // Mobile Menu Toggle
-                    document.addEventListener('DOMContentLoaded', () => {
-          const hamburger = document.querySelector('.hamburger');
-          const navLinks = document.querySelector('.nav-links');
 
-          if (hamburger && navLinks) {
-            hamburger.addEventListener('click', () => {
-              navLinks.classList.toggle('active');
-              hamburger.classList.toggle('active');
-            });
-          }
-        });
+	<!-- Scripts -->
+	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+	<script>
+			// Mobile Menu Toggle
+					document.addEventListener('DOMContentLoaded', () => {
+		  const hamburger = document.querySelector('.hamburger');
+		  const navLinks = document.querySelector('.nav-links');
 
-            // Language Switcher
-            const languageBtns = document.querySelectorAll('.language-btn');
-            const elementsToTranslate = document.querySelectorAll('[data-ar], [data-en]');
-            const placeholdersToTranslate = document.querySelectorAll('[data-ar-placeholder], [data-en-placeholder]');
+		  if (hamburger && navLinks) {
+			hamburger.addEventListener('click', () => {
+			  navLinks.classList.toggle('active');
+			  hamburger.classList.toggle('active');
+			});
+		  }
+		});
 
-            languageBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const lang = btn.dataset.lang;
+			// Language Switcher
+			const languageBtns = document.querySelectorAll('.language-btn');
+			const elementsToTranslate = document.querySelectorAll('[data-ar], [data-en]');
+			const placeholdersToTranslate = document.querySelectorAll('[data-ar-placeholder], [data-en-placeholder]');
 
-                    languageBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
+			languageBtns.forEach(btn => {
+				btn.addEventListener('click', () => {
+					const lang = btn.dataset.lang;
 
-                    document.documentElement.lang = lang;
+					languageBtns.forEach(b => b.classList.remove('active'));
+					btn.classList.add('active');
 
-                    if (lang === 'ar') {
-                        document.documentElement.dir = 'rtl';
-                        document.body.className = 'lang-ar';
+					document.documentElement.lang = lang;
 
-                        // Translate text content
-                        elementsToTranslate.forEach(el => {
-                            if (el.dataset.ar) {
-                                el.textContent = el.dataset.ar;
-                            }
-                        });
+					if (lang === 'ar') {
+						document.documentElement.dir = 'rtl';
+						document.body.className = 'lang-ar';
 
-                        // Translate placeholders
-                        placeholdersToTranslate.forEach(el => {
-                            if (el.dataset.arPlaceholder) {
-                                el.placeholder = el.dataset.arPlaceholder;
-                            }
-                        });
-                    } else {
-                        document.documentElement.dir = 'ltr';
-                        document.body.className = 'lang-en';
+						// Translate text content
+						elementsToTranslate.forEach(el => {
+							if (el.dataset.ar) {
+								el.textContent = el.dataset.ar;
+							}
+						});
 
-                        // Translate text content
-                        elementsToTranslate.forEach(el => {
-                            if (el.dataset.en) {
-                                el.textContent = el.dataset.en;
-                            }
-                        });
+						// Translate placeholders
+						placeholdersToTranslate.forEach(el => {
+							if (el.dataset.arPlaceholder) {
+								el.placeholder = el.dataset.arPlaceholder;
+							}
+						});
+					} else {
+						document.documentElement.dir = 'ltr';
+						document.body.className = 'lang-en';
 
-                        // Translate placeholders
-                        placeholdersToTranslate.forEach(el => {
-                            if (el.dataset.enPlaceholder) {
-                                el.placeholder = el.dataset.enPlaceholder;
-                            }
-                        });
-                    }
-                });
-            });
+						// Translate text content
+						elementsToTranslate.forEach(el => {
+							if (el.dataset.en) {
+								el.textContent = el.dataset.en;
+							}
+						});
 
-            // Navbar Scroll Effect
-            // window.addEventListener('scroll', () => {
-            //     if (window.scrollY > 50) {
-            //         document.querySelector('.navbar').classList.add('scrolled');
-            //     } else {
-            //         document.querySelector('.navbar').classList.remove('scrolled');
-            //     }
-            // });
-                    window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            }
-        });
+						// Translate placeholders
+						placeholdersToTranslate.forEach(el => {
+							if (el.dataset.enPlaceholder) {
+								el.placeholder = el.dataset.enPlaceholder;
+							}
+						});
+					}
+				});
+			});
 
-            // Events Slider
-            const eventsSlider = new Swiper('.events-slider', {
-                slidesPerView: 1,
-                spaceBetween: 20,
-                loop: true,
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: false,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2,
-                    },
-                    992: {
-                        slidesPerView: 3,
-                    }
-                }
-            });
+			// Navbar Scroll Effect
+			// window.addEventListener('scroll', () => {
+			//     if (window.scrollY > 50) {
+			//         document.querySelector('.navbar').classList.add('scrolled');
+			//     } else {
+			//         document.querySelector('.navbar').classList.remove('scrolled');
+			//     }
+			// });
+					window.addEventListener('scroll', () => {
+			const navbar = document.querySelector('.navbar');
+			if (navbar) {
+				if (window.scrollY > 50) {
+					navbar.classList.add('scrolled');
+				} else {
+					navbar.classList.remove('scrolled');
+				}
+			}
+		});
 
-            // Testimonials Slider
-            const testimonialsSlider = new Swiper('.testimonials-slider', {
-                slidesPerView: 1,
-                loop: true,
-                autoplay: {
-                    delay: 7000,
-                    disableOnInteraction: false,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                }
-            });
+			// Events Slider
+			const eventsSlider = new Swiper('.events-slider', {
+				slidesPerView: 1,
+				spaceBetween: 20,
+				loop: true,
+				autoplay: {
+					delay: 5000,
+					disableOnInteraction: false,
+				},
+				pagination: {
+					el: '.swiper-pagination',
+					clickable: true,
+				},
+				breakpoints: {
+					768: {
+						slidesPerView: 2,
+					},
+					992: {
+						slidesPerView: 3,
+					}
+				}
+			});
 
-            // Counter Animation
-            const statNumbers = document.querySelectorAll('.stat-number');
+			// Testimonials Slider
+			const testimonialsSlider = new Swiper('.testimonials-slider', {
+				slidesPerView: 1,
+				loop: true,
+				autoplay: {
+					delay: 7000,
+					disableOnInteraction: false,
+				},
+				pagination: {
+					el: '.swiper-pagination',
+					clickable: true,
+				}
+			});
 
-            function animateCounters() {
-                statNumbers.forEach(stat => {
-                    const target = parseInt(stat.dataset.count);
-                    const duration = 2000;
-                    const step = target / (duration / 16);
-                    let current = 0;
+			// Counter Animation
+			const statNumbers = document.querySelectorAll('.stat-number');
 
-                    const counter = setInterval(() => {
-                        current += step;
-                        if (current >= target) {
-                            clearInterval(counter);
-                            stat.textContent = target;
-                        } else {
-                            stat.textContent = Math.floor(current);
-                        }
-                    }, 16);
-                });
-            }
+			function animateCounters() {
+				statNumbers.forEach(stat => {
+					const target = parseInt(stat.dataset.count);
+					const duration = 2000;
+					const step = target / (duration / 16);
+					let current = 0;
 
-            // GSAP Animations
-            gsap.registerPlugin(ScrollTrigger);
+					const counter = setInterval(() => {
+						current += step;
+						if (current >= target) {
+							clearInterval(counter);
+							stat.textContent = target;
+						} else {
+							stat.textContent = Math.floor(current);
+						}
+					}, 16);
+				});
+			}
 
-            // Animate hero content
-            gsap.from('.hero-subtitle', {
-                opacity: 0,
-                y: 50,
-                duration: 1,
-                delay: 0.5
-            });
+			// GSAP Animations
+			gsap.registerPlugin(ScrollTrigger);
 
-            gsap.from('.hero-title', {
-                opacity: 0,
-                y: 50,
-                duration: 1,
-                delay: 0.8
-            });
+			// Animate hero content
+			gsap.from('.hero-subtitle', {
+				opacity: 0,
+				y: 50,
+				duration: 1,
+				delay: 0.5
+			});
 
-            gsap.from('.hero-text', {
-                opacity: 0,
-                y: 50,
-                duration: 1,
-                delay: 1.1
-            });
+			gsap.from('.hero-title', {
+				opacity: 0,
+				y: 50,
+				duration: 1,
+				delay: 0.8
+			});
 
-            gsap.from('.hero-buttons', {
-                opacity: 0,
-                y: 50,
-                duration: 1,
-                delay: 1.4
-            });
+			gsap.from('.hero-text', {
+				opacity: 0,
+				y: 50,
+				duration: 1,
+				delay: 1.1
+			});
 
-            // Animate sections on scroll
-            gsap.utils.toArray('.animate-on-scroll').forEach(section => {
-                gsap.from(section, {
-                    opacity: 0,
-                    y: 100,
-                    duration: 1,
-                    scrollTrigger: {
-                        trigger: section,
-                        start: 'top 80%',
-                        toggleActions: 'play none none none'
-                    }
-                });
-            });
+			gsap.from('.hero-buttons', {
+				opacity: 0,
+				y: 50,
+				duration: 1,
+				delay: 1.4
+			});
 
-            // Animate about section
-            gsap.from('.about-image', {
-                scrollTrigger: {
-                    trigger: '.about',
-                    start: 'top 70%',
-                    toggleActions: 'play none none none'
-                },
-                x: -100,
-                opacity: 0,
-                duration: 1
-            });
+			// Animate sections on scroll
+			gsap.utils.toArray('.animate-on-scroll').forEach(section => {
+				gsap.from(section, {
+					opacity: 0,
+					y: 100,
+					duration: 1,
+					scrollTrigger: {
+						trigger: section,
+						start: 'top 80%',
+						toggleActions: 'play none none none'
+					}
+				});
+			});
 
-            gsap.from('.about-text', {
-                scrollTrigger: {
-                    trigger: '.about',
-                    start: 'top 70%',
-                    toggleActions: 'play none none none'
-                },
-                x: 100,
-                opacity: 0,
-                duration: 1
-            });
+			// Animate about section
+			gsap.from('.about-image', {
+				scrollTrigger: {
+					trigger: '.about',
+					start: 'top 70%',
+					toggleActions: 'play none none none'
+				},
+				x: -100,
+				opacity: 0,
+				duration: 1
+			});
 
-            // Initialize counters when stats section is in view
-            ScrollTrigger.create({
-                trigger: '.stats',
-                start: 'top 70%',
-                onEnter: animateCounters
-            });
+			gsap.from('.about-text', {
+				scrollTrigger: {
+					trigger: '.about',
+					start: 'top 70%',
+					toggleActions: 'play none none none'
+				},
+				x: 100,
+				opacity: 0,
+				duration: 1
+			});
 
-            // Parallax effect for hero background
-            gsap.to('.hero-bg', {
-                scrollTrigger: {
-                    scrub: true
-                },
-                y: 100,
-                scale: 1.1
-            });
-        </script>
-    </body>
+			// Initialize counters when stats section is in view
+			ScrollTrigger.create({
+				trigger: '.stats',
+				start: 'top 70%',
+				onEnter: animateCounters
+			});
+
+			// Parallax effect for hero background
+			gsap.to('.hero-bg', {
+				scrollTrigger: {
+					scrub: true
+				},
+				y: 100,
+				scale: 1.1
+			});
+	</script>
+</body>
 </html>

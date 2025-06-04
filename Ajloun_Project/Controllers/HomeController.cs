@@ -37,7 +37,7 @@ namespace Ajloun_Project.Controllers
                 {
                     e.Title,
                     e.Description,
-                    PosterUrl = "" // ?? ???? ????
+                    e.PosterUrl
                 });
 
             ViewBag.UpcomingEvents = culturalEvents.Concat(assocEvents).Take(6).ToList();

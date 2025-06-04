@@ -279,15 +279,17 @@ a:not(.btn):hover::after {
 }
 
 .alert {
-    padding: 10px;
-    border-radius: 8px;
-    margin: 15px 0;
-    font-size: 14px;
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
 }
 
-.alert-info {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
+.alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
 }
 
 /* خاص بتسجيل الدخول */

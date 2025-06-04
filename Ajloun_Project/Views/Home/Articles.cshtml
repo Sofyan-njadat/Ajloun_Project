@@ -5,255 +5,255 @@
 }
 @model List<Ajloun_Project.Models.Article>
 @{
-    ViewData["Title"] = "المجلّة";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    var categories = Model.Select(a => a.Category).Distinct().ToList();
+	ViewData["Title"] = "المجلّة";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var categories = Model.Select(a => a.Category).Distinct().ToList();
 }
 
 @section Styles {
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #EFF5EC;
-        }
+	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
+	<style>
+		body {
+			background-color: #EFF5EC;
+		}
 
-        .modern-header {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/images/library-bg.jpg);
-            background-size: cover;
-            background-position: center;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-            border-top: 25px solid #1E2F23;
-            border-bottom: 25px solid #1E2F23;
-            font-family: 'Cairo', sans-serif;
-        }
+		.modern-header {
+			background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/images/library-bg.jpg);
+			background-size: cover;
+			background-position: center;
+			height: 300px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			margin-bottom: 50px;
+			position: relative;
+			border-top: 25px solid #1E2F23;
+			border-bottom: 25px solid #1E2F23;
+			font-family: 'Cairo', sans-serif;
+		}
 
-        .overlay {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #355E3B;
-        }
+		.overlay {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #355E3B;
+		}
 
-        .header-content {
-            color: white;
-            z-index: 1;
-            padding: 0 20px;
-        }
+		.header-content {
+			color: white;
+			z-index: 1;
+			padding: 0 20px;
+		}
 
-        .header-content h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            color: #FFE15D;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            font-family: 'Cairo', sans-serif;
-        }
+			.header-content h1 {
+				font-size: 4rem;
+				font-weight: 900;
+				margin-bottom: 1rem;
+				color: #ffd700;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+				font-family: 'Cairo', sans-serif;
+			}
 
-        .header-content .subtitle {
-            font-size: 1.5rem;
-            color: white;
-            margin: 0;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-            font-weight: 600;
-        }
+			.header-content .subtitle {
+				font-size: 1.5rem;
+				color: white;
+				margin: 0;
+				text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+				font-weight: 600;
+			}
 
-        .search-container {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            margin-bottom: 40px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+		.search-container {
+			background: white;
+			padding: 25px;
+			border-radius: 12px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+			margin-bottom: 40px;
+			max-width: 900px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
+		.input-group {
+			display: flex;
+			gap: 10px;
+		}
 
-        .input-group input {
-            padding: 12px 20px;
-            border-radius: 30px;
-            border: 2px solid #F2E8CF;
-            font-size: 1rem;
-            flex: 1;
-        }
+			.input-group input {
+				padding: 12px 20px;
+				border-radius: 30px;
+				border: 2px solid #F2E8CF;
+				font-size: 1rem;
+				flex: 1;
+			}
 
-        .input-group input:focus {
-            outline: none;
-            border-color: #2C6E49;
-            box-shadow: 0 0 0 2px rgba(44, 110, 73, 0.2);
-        }
+				.input-group input:focus {
+					outline: none;
+					border-color: #2C6E49;
+					box-shadow: 0 0 0 2px rgba(44, 110, 73, 0.2);
+				}
 
-        .input-group button {
-            padding: 12px 30px;
-            background: #2C6E49;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            min-width: 120px;
-            transition: all 0.3s ease;
-        }
+			.input-group button {
+				padding: 12px 30px;
+				background: #2C6E49;
+				color: white;
+				border: none;
+				border-radius: 30px;
+				font-weight: 600;
+				min-width: 120px;
+				transition: all 0.3s ease;
+			}
 
-        .input-group button:hover {
-            background: #235c3a;
-            transform: translateY(-2px);
-        }
+				.input-group button:hover {
+					background: #235c3a;
+					transform: translateY(-2px);
+				}
 
-        .filter-buttons {
-            margin: 30px 0;
-            text-align: center;
-        }
+		.filter-buttons {
+			margin: 30px 0;
+			text-align: center;
+		}
 
-        .filter-buttons .btn {
-            margin: 5px;
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: 2px solid #2C6E49;
-            color: #2C6E49;
-            background: transparent;
-            transition: all 0.3s ease;
-            min-width: 120px;
-        }
+			.filter-buttons .btn {
+				margin: 5px;
+				padding: 10px 20px;
+				border-radius: 20px;
+				border: 2px solid #2C6E49;
+				color: #2C6E49;
+				background: transparent;
+				transition: all 0.3s ease;
+				min-width: 120px;
+			}
 
-        .filter-buttons .btn:hover,
-        .filter-buttons .btn.active {
-            background: #2C6E49;
-            color: white;
-        }
+				.filter-buttons .btn:hover,
+				.filter-buttons .btn.active {
+					background: #2C6E49;
+					color: white;
+				}
 
-        .card {
-            border: none;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+		.card {
+			border: none;
+			border-radius: 15px;
+			overflow: hidden;
+			transition: transform 0.3s ease;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+		}
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
+			.card:hover {
+				transform: translateY(-5px);
+			}
 
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
+		.card-img-top {
+			height: 200px;
+			object-fit: cover;
+			transition: transform 0.3s ease;
+		}
 
-        .card:hover .card-img-top {
-            transform: scale(1.05);
-        }
+		.card:hover .card-img-top {
+			transform: scale(1.05);
+		}
 
-        .card-body {
-            padding: 1.5rem;
-        }
+		.card-body {
+			padding: 1.5rem;
+		}
 
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #2C6E49;
-        }
+		.card-title {
+			font-size: 1.25rem;
+			font-weight: 700;
+			margin-bottom: 1rem;
+			color: #2C6E49;
+		}
 
-        .btn-primary {
-            background: #2C6E49;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
+		.btn-primary {
+			background: #2C6E49;
+			border: none;
+			padding: 10px 25px;
+			border-radius: 20px;
+			transition: all 0.3s ease;
+		}
 
-        .btn-primary:hover {
-            background: #235c3a;
-        }
+			.btn-primary:hover {
+				background: #235c3a;
+			}
 
-        @@media (max-width: 768px) {
-            .header-content h1 {
-                font-size: 2.5rem;
-            }
-            
-            .input-group {
-                flex-direction: column;
-            }
+		@@media (max-width: 768px) {
+			.header-content h1 {
+				font-size: 2.5rem;
+			}
 
-            .input-group button {
-                width: 100%;
-            }
-        }
-    </style>
+			.input-group {
+				flex-direction: column;
+			}
+
+				.input-group button {
+					width: 100%;
+				}
+		}
+	</style>
 }
 
 <div class="modern-header">
-    <div class="overlay">
-        <div class="header-content">
-            <h1>المجلّة</h1>
-            <p class="subtitle">مجلة المعارف والفنون</p>
-        </div>
-    </div>
+	<div class="overlay">
+		<div class="header-content">
+			<h1>المجلّة</h1>
+			<p class="subtitle">مجلة المعارف والفنون</p>
+		</div>
+	</div>
 </div>
 
 <div class="container">
-        <!-- البحث -->
-    <div class="search-container">
-                <form method="get" asp-controller="Home" asp-action="Articles" class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="🔍 ابحث عن مجلّة..." value="@(Context.Request.Query["search"])" />
-            <button type="submit" class="btn">بحث</button>
-                </form>
-        </div>
+	<!-- البحث -->
+	<div class="search-container">
+		<form method="get" asp-controller="Home" asp-action="Articles" class="input-group">
+			<input type="text" name="search" class="form-control" placeholder="🔍 ابحث عن مجلّة..." value="@(Context.Request.Query["search"])" />
+			<button type="submit" class="btn">بحث</button>
+		</form>
+	</div>
 
-        <!-- الفلاتر -->
-    <div class="filter-buttons">
-            <form method="get" asp-controller="Home" asp-action="Articles">
-                <button type="submit" name="category" value=""
-                    class="btn @(string.IsNullOrEmpty(Context.Request.Query["category"].ToString()) ? "active" : "")">
-                    الكل
-                </button>
-            @foreach (var category in categories)
-            {
-                <button type="submit" name="category" value="@category"
-                        class="btn @(Context.Request.Query["category"].ToString() == category ? "active" : "")">
-                    @category
-                </button>
-            }
-            </form>
-        </div>
+	<!-- الفلاتر -->
+	<div class="filter-buttons">
+		<form method="get" asp-controller="Home" asp-action="Articles">
+			<button type="submit" name="category" value=""
+					class="btn @(string.IsNullOrEmpty(Context.Request.Query["category"].ToString()) ? "active" : "")">
+				الكل
+			</button>
+			@foreach (var category in categories)
+			{
+				<button type="submit" name="category" value="@category"
+						class="btn @(Context.Request.Query["category"].ToString() == category ? "active" : "")">
+					@category
+				</button>
+			}
+		</form>
+	</div>
 
-        @if (Model != null && Model.Any())
-        {
-            <div class="row">
-                @foreach (var article in Model)
-                {
-                    <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <img src="@article.CoverImageUrl" class="card-img-top" alt="@article.Title" />
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">@article.Title</h5>
-                            <p class="card-text text-muted mb-1">
-                                <i class="bi bi-person"></i> @article.AuthorName
-                            </p>
-                                <p class="card-text text-muted">
-                                    <i class="bi bi-calendar-event"></i> @article.PublishDate?.ToString("yyyy-MM-dd")
-                                </p>
-                                <a href="@Url.Action("ArticleDetails", new { id = article.ArticleId })" class="btn btn-primary mt-auto">قراءة المزيد</a>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-        <div class="alert alert-info text-center">لا توجد مجلّات لعرضها حاليًا.</div>
-        }
-    </div>
+	@if (Model != null && Model.Any())
+	{
+		<div class="row">
+			@foreach (var article in Model)
+			{
+				<div class="col-md-4 mb-4">
+					<div class="card h-100">
+						<img src="@article.CoverImageUrl" class="card-img-top" alt="@article.Title" />
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title">@article.Title</h5>
+							<p class="card-text text-muted mb-1">
+								<i class="bi bi-person"></i> @article.AuthorName
+							</p>
+							<p class="card-text text-muted">
+								<i class="bi bi-calendar-event"></i> @article.PublishDate?.ToString("yyyy-MM-dd")
+							</p>
+							<a href="@Url.Action("ArticleDetails", new { id = article.ArticleId })" class="btn btn-primary mt-auto">قراءة المزيد</a>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
+	else
+	{
+		<div class="alert alert-info text-center">لا توجد مجلّات لعرضها حاليًا.</div>
+	}
+</div>

@@ -1,4 +1,4 @@
-﻿﻿@{
+﻿@{
     Layout = null;
     var userId = Context.Session.GetInt32("userId");
 }
@@ -20,7 +20,7 @@
     <style>
         /* تحسينات عامة للشريط */
         header {
-            z-index: 1000;
+            /* z-index: 1000; */
             position: relative;
         }
 
@@ -36,7 +36,7 @@
             color: #fff; /* لون النصوص أبيض مثل الـ navbar */
             min-width: 160px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1001; /* z-index أعلى من الـ header لضمان الظهور */
+            z-index: 1500; /* z-index أعلى من الـ header لضمان الظهور */
             border-radius: 0 0 5px 5px;
         }
 
@@ -123,6 +123,8 @@
             .dropdown.active .dropdown-content {
                 display: block; /* يظهر عند النقر */
             }
+
+
         }
 
         .dropdown-content {
@@ -134,6 +136,18 @@
             overflow: visible!important;
         }
 
+        nav a:hover {
+            background-color: #263a2c;
+            color: white !important;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #2c3e2e;
+            color: white;
+            font-weight: 400;
+        }
     </style>
 </head>
 <body>
@@ -144,23 +158,13 @@
         <nav id="main-nav">
             <a asp-controller="Home" asp-action="Index">الرئيسية</a>
 
+
             <div class="dropdown">
-                <a href="#">المكتبة</a>
+                <a href="#">المكتبة و الدورات</a>
                 <div class="dropdown-content">
                     <a asp-controller="Library" asp-action="Index">المكتبة العامة</a>
-                    <a asp-controller="Home" asp-action="Articles">المجلة</a>
-                    <a asp-controller="ArtWorks" asp-action="ArtWorks">الأعمال الفنية</a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <a href="#">الدورات</a>
-                <div class="dropdown-content">
                     <a asp-controller="Category" asp-action="Index">الورشات التدريبية</a>
                     <a asp-controller="UserProfile" asp-action="UserCourseApplications">دوراتي</a>
-                    <a asp-controller="UserPosts" asp-action="Create">بماذا تفكر</a>
-                    <a asp-controller="UserPosts" asp-action="PublicLibrary"> المشاركات الثقافية</a>
-
 
                 </div>
             </div>
@@ -169,16 +173,21 @@
                 <a href="#">الأنشطة الثقافية</a>
                 <div class="dropdown-content">
                     <a asp-controller="Festivals" asp-action="Festivals">المهرجانات</a>
-                    <a asp-controller="Association" asp-action="AllAssociation">نافذة على الهيئات الثقافية</a>
                     <a asp-controller="Events" asp-action="Events">الفعاليات</a>
-                    <a asp-controller="Handicrafts" asp-action="Index"> الصناعات الثقافية</a>
+                    <a asp-controller="Handicrafts" asp-action="Index">الصناعات الثقافية</a>
+                    <a asp-controller="ArtWorks" asp-action="ArtWorks">الأعمال الفنية</a>
+                    <a asp-controller="UserPosts" asp-action="Create"> شاركنا أفكارك</a>
+
+                    <a asp-controller="UserPosts" asp-action="PublicLibrary"> المشاركات الثقافية</a>
                 </div>
             </div>
 
             <div class="dropdown">
                 <a href="#">المحتوى</a>
                 <div class="dropdown-content">
-                    <a asp-controller="News" asp-action="Index">الإعلانات</a>
+                    <a asp-controller="News" asp-action="Index">الإعلانات الثقافية</a>
+                    <a asp-controller="Home" asp-action="Articles">المجلة</a>
+                    <a asp-controller="Association" asp-action="AllAssociation">الهيئات الثقافية</a>
                     <a asp-controller="Gallery" asp-action="Gallery">معرض الصور</a>
                 </div>
             </div>

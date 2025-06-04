@@ -4,47 +4,245 @@
 
 @section Styles {
     <style>
+        :root {
+            --primary-color: #2C6E49;
+            --primary-dark: #24553a;
+            --secondary-color: #4C9F70;
+            --light-color: #F8F9FA;
+            --accent-color: #FF9E1B;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4f0f5 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
         .success-container {
             max-width: 600px;
             margin: 100px auto;
             background-color: white;
-            padding: 40px;
-            border-radius: 12px;
+            padding: 50px;
+            border-radius: 16px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+            transition: all 0.3s ease;
         }
 
-            .success-container h2 {
-                color: #2C6E49;
-                margin-bottom: 20px;
+            .success-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 5px;
+                background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+                background-size: 200% 200%;
+                animation: gradientBG 3s ease infinite;
             }
 
-            .success-container p {
-                color: #444;
-                font-size: 16px;
+            .success-container:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             }
 
-            .success-container a {
-                display: inline-block;
-                margin-top: 30px;
-                background-color: #2C6E49;
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 25px;
+            display: inline-block;
+            animation: bounce 1s ease infinite alternate;
+            color: var(--primary-color);
+            filter: drop-shadow(0 5px 10px rgba(44, 110, 73, 0.3));
+        }
+
+        .success-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 32px;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+            .success-container h2::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 50px;
+                height: 3px;
+                background: var(--accent-color);
+                border-radius: 3px;
+            }
+
+        .success-container p {
+            color: #555;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .success-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 14px 32px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(44, 110, 73, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+            .success-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(44, 110, 73, 0.4);
+                background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
                 color: white;
-                padding: 12px 24px;
-                text-decoration: none;
-                border-radius: 6px;
-                font-size: 15px;
             }
 
-                .success-container a:hover {
-                    background-color: #24553a;
-                }
+            .success-btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: 0.5s;
+            }
+
+            .success-btn:hover::before {
+                left: 100%;
+            }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            opacity: 0;
+        }
+
+        /* Animations */
+        @@keyframes fadeInUp {
+            to
+
+        {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        @@keyframes bounce {
+            to
+
+        {
+            transform: translateY(-15px);
+        }
+
+        }
+
+        @@keyframes gradientBG {
+            0%
+
+        {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .success-container
+
+        {
+            margin: 50px 20px;
+            padding: 30px;
+        }
+
+        .success-icon {
+            font-size: 60px;
+        }
+
+        .success-container h2 {
+            font-size: 26px;
+        }
+
+        }
     </style>
 }
 
 <div class="success-container">
-    <h2>🎉 تم الحجز بنجاح!</h2>
-    <p>شكراً لك على استخدام نظام مكتبة مركز عجلون الثقافي.</p>
-    <p>سوف يتم مراجعة الحجز والتواصل معك لتأكيد الاستلام.</p>
+    <div class="success-icon">🎉</div>
+    <h2>تم الحجز بنجاح!</h2>
+    <p>شكراً لك على استخدام نظام المكتبة العامة. لقد تم تأكيد حجزك بنجاح .</p>
 
-    <a asp-action="Index">⬅️ العودة إلى صفحة الكتب</a>
+    <a asp-action="Index" class="success-btn">
+        <span>العودة إلى صفحة الكتب</span>
+    </a>
 </div>
+
+@section Scripts {
+    <script>
+        // Create confetti effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const colors = ['#2C6E49', '#4C9F70', '#FF9E1B', '#F8F9FA'];
+            const container = document.querySelector('.success-container');
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -10 + 'px';
+                confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                container.appendChild(confetti);
+
+                // Animate each confetti
+                setTimeout(() => {
+                    confetti.style.opacity = '1';
+                    confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.setProperty('--random-x', Math.random() * 200 - 100 + 'px');
+                }, Math.random() * 1000);
+            }
+
+            // Add CSS for confetti animation
+            const style = document.createElement('style');
+            style.textContent = `
+        @@keyframes fall {
+                    to {
+                        top: 100%;
+                        left: calc(var(--random-x) + 50%);
+                        opacity: 0;
+                        transform: rotate(360deg);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+}
