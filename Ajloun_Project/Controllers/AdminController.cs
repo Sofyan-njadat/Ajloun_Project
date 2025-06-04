@@ -646,5 +646,11 @@ namespace Ajloun_Project.Controllers
 
             return RedirectToAction(nameof(ManageCategories));
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

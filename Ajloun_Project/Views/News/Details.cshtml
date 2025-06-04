@@ -122,9 +122,17 @@
 
     .news-content {
         font-size: 18px;
-        line-height: 1.9;
         color: var(--text);
-        white-space: pre-wrap;
+    }
+
+    .news-content {
+        word-wrap: break-word; 
+        overflow-wrap: break-word; 
+        white-space: normal; 
+        direction: rtl; 
+        text-align: right; 
+        line-height: 1.5; 
+        max-width: 100%;
     }
 
         .news-content p {
@@ -235,7 +243,7 @@
 
     <div class="news-content-container animate__animated animate__fadeIn animate__delay-3s">
         <div class="news-content">
-            @Html.Raw(Model.Content.Replace("\n", "<br />"))
+            @Html.Raw(Model.Content)
         </div>
 
         <a href="javascript:history.back()" class="back-button">
