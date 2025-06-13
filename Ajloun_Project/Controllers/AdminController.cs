@@ -11,17 +11,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
+using Ajloun_Project.Services;
 namespace Ajloun_Project.Controllers
 {
     public class AdminController : Controller
     {
         private readonly MyDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IBookingNotificationService _notificationService;
 
-        public AdminController(MyDbContext context, IWebHostEnvironment webHostEnvironment)
+        public AdminController(MyDbContext context, IWebHostEnvironment webHostEnvironment, IBookingNotificationService notificationService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _notificationService = notificationService;
+
         }
         public IActionResult Dashboard()
         {
@@ -217,7 +221,6 @@ namespace Ajloun_Project.Controllers
             return View(bookings);
         }
 
-
         [HttpPost]
         public IActionResult UpdateHallBookingStatus(int id, string status)
         {
@@ -229,6 +232,27 @@ namespace Ajloun_Project.Controllers
 
             booking.Status = status;
             _context.SaveChanges();
+
+            // نحاول نجيب الهيئة الثقافية باستخدام RequestingParty (اسم الهيئة)
+            var assoc = _context.CulturalAssociations
+                .FirstOrDefault(a => a.Name == booking.RequestingParty);
+
+            if (assoc != null && !string.IsNullOrEmpty(assoc.Email))
+            {
+                string subject = "رد على طلب حجز القاعة";
+                string message = status == "Approved"
+                    ? "نحيطكم علمًا بأنه تم *الموافقة* على طلب حجز القاعة المقدم من طرفكم. نشكركم على تعاونكم."
+                    : "نأسف لإعلامكم بأنه تم *رفض* طلب حجز القاعة. لأي استفسار يرجى التواصل مع مديرية الثقافة.";
+
+                try
+                {
+                    _notificationService.SendNotification(assoc.Email, subject, message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("خطأ أثناء إرسال الإيميل: " + ex.Message);
+                }
+            }
 
             return RedirectToAction("HallBookingsRequests");
         }

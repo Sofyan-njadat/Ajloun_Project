@@ -9,6 +9,8 @@ ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 //builder.Services.AddDbContext<MyDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddScoped<IBookingNotificationService, BookingNotificationService>();
 
 //builder.Services.AddDbContext<MyDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
