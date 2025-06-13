@@ -51,6 +51,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<FestivalReservation> FestivalReservations { get; set; }
 
+    public virtual DbSet<GalleryImage> GalleryImages { get; set; }
+
     public virtual DbSet<HallBooking> HallBookings { get; set; }
 
     public virtual DbSet<Handicraft> Handicrafts { get; set; }
@@ -346,6 +348,14 @@ public partial class MyDbContext : DbContext
                 .HasConstraintName("FK__FestivalR__UserI__7D439ABD");
         });
 
+        modelBuilder.Entity<GalleryImage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__GalleryI__3214EC071F27D28E");
+
+            entity.Property(e => e.Category).HasMaxLength(100);
+            entity.Property(e => e.Title).HasMaxLength(200);
+        });
+
         modelBuilder.Entity<HallBooking>(entity =>
         {
             entity.HasKey(e => e.BookingId).HasName("PK__HallBook__73951AEDD43995BE");
@@ -410,7 +420,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<UserPost>(entity =>
         {
-            entity.HasKey(e => e.PostId).HasName("PK__UserPost__AA126018853DA23B");
+            entity.HasKey(e => e.PostId).HasName("PK__UserPost__AA12601821D6885E");
 
             entity.Property(e => e.Category).HasMaxLength(100);
             entity.Property(e => e.CreatedAt)
@@ -427,7 +437,7 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserPosts)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UserPosts__UserI__18EBB532");
+                .HasConstraintName("FK__UserPosts__UserI__17F790F9");
         });
 
         OnModelCreatingPartial(modelBuilder);

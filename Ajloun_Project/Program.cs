@@ -1,8 +1,11 @@
 ﻿using Ajloun_Project.Models;
 using Ajloun_Project.Services;
 using Microsoft.EntityFrameworkCore;
-
+using OfficeOpenXml;
 var builder = WebApplication.CreateBuilder(args);
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
 //builder.Services.AddDbContext<MyDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 

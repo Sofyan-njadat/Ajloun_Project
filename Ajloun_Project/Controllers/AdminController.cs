@@ -10,7 +10,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-
+using OfficeOpenXml;
 namespace Ajloun_Project.Controllers
 {
     public class AdminController : Controller
@@ -203,11 +203,21 @@ namespace Ajloun_Project.Controllers
         public IActionResult HallBookingsRequests()
         {
             var bookings = _context.HallBookings
-                .OrderBy(b => b.Status == "Pending" ? 0 : 1) // ترتيب البندنغ بالأول
+                .OrderBy(b => b.Status == "Pending" ? 0 : 1)
                 .ToList();
+
+            // معالجة التكرار في أسماء الجمعيات باستخدام GroupBy لضمان أن كل اسم مفتاح يظهر مرة واحدة فقط
+            var associationsDict = _context.CulturalAssociations
+                .Where(a => !string.IsNullOrEmpty(a.Name))
+                .GroupBy(a => a.Name!)
+                .ToDictionary(g => g.Key, g => g.First());
+
+            ViewBag.AssociationMap = associationsDict;
 
             return View(bookings);
         }
+
+
         [HttpPost]
         public IActionResult UpdateHallBookingStatus(int id, string status)
         {
@@ -580,6 +590,43 @@ namespace Ajloun_Project.Controllers
             return RedirectToAction(nameof(ManageCategories));
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> AddArtwork(IFormFile ImageFile, string Title, string ArtistName, string Type, string Description)
+        {
+            string imageUrl = null;
+
+            if (ImageFile != null && ImageFile.Length > 0)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(ImageFile.FileName);
+                var extension = Path.GetExtension(ImageFile.FileName);
+                var uniqueFileName = $"{fileName}_{Guid.NewGuid()}{extension}";
+                var path = Path.Combine("wwwroot/uploads", uniqueFileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await ImageFile.CopyToAsync(stream);
+                }
+
+                imageUrl = "/uploads/" + uniqueFileName;
+            }
+
+            var artwork = new Artwork
+            {
+                Title = Title,
+                ArtistName = ArtistName,
+                Type = Type,
+                Description = Description,
+                ImageUrl = imageUrl,
+                Status = "Approved" // ✅ يضاف مباشرة كموافق عليه
+            };
+
+            _context.Artworks.Add(artwork);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("PendingArtworks"); // أو اسم الأكشن اللي يعرض القائمة
+        }
+
         // تعديل فئة
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -651,6 +698,40 @@ namespace Ajloun_Project.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult ExportUsersToExcel()
+        {
+
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Users");
+
+            // رؤوس الأعمدة
+            worksheet.Cells[1, 1].Value = "الرقم";
+            worksheet.Cells[1, 2].Value = "الاسم الكامل";
+            worksheet.Cells[1, 3].Value = "البريد الإلكتروني";
+            worksheet.Cells[1, 4].Value = "الهاتف";
+            worksheet.Cells[1, 5].Value = "الجنس";
+            worksheet.Cells[1, 6].Value = "تاريخ الميلاد";
+
+            var users = _context.Users.ToList();
+            int row = 2;
+            foreach (var u in users)
+            {
+                worksheet.Cells[row, 1].Value = u.UserId;
+                worksheet.Cells[row, 2].Value = u.FullName;
+                worksheet.Cells[row, 3].Value = u.Email;
+                worksheet.Cells[row, 4].Value = u.Phone;
+                worksheet.Cells[row, 5].Value = u.Gender;
+                worksheet.Cells[row, 6].Value = u.BirthDate?.ToString("yyyy-MM-dd");
+                row++;
+            }
+
+            var stream = new MemoryStream();
+            package.SaveAs(stream);
+            stream.Position = 0;
+
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Users.xlsx");
         }
     }
 }

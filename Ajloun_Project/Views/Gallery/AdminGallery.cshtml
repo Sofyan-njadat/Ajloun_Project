@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Ajloun_Project.Models.GalleryImage>
+
+@{
+    ViewData["Title"] = "إدارة المعرض";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">إضافة صورة جديدة</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addImageModal">
+                    <i class="fas fa-plus"></i> إضافة صورة
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <div class="card">
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>المعرف</th>
+                        <th>الصورة</th>
+                        <th>العنوان</th>
+                        <th>الفئة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var img in Model)
+                    {
+                        <tr>
+                            <td>@img.Id</td>
+                            <td>
+                                <img src="@img.ImageUrl" alt="صورة" style="width:100px; height:80px; object-fit:cover; border-radius:4px;" />
+                            </td>
+                            <td>@img.Title</td>
+                            <td>@img.Category</td>
+                            <td>
+                            <form id="deleteForm_@img.Id" asp-action="Delete" asp-route-id="@img.Id" method="post" onsubmit="return confirmDelete('deleteForm_@img.Id');">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </form>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal لإضافة صورة -->
+<div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="addImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-action="Add" asp-controller="Gallery" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addImageModalLabel">إضافة صورة جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">العنوان</label>
+                        <input type="text" name="Title" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الفئة</label>
+                        <input type="text" name="Category" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الصورة</label>
+                        <input type="file" name="ImageFile" accept="image/*" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">إضافة</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmDelete(formId) {
+        Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: "لا يمكنك التراجع بعد الحذف!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'نعم، احذفها',
+            cancelButtonText: 'إلغاء'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(formId).submit();
+            }
+        });
+        return false;
+    }
+</script>

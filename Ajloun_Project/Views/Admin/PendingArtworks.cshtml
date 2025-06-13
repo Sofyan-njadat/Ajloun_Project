@@ -107,6 +107,90 @@
         transform: rotate(90deg);
         background: rgba(255,255,255,0.3);
     }
+
+    /* مودال خاص بالإضافة */
+    /* مودال أنيق وبسيط */
+    .custom-modal .modal-dialog {
+        max-width: 450px; /* تصغير العرض */
+        margin: auto;
+        border-radius: 12px;
+    }
+
+    .custom-modal .modal-content {
+        background-color: #fefefe;
+        color: #333;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        padding: 15px 20px;
+        font-family: 'Cairo', sans-serif;
+    }
+
+    /* الهيدر */
+    .custom-modal .modal-header {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        background-color: transparent;
+    }
+
+    .custom-modal .modal-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1d3f8b;
+    }
+
+    /* الحقول */
+    .custom-modal input,
+    .custom-modal textarea {
+        font-size: 0.95rem;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    .custom-modal label {
+        font-size: 0.9rem;
+        color: #444;
+        margin-bottom: 3px;
+        font-weight: 500;
+    }
+
+    .custom-modal textarea {
+        resize: vertical;
+    }
+
+    /* الأزرار */
+    .custom-modal .modal-footer {
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+        background-color: transparent;
+    }
+
+    .custom-modal .btn-primary {
+        background-color: #1d3f8b;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 16px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .custom-modal .btn-secondary {
+        background-color: #f0f0f0;
+        color: #333;
+        border-radius: 6px;
+        padding: 6px 14px;
+        font-size: 0.9rem;
+    }
+
+    .modal-backdrop.show {
+        z-index: 9998 !important;
+    }
+
+    .custom-modal {
+        z-index: 9999 !important;
+    }
+
 </style>
 
 <div class="container-fluid py-4">
@@ -118,6 +202,53 @@
             </div>
         </div>
     </div>
+    <!-- زر الفتح -->
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#customAddModal">
+            <i class="fas fa-plus"></i> إضافة عمل فني
+        </button>
+    </div>
+
+    <!-- مودال الإضافة المعدل -->
+    <div class="modal fade custom-modal" id="customAddModal" tabindex="-1" aria-labelledby="customAddModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <form asp-action="AddArtwork" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">إضافة عمل فني جديد</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>عنوان العمل</label>
+                            <input name="Title" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>اسم الفنان</label>
+                            <input name="ArtistName" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>نوع العمل</label>
+                            <input name="Type" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>الوصف</label>
+                            <textarea name="Description" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>صورة</label>
+                            <input type="file" name="ImageFile" accept="image/*" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">إضافة</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <div class="card">
         <div class="card-body">
