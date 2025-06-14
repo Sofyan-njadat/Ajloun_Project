@@ -51,6 +51,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<FestivalReservation> FestivalReservations { get; set; }
 
+    public virtual DbSet<GalleryImage> GalleryImages { get; set; }
+
     public virtual DbSet<HallBooking> HallBookings { get; set; }
 
     public virtual DbSet<Handicraft> Handicrafts { get; set; }
@@ -270,6 +272,7 @@ public partial class MyDbContext : DbContext
         {
             entity.HasKey(e => e.AssociationId).HasName("PK__Cultural__B51A182D69818CC2");
 
+            entity.Property(e => e.Email).HasMaxLength(150);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Phone).HasMaxLength(20);
             entity.Property(e => e.PresidentName).HasMaxLength(100);
@@ -344,6 +347,14 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.FestivalReservations)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__FestivalR__UserI__7D439ABD");
+        });
+
+        modelBuilder.Entity<GalleryImage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__GalleryI__3214EC07947A3701");
+
+            entity.Property(e => e.Category).HasMaxLength(100);
+            entity.Property(e => e.Title).HasMaxLength(200);
         });
 
         modelBuilder.Entity<HallBooking>(entity =>
