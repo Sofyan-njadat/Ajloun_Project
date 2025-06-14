@@ -351,7 +351,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<GalleryImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__GalleryI__3214EC071F27D28E");
+            entity.HasKey(e => e.Id).HasName("PK__GalleryI__3214EC07947A3701");
 
             entity.Property(e => e.Category).HasMaxLength(100);
             entity.Property(e => e.Title).HasMaxLength(200);
