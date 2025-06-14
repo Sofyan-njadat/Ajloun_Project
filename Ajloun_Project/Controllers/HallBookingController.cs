@@ -26,65 +26,57 @@ namespace Ajloun_Project.Controllers
         [HttpPost]
         public IActionResult Create(HallBooking model)
         {
+            // التأكد من تمرير قائمة الهيئات حتى لو صار خطأ
+            ViewBag.Associations = _context.CulturalAssociations
+                .Where(a => !string.IsNullOrEmpty(a.Name))
+                .Select(a => a.Name)
+                .ToList();
+
+            // التحقق البسيط يدوي (بدون استخدام ModelState)
             if (model.EventDate < DateOnly.FromDateTime(DateTime.Today))
             {
-                ModelState.AddModelError("EventDate", "لا يمكن اختيار تاريخ قديم.");
+                TempData["Error"] = "⚠️ لا يمكن اختيار تاريخ قديم.";
+                return View(model);
             }
 
             if (model.StartTime.HasValue && model.EndTime.HasValue && model.EndTime <= model.StartTime)
             {
-                ModelState.AddModelError("EndTime", "وقت الانتهاء يجب أن يكون بعد وقت البدء.");
+                TempData["Error"] = "⚠️ وقت الانتهاء يجب أن يكون بعد وقت البدء.";
+                return View(model);
             }
 
-            // جمع الحجوزات المتضاربة
-            var conflictingBookings = _context.HallBookings
-                .Where(b =>
-                    b.EventDate == model.EventDate &&
-                    b.StartTime < model.EndTime &&
-                    b.EndTime > model.StartTime)
-                .ToList();
-
-            if (conflictingBookings.Any())
-            {
-                ModelState.AddModelError(string.Empty, "⚠️ يوجد فعالية أخرى محجوزة في نفس الوقت.");
-                ViewBag.Conflicts = conflictingBookings;
-            }
-
-            bool isExactDuplicate = _context.HallBookings.Any(b =>
+            var isDuplicate = _context.HallBookings.Any(b =>
                 b.RequestingParty == model.RequestingParty &&
                 b.EventDate == model.EventDate &&
                 b.StartTime == model.StartTime &&
                 b.EndTime == model.EndTime &&
-                b.EventTitle == model.EventTitle
-            );
-            if (isExactDuplicate)
-            {
-                ModelState.AddModelError(string.Empty, "⚠️ نفس الطلب مكرر من قبل.");
-            }
+                b.EventTitle == model.EventTitle);
 
-            var latestEnd = _context.HallBookings
-                .Where(b => b.EventDate == model.EventDate)
-                .OrderByDescending(b => b.EndTime)
-                .Select(b => b.EndTime)
-                .FirstOrDefault();
-
-            if (latestEnd.HasValue && model.StartTime <= latestEnd)
+            if (isDuplicate)
             {
-                ModelState.AddModelError("StartTime", "⚠️ لا يمكن الحجز قبل انتهاء آخر فعالية في نفس اليوم.");
-            }
-
-            if (!ModelState.IsValid)
-            {
+                TempData["Error"] = "⚠️ نفس الطلب مكرر من قبل.";
                 return View(model);
             }
 
+            var hasConflict = _context.HallBookings.Any(b =>
+                b.EventDate == model.EventDate &&
+                b.StartTime < model.EndTime &&
+                b.EndTime > model.StartTime);
+
+            if (hasConflict)
+            {
+                TempData["Error"] = "⚠️ يوجد فعالية أخرى في نفس التوقيت.";
+                return View(model);
+            }
+
+            // الحجز سليم – حفظه
             model.Status = "Pending";
             model.RequestDate = DateOnly.FromDateTime(DateTime.Now);
 
             _context.HallBookings.Add(model);
             _context.SaveChanges();
 
-            TempData["Success"] = "تم إرسال طلب الحجز بنجاح.";
+            TempData["Success"] = "✅ تم إرسال طلب الحجز بنجاح.";
             return RedirectToAction("Create");
         }
 

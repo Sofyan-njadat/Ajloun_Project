@@ -1,11 +1,16 @@
 ﻿using Ajloun_Project.Models;
 using Ajloun_Project.Services;
 using Microsoft.EntityFrameworkCore;
-
+using OfficeOpenXml;
 var builder = WebApplication.CreateBuilder(args);
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
 //builder.Services.AddDbContext<MyDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddScoped<IBookingNotificationService, BookingNotificationService>();
 
 //builder.Services.AddDbContext<MyDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));

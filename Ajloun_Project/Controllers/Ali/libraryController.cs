@@ -8,6 +8,8 @@
     using System;
     using System.IO;
     using System.Globalization;
+    using System.Text;
+    using OfficeOpenXml;
 
     public class LibraryController : Controller
     {
@@ -321,5 +323,42 @@
             }
         }
 
+
+        public IActionResult ExportBooksToExcel()
+        {
+            var books = _context.Books.Include(b => b.Category).ToList();
+
+            using (var package = new ExcelPackage())
+            {
+                var sheet = package.Workbook.Worksheets.Add("Books");
+
+                // رؤوس الأعمدة
+                sheet.Cells[1, 1].Value = "رقم";
+                sheet.Cells[1, 2].Value = "العنوان";
+                sheet.Cells[1, 3].Value = "المؤلف";
+                sheet.Cells[1, 4].Value = "التصنيف";
+                sheet.Cells[1, 5].Value = "عدد النسخ";
+                sheet.Cells[1, 6].Value = "الحالة";
+
+                int row = 2;
+                foreach (var book in books)
+                {
+                    sheet.Cells[row, 1].Value = book.BookId;
+                    sheet.Cells[row, 2].Value = book.Title;
+                    sheet.Cells[row, 3].Value = book.Author;
+                    sheet.Cells[row, 4].Value = book.Category?.Name;
+                    sheet.Cells[row, 5].Value = book.AvailableCopies;
+                    sheet.Cells[row, 6].Value = book.IsAvailable ? "متاح" : "غير متاح";
+                    row++;
+                }
+
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
+
+                string fileName = $"Books_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+        }
     }
 }
