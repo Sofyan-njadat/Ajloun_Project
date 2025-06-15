@@ -766,6 +766,7 @@ body {
     }
 
     .era-date, .era-point {
+        display:none;
         left: 30px !important;
         right: auto !important;
         transform: translateX(-50%);

@@ -371,7 +371,6 @@
 									<span class="event-date">قريبًا</span>
 									<h3 class="event-title">@item.Title</h3>
 									<p>@item.Description</p>
-									@* <a href="#" class="event-link">التفاصيل <i class="fas fa-arrow-left"></i></a> *@
 								</div>
 							</div>
 						</div>
@@ -394,18 +393,13 @@
 			</div>
 
 			<div class="artists-grid">
-				@foreach (var artist in ViewBag.Artists)
+				@foreach (var artist in ((List<Artwork>)ViewBag.Artists).Take(3))
 				{
 					<div class="artist-card">
 						<img src="@artist.ImageUrl" alt="@artist.ArtistName" class="artist-image" />
 						<div class="artist-overlay">
-							<h3 class="artist-name">@artist.ArtistName</h3>
+							<h3 class="artist-name" style="color: #ffffff;">@artist.ArtistName</h3>
 							<span class="artist-specialty">@artist.ArtistEmail</span>
-							@* <p>@artist.Description</p> *@
-							<div class="artist-social">
-								<a href="#"><i class="fab fa-facebook-f"></i></a>
-								<a href="#"><i class="fab fa-instagram"></i></a>
-							</div>
 						</div>
 					</div>
 				}
@@ -413,19 +407,7 @@
 		</div>
 	</section>
 
-	<!-- Newsletter Section -->
-	@*    <section class="section newsletter">
-            <div class="container">
-                <h2 class="section-title text-center" data-ar="اشترك في نشرتنا البريدية" data-en="Subscribe to Our Newsletter">اشترك في نشرتنا البريدية</h2> <br /><br />
-                <p class="text-center" data-ar="ابق على اطلاع بآخر الفعاليات والأنشطة الثقافية في عجلون" data-en="Stay updated with the latest cultural events and activities in Ajloun">ابق على اطلاع بآخر الفعاليات والأنشطة الثقافية في عجلون</p>
 
-                <form class="newsletter-form">
-                    <input type="email" class="newsletter-input" placeholder="بريدك الإلكتروني" data-ar-placeholder="بريدك الإلكتروني" data-en-placeholder="Your Email" required>
-                    <button type="submit" class="btn btn-outline" data-ar="اشتراك" data-en="Subscribe">اشتراك</button>
-                </form>
-            </div>
-        </section>
- *@
 
 	<!-- Scripts -->
 	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
@@ -495,14 +477,7 @@
 				});
 			});
 
-			// Navbar Scroll Effect
-			// window.addEventListener('scroll', () => {
-			//     if (window.scrollY > 50) {
-			//         document.querySelector('.navbar').classList.add('scrolled');
-			//     } else {
-			//         document.querySelector('.navbar').classList.remove('scrolled');
-			//     }
-			// });
+
 					window.addEventListener('scroll', () => {
 			const navbar = document.querySelector('.navbar');
 			if (navbar) {
