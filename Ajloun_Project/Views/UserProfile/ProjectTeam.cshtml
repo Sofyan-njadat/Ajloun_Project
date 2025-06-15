@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Students";
+	ViewData["Title"] = "فريق المطورين";
 }
 
 <!-- Bootstrap CSS -->
@@ -243,6 +243,31 @@
 			height: 180px;
 		}
 	}
+
+	.centered-img {
+		height: 250px; /* أو حسب ما يناسبك */
+		object-fit: cover;
+		object-position: top center; /* يركز على الرأس */
+	}
+
+	.profile-img {
+		height: 260px;
+		width: 100%;
+		object-fit: cover;
+		object-position: center 10%;
+		border-top-left-radius: 1rem;
+		border-top-right-radius: 1rem;
+	}
+
+	.uniform-img {
+		height: 250px;
+		width: 100%;
+		object-fit: cover;
+		object-position: top center;
+		border-top-left-radius: 1rem;
+		border-top-right-radius: 1rem;
+	}
+
 </style>
 
 <!-- Particle background -->
@@ -271,7 +296,7 @@
 		<!-- Toqa (Girl) -->
 		<div class="col">
 			<div class="card h-100 shadow">
-				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Toqa">
+				<img src="~/Images/users/toqa.jpg" class="card-img-top" alt="Toqa">
 				<div class="card-body">
 					<h5 class="card-title">Toqa Khashashneh</h5>
 					<p class="card-text">Fullstack Web Developer</p>
@@ -285,7 +310,7 @@
 		<!-- Ali (Boy) -->
 		<div class="col">
 			<div class="card h-100 shadow">
-				<img src="~/Images/users/ali.jpeg" class="card-img-top" alt="Ali">
+				<img src="~/Images/users/ali1.jpg" class="card-img-top" alt="Ali">
 				<div class="card-body">
 					<h5 class="card-title">Ali Smadi</h5>
 					<p class="card-text">Fullstack Web Developer</p>
@@ -314,13 +339,15 @@
 
 		<!-- Firas (Boy) -->
 		<div class="col">
-			<div class="card h-100 shadow">
-				<img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Firas">
-				<div class="card-body">
-					<h5 class="card-title">Firas Abu Mallouh</h5>
-					<p class="card-text">Fullstack Web Developer</p>
-					<div class="social-icons">
-						<a href="https://www.linkedin.com/in/firasabumalloh/" target="_blank"><i class="fab fa-linkedin"></i></a>
+			<div class="card h-100 shadow overflow-hidden">
+				<img src="/Images/users/firas.jpeg" class="card-img-top uniform-img" alt="Firas">
+				<div class="card-body text-center">
+					<h5 class="card-title fw-bold">Firas Abu Mallouh</h5>
+					<p class="card-text text-muted">Fullstack Web Developer</p>
+					<div class="social-icons mt-3">
+						<a href="https://www.linkedin.com/in/firasabumalloh/" target="_blank">
+							<i class="fab fa-linkedin fa-lg"></i>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -328,26 +355,25 @@
 
 		<!-- Ahmad (Boy) -->
 		<div class="col">
-			<div class="card h-100 shadow rounded-4 overflow-hidden border-0">
-				<div style="height: 220px; overflow: hidden;">
-					<img src="~/Images/users/ahmad.jpeg" class="w-100" alt="Ahmad"
-						 style="height: 100%; object-fit: cover; object-position: center top;">
-				</div>
-				<div class="card-body text-center" style="background: linear-gradient(#f9f9f9, #f3f3f3);">
-					<h5 class="card-title fw-bold" style="color: #1e3625;">Ahmad Bani Younis</h5>
+			<div class="card h-100 shadow overflow-hidden">
+				<img src="~/Images/users/ahmad.jpeg" class="card-img-top uniform-img" alt="Ahmad">
+				<div class="card-body text-center">
+					<h5 class="card-title fw-bold">Ahmad Bani Younis</h5>
 					<p class="card-text text-muted">Fullstack Web Developer</p>
-					<a href="https://www.linkedin.com/in/ahmad-bani-younes-61824324b/" target="_blank"
-					   class="btn btn-outline-dark rounded-circle mt-2" style="width: 40px; height: 40px;">
-						<i class="fab fa-linkedin"></i>
-					</a>
+					<div class="social-icons mt-3">
+						<a href="https://www.linkedin.com/in/ahmad-bani-younes-61824324b/" target="_blank">
+							<i class="fab fa-linkedin"></i>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
 
+
 		<!-- Hazem (Boy) -->
 		<div class="col">
 			<div class="card h-100 shadow">
-				<img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" class="card-img-top" alt="Hazem">
+				<img src="~/Images/users/hazem.jpeg" class="card-img-top profile-img" alt="Hazem">
 				<div class="card-body">
 					<h5 class="card-title">Hazem Frehat</h5>
 					<p class="card-text">Fullstack Web Developer</p>
@@ -361,7 +387,7 @@
 		<!-- Nada (Girl) -->
 		<div class="col">
 			<div class="card h-100 shadow">
-				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Nada">
+				<img src="~/Images/users/Nada.jpeg" class="card-img-top" alt="Nada">
 				<div class="card-body">
 					<h5 class="card-title">Nada Kdesat</h5>
 					<p class="card-text">Fullstack Web Developer</p>
@@ -375,7 +401,7 @@
 		<!-- Amal (Girl) -->
 		<div class="col">
 			<div class="card h-100 shadow">
-				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Amal">
+				<img src="~/Images/users/Amal.jpeg" class="card-img-top" alt="Amal">
 				<div class="card-body">
 					<h5 class="card-title">Amal Dlqamoni</h5>
 					<p class="card-text">Fullstack Web Developer</p>
@@ -389,7 +415,7 @@
 		<!-- Mona (Girl) -->
 		<div class="col">
 			<div class="card h-100 shadow">
-				<img src="https://t4.ftcdn.net/jpg/02/79/66/93/360_F_279669366_Lk12QalYQKMczLEa4ySjhaLtx1M2u7e6.jpg" class="card-img-top" alt="Mona">
+				<img src="~/Images/users/Mona.jpeg" class="card-img-top" alt="Mona">
 				<div class="card-body">
 					<h5 class="card-title">Mona Tamimi</h5>
 					<p class="card-text">Fullstack Web Developer</p>
@@ -413,6 +439,7 @@
 				</div>
 			</div>
 		</div>
+
 
 		<!-- Sara (Girl) -->
 		<div class="col">

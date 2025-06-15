@@ -215,6 +215,41 @@ namespace Ajloun_Project.Controllers.Ali
             TempData["SuccessMessage"] = "تم تحديث معلومات الحساب بنجاح.";
             return RedirectToAction("UserInfo");
         }
+
+
+        public async Task<IActionResult> UserHallBookings()
+        {
+            var userId = GetUserId();
+            if (userId == null)
+                return RedirectToAction("signIn", "User");
+
+            // أول شيء: جيب اسم المستخدم (أو الاسم المسؤول)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (user == null)
+                return NotFound();
+
+            // بعدين استعلم عن الحجوزات باستخدام الاسم
+            var bookings = await _context.HallBookings
+                .Where(b => b.ResponsibleName == user.FullName)
+                .ToListAsync();
+
+            return View(bookings);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CancelHallBooking(int id)
+        {
+            var booking = await _context.HallBookings.FindAsync(id);
+            if (booking == null || booking.Status != "Pending")
+                return NotFound();
+
+            _context.HallBookings.Remove(booking);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("UserHallBookings");
+        }
+
         [HttpPost]
         public IActionResult Logout()
         {

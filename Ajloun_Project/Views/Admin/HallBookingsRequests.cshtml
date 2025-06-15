@@ -1,8 +1,8 @@
 ﻿@model List<HallBooking>
-
 @{
     ViewData["Title"] = "طلبات حجز المسارح";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
+    var assocMap = ViewBag.AssociationMap as Dictionary<string, Ajloun_Project.Models.CulturalAssociation>;
 }
 
 <link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
@@ -12,24 +12,59 @@
         display: flex;
         gap: 5px;
         justify-content: center;
+        flex-wrap: wrap;
     }
 
-    .action-buttons .btn {
-        width: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-    }
-
-    .action-buttons form {
-        margin: 0;
-    }
+        .action-buttons .btn {
+            min-width: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
 
     .badge {
         padding: 8px 12px;
         font-size: 0.9rem;
     }
+
+    <style >
+    .modal-content {
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-weight: bold;
+        font-size: 20px;
+        color: #2C6E49;
+        margin-bottom: 0;
+    }
+
+    .modal-body p {
+        font-size: 15px;
+        color: #333;
+        margin: 8px 0;
+    }
+
+    .modal-body strong {
+        color: #4c956c;
+        margin-left: 4px;
+    }
+
+    .btn-close {
+        background-color: transparent;
+        border: none;
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #ccc;
+    }
+</style>
+
 </style>
 
 <div class="container-fluid py-4">
@@ -88,15 +123,18 @@
                                         case "Rejected":
                                             <span class="badge bg-danger">مرفوض</span>
                                             break;
+                                        case "PendingContact":
+                                            <span class="badge bg-info text-dark">بانتظار التواصل</span>
+                                            break;
                                         default:
                                             <span class="badge bg-secondary">غير معروف</span>
                                             break;
                                     }
                                 </td>
                                 <td>
-                                    @if (item.Status == "Pending")
-                                    {
-                                        <div class="action-buttons">
+                                    <div class="action-buttons">
+                                        @if (item.Status == "Pending")
+                                        {
                                             <form asp-action="UpdateHallBookingStatus" method="post">
                                                 <input type="hidden" name="id" value="@item.BookingId" />
                                                 <input type="hidden" name="status" value="Approved" />
@@ -111,8 +149,33 @@
                                                     <i class="fas fa-times"></i> رفض
                                                 </button>
                                             </form>
-                                        </div>
-                                    }
+                                        }
+
+                                        @if (assocMap != null && assocMap.ContainsKey(item.RequestingParty ?? ""))
+                                        {
+                                            var assoc = assocMap[item.RequestingParty];
+                                            <button class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#contactModal_@item.BookingId">
+                                                معلومات التواصل
+                                            </button>
+
+                                            <div class="modal fade" id="contactModal_@item.BookingId" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">معلومات التواصل مع الهيئة</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p><strong>اسم الهيئة:</strong> @assoc.Name</p>
+                                                            <p><strong>رئيس الهيئة:</strong> @assoc.PresidentName</p>
+                                                            <p><strong>رقم الهاتف:</strong> @assoc.Phone</p>
+                                                            <p><strong>المنطقة:</strong> @assoc.Region</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
                                 </td>
                             </tr>
                         }

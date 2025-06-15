@@ -174,7 +174,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                    <label asp-for="Region" class="form-label">المكان</label>
+                                    <label asp-for="Region" class="form-label">المنطقة</label>
                                     <input asp-for="Region" class="form-control" required />
                                     <span asp-validation-for="Region" class="text-danger"></span>
                                 </div>
@@ -199,9 +199,9 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label asp-for="CategoryId" class="form-label">المنطقة</label>
+                            <label asp-for="CategoryId" class="form-label">الفئة</label>
                             <select asp-for="CategoryId" class="form-select" required>
-                                <option value="">اختر المنطقة</option>
+                                <option value="">اختر الفئة</option>
                                 @foreach (var category in ViewBag.Categories)
                                 {
                                     <option value="@category.CategoryId">@category.Name</option>
@@ -211,9 +211,14 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label asp-for="Description" class="form-label">الرقم الوطني للهيئة</label>
+                            <label asp-for="Description" class="form-label">وصف الهيئة</label>
                             <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label asp-for="Email" class="form-label">البريد الإلكتروني للهيئة</label>
+                            <input asp-for="Email" class="form-control" type="email" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="form-group text-center mt-5">

@@ -438,7 +438,7 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserPosts)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UserPosts__UserI__18EBB532");
+                .HasConstraintName("FK__UserPosts__UserI__17F790F9");
         });
 
         OnModelCreatingPartial(modelBuilder);

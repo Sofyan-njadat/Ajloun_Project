@@ -1,15 +1,13 @@
-﻿@{
+﻿@model List<Ajloun_Project.Models.GalleryImage>
+@{
     ViewData["Title"] = "Ajloun Cultural Gallery";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = Model.Select(m => m.Category).Distinct().ToList();
 }
 @section Styles {
-
     <link rel="stylesheet" href="~/css/Gallery.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet">
-
 }
-
-
 
 <header class="modern-header">
     <div class="overlay">
@@ -20,160 +18,31 @@
     </div>
 </header>
 
-
-
-
 <main class="gallery-container">
     <div class="gallery-nav">
-     
         <button class="active">الكل</button>
-
-        <button>فعاليات</button>
-        <button>جلسات حوارية</button>
-        <button>أعمال يدوية</button>
-        <button>مهرجانات</button>
+        @foreach (var category in categories)
+        {
+            <button>@category</button>
+        }
     </div>
 
     <div class="gallery-grid">
-    
-
-        <!-- مهرجانات Images -->
-        <div class="gallery-item" data-category="مهرجانات">
-            <img src="https://www.ajlounnews.net/wp-content/uploads/2025/04/24/WhatsApp-Image-2025-04-24-at-3.08.20-PM-1-750x430.jpg"
-                 alt="مهرجان ربيع عجلون الثامن - صورة 1"  />
-            <div class="item-overlay">
-                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
-                <span class="item-category">مهرجانات</span>
+        @foreach (var image in Model)
+        {
+            <div class="gallery-item" data-category="@image.Category">
+                <img src="@image.ImageUrl" alt="@image.Title" />
+                <div class="item-overlay">
+                    <h3 class="item-title">@image.Title</h3>
+                    <span class="item-category">@image.Category</span>
+                </div>
             </div>
-        </div>
-
-        <div class="gallery-item" data-category="مهرجانات">
-            <img src="https://www.ajlounnews.net/wp-content/uploads/2025/04/24/WhatsApp-Image-2025-04-24-at-2.01.36-PM-16.jpg"
-                 alt="مهرجان ربيع عجلون الثامن - صورة 2" />
-            <div class="item-overlay">
-                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
-                <span class="item-category">مهرجانات</span>
-            </div>
-        </div>
-
-        <div class="gallery-item" data-category="مهرجانات">
-            <img src="https://www.ajlounnews.net/wp-content/uploads/2025/04/24/WhatsApp-Image-2025-04-24-at-10.17.24-AM.jpg"
-                 alt="مهرجان ربيع عجلون الثامن - صورة 3"  />
-            <div class="item-overlay">
-                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
-                <span class="item-category">مهرجانات</span>
-            </div>
-        </div>
-
-        <div class="gallery-item" data-category="مهرجانات">
-            <img src="https://www.ajlounnews.net/wp-content/uploads/2025/04/24/WhatsApp-Image-2025-04-24-at-1.58.00-PM-4.jpg"
-                 alt="مهرجان ربيع عجلون الثامن - صورة 4"  />
-            <div class="item-overlay">
-                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
-                <span class="item-category">مهرجانات</span>
-            </div>
-        </div>
-
-        <div class="gallery-item" data-category="مهرجانات">
-            <img src="https://www.ajlounnews.net/wp-content/uploads/2025/04/24/WhatsApp-Image-2025-04-24-at-1.58.02-PM-8.jpg"
-                 alt="مهرجان ربيع عجلون الثامن - صورة 5" />
-            <div class="item-overlay">
-                <h3 class="item-title">مقتطفات من حفل افتتاح فعاليات مهرجان ربيع عجلون الثامن</h3>
-                <span class="item-category">مهرجانات</span>
-            </div>
-        </div>
-
-    <div class="gallery-item" data-category="أعمال يدوية">
-        <img src="@Url.Content("~/Images/Gallery/Handmade1.jpg")" alt="أعمال يدوية 1"  />
-
-        <div class="item-overlay">
-                <h3 class="item-title"> صناعة الريزن </h3>
-            <span class="item-category">أعمال يدوية</span>
-        </div>
+        }
     </div>
-
-        <div class="gallery-item" data-category="أعمال يدوية">
-            <img src="@Url.Content("~/Images/Gallery/Handmade2.jpg")" alt="أعمال يدوية 1"  />
-
-            <div class="item-overlay">
-                <h3 class="item-title"> صناعة الريزن</h3>
-                <span class="item-category">أعمال يدوية</span>
-            </div>
-        </div>
-
-        <div class="gallery-item" data-category="جلسات حوارية">
-            <img src="@Url.Content("~/Images/Gallery/meeting1.jpg")" alt="أعمال يدوية 1"  />
-
-         
-            <div class="item-overlay">
-                <h3 class="item-title">عجلون بعيون شبابها للتنمية المستدامة</h3>
-                <span class="item-category"> جلسات حوارية</span>
-            </div>
-        </div>
-
-
-        <div class="gallery-item" data-category="جلسات حوارية">
-            <img src="@Url.Content("~/Images/Gallery/meeting2.jpg")" alt="أعمال يدوية 1"  />
-
-            <div class="item-overlay">
-                <h3 class="item-title">أبرز التحديات السياسية والاقتصادية التي تواجه وطننا</h3>
-                <span class="item-category"> جلسات حوارية</span>
-            </div>
-        </div>
-
-
-        <div class="gallery-item" data-category="فعاليات">
-            <img src="@Url.Content("~/Images/Gallery/activites1.jpg")" alt="فعاليات  1"  />
-
-            <div class="item-overlay">
-                <h3 class="item-title">يوم العلم</h3>
-                <span class="item-category"> فعاليات</span>
-            </div>
-        </div>
-
-
-        <div class="gallery-item" data-category="فعاليات">
-            <img src="@Url.Content("~/Images/Gallery/activites2.jpg")" alt="فعاليات  2"  />
-
-            <div class="item-overlay">
-                <h3 class="item-title">زيارة متحف الودهانة للتراث الشعبي ضمن مبادرة ضادنا فخرنا </h3>
-                <span class="item-category"> فعاليات</span>
-            </div>
-        </div>
-
-
-        <div class="gallery-item" data-category="فعاليات">
-            <img src="@Url.Content("~/Images/Gallery/activites4.jpg")" alt="فعاليات  4"  />
-
-           
-            <div class="item-overlay">
-                <h3 class="item-title"> تكريم المدارس المشاركة بمبادرة عجلون بلد السنديان والزيتون</h3>
-                <span class="item-category"> فعاليات</span>
-            </div>
-        </div>
-
-
-
-        <div class="gallery-item" data-category="فعاليات">
-            <img src="@Url.Content("~/Images/Gallery/activites3.jpg")" alt="فعاليات  3"  />
-
-   
-            <div class="item-overlay">
-                <h3 class="item-title"> تكريم المدارس المشاركة بمبادرة عجلون بلد السنديان والزيتون</h3>
-                <span class="item-category"> فعاليات</span>
-            </div>
-        </div>
-
-
-
-    </div>
-
 </main>
-
 
 @section Scripts {
     <script>
-        // Filter gallery by category
         document.querySelectorAll('.gallery-nav button').forEach(button => {
             button.addEventListener('click', function () {
                 document.querySelectorAll('.gallery-nav button').forEach(btn => btn.classList.remove('active'));
@@ -185,7 +54,5 @@
                 });
             });
         });
-
-    
     </script>
 }

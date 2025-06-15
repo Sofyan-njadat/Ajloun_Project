@@ -34,8 +34,8 @@ body {
     font-family: 'Noto Kufi Arabic', sans-serif;
     background-color: var(--dark);
     color: var(--text);
-    overflow-x: hidden;
-    line-height: 1.6;
+/*    overflow-x: hidden;
+    line-height: 1.6;*/
 }
 
 #scene-container {
