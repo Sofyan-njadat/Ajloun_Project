@@ -51,6 +51,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<FestivalReservation> FestivalReservations { get; set; }
 
+    public virtual DbSet<GalleryImage> GalleryImages { get; set; }
+
     public virtual DbSet<HallBooking> HallBookings { get; set; }
 
     public virtual DbSet<Handicraft> Handicrafts { get; set; }
@@ -63,7 +65,7 @@ public partial class MyDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-1BD42PF;Database=AjlounCultureDB;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-1BD42PF; Database=AjlounCultureDB; Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -270,6 +272,7 @@ public partial class MyDbContext : DbContext
         {
             entity.HasKey(e => e.AssociationId).HasName("PK__Cultural__B51A182D69818CC2");
 
+            entity.Property(e => e.Email).HasMaxLength(150);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Phone).HasMaxLength(20);
             entity.Property(e => e.PresidentName).HasMaxLength(100);
@@ -346,6 +349,14 @@ public partial class MyDbContext : DbContext
                 .HasConstraintName("FK__FestivalR__UserI__7D439ABD");
         });
 
+        modelBuilder.Entity<GalleryImage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__GalleryI__3214EC07D72E5B90");
+
+            entity.Property(e => e.Category).HasMaxLength(100);
+            entity.Property(e => e.Title).HasMaxLength(200);
+        });
+
         modelBuilder.Entity<HallBooking>(entity =>
         {
             entity.HasKey(e => e.BookingId).HasName("PK__HallBook__73951AEDD43995BE");
@@ -410,7 +421,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<UserPost>(entity =>
         {
-            entity.HasKey(e => e.PostId).HasName("PK__UserPost__AA126018853DA23B");
+            entity.HasKey(e => e.PostId).HasName("PK__UserPost__AA1260188EED575B");
 
             entity.Property(e => e.Category).HasMaxLength(100);
             entity.Property(e => e.CreatedAt)
