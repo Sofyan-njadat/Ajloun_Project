@@ -26,7 +26,7 @@ namespace Ajloun_Project.Services
             try
             {
                 var smtpSettings = _configuration.GetSection("SmtpSettings");
-                
+
                 // التحقق من وجود جميع الإعدادات المطلوبة
                 if (string.IsNullOrEmpty(smtpSettings["Server"]) ||
                     string.IsNullOrEmpty(smtpSettings["Username"]) ||
@@ -37,23 +37,33 @@ namespace Ajloun_Project.Services
                 }
 
                 var smtpServer = smtpSettings["Server"];
-                var smtpPort = int.Parse(smtpSettings["Port"]);
-                var smtpUsername = smtpSettings["Username"];
+                var smtpPort = int.Parse(smtpSettings["Port"] ?? "587");
+                var smtpUsername = smtpSettings["Username"]; // يجب أن يكون البريد الكامل
                 var smtpPassword = smtpSettings["Password"];
                 var enableSsl = bool.Parse(smtpSettings["EnableSsl"] ?? "true");
-                var toEmail = "firasabumalloh@gmail.com";
+                var adminEmail = smtpSettings["FromEmail"]; // البريد الذي ستصل إليه الرسائل
+                var displayName = smtpSettings["FromName"];
 
                 _logger.LogInformation("Preparing to send email using SMTP server: {Server}:{Port}", smtpServer, smtpPort);
+                _logger.LogInformation("SMTP Username: {Username}", smtpUsername);
 
                 var message = new MailMessage
                 {
-                    From = new MailAddress(smtpUsername, smtpSettings["FromName"]),
+                    From = new MailAddress(smtpUsername, displayName),
                     Subject = subject,
                     Body = body,
                     IsBodyHtml = true,
-                    Priority = MailPriority.High
+                    Priority = MailPriority.Normal
                 };
-                message.To.Add(toEmail);
+
+                // إرسال الرسالة إلى الإدارة
+                message.To.Add(adminEmail);
+
+                // إضافة المرسل الأصلي في Reply-To إذا كان موجوداً
+                if (!string.IsNullOrEmpty(fromEmail) && IsValidEmail(fromEmail))
+                {
+                    message.ReplyToList.Add(new MailAddress(fromEmail, fromName ?? ""));
+                }
 
                 using var client = new SmtpClient(smtpServer, smtpPort)
                 {
@@ -61,37 +71,52 @@ namespace Ajloun_Project.Services
                     EnableSsl = enableSsl,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
-                    Timeout = 10000 // 10 seconds timeout
+                    Timeout = 30000 // زيادة timeout إلى 30 ثانية
                 };
 
-                _logger.LogInformation("Attempting to send email to {ToEmail} from {FromEmail}", toEmail, smtpUsername);
-                
-                try
+                _logger.LogInformation("Attempting to send email to {ToEmail} from {FromEmail}", adminEmail, smtpUsername);
+
+                await client.SendMailAsync(message);
+                _logger.LogInformation("Email sent successfully to {ToEmail}", adminEmail);
+                return true;
+            }
+            catch (SmtpException smtpEx)
+            {
+                _logger.LogError(smtpEx, "SMTP Error: {StatusCode} - {Message}", smtpEx.StatusCode, smtpEx.Message);
+
+                // تحليل مفصل لأخطاء SMTP
+                switch (smtpEx.StatusCode)
                 {
-                    await client.SendMailAsync(message);
-                    _logger.LogInformation("Email sent successfully to {ToEmail}", toEmail);
-                    return true;
+                    case SmtpStatusCode.GeneralFailure:
+                        _logger.LogError("General SMTP failure. Check server settings.");
+                        break;
+                    case SmtpStatusCode.InsufficientStorage:
+                        _logger.LogError("Insufficient storage on the server.");
+                        break;
+                    case SmtpStatusCode.ClientNotPermitted:
+                        _logger.LogError("Client not permitted to send email.");
+                        break;
+                    case SmtpStatusCode.MustIssueStartTlsFirst:
+                        _logger.LogError("Must enable SSL/TLS first.");
+                        break;
+                    default:
+                        if (smtpEx.Message.Contains("authentication", StringComparison.OrdinalIgnoreCase) ||
+                            smtpEx.Message.Contains("535") ||
+                            smtpEx.Message.Contains("Username and Password not accepted"))
+                        {
+                            _logger.LogError("Authentication failed. Check Gmail App Password and username.");
+                        }
+                        else if (smtpEx.Message.Contains("timeout", StringComparison.OrdinalIgnoreCase))
+                        {
+                            _logger.LogError("Connection timeout. Check network connection.");
+                        }
+                        else
+                        {
+                            _logger.LogError("SMTP error: {Message}", smtpEx.Message);
+                        }
+                        break;
                 }
-                catch (SmtpException smtpEx)
-                {
-                    _logger.LogError(smtpEx, "SMTP Error: {StatusCode} - {Message}", smtpEx.StatusCode, smtpEx.Message);
-                    
-                    // تحقق من رسالة الخطأ لمعرفة إذا كان الخطأ متعلق بالمصادقة
-                    if (smtpEx.Message.Contains("authentication", StringComparison.OrdinalIgnoreCase) ||
-                        smtpEx.Message.Contains("535"))
-                    {
-                        _logger.LogError("Authentication failed. Please check your username and app password.");
-                    }
-                    else if (smtpEx.StatusCode == SmtpStatusCode.MustIssueStartTlsFirst)
-                    {
-                        _logger.LogError("SSL/TLS is required but not enabled.");
-                    }
-                    else
-                    {
-                        _logger.LogError("SMTP error occurred while sending email.");
-                    }
-                    return false;
-                }
+                return false;
             }
             catch (Exception ex)
             {
@@ -99,5 +124,18 @@ namespace Ajloun_Project.Services
                 return false;
             }
         }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
-} 
+}

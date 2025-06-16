@@ -27,6 +27,8 @@
             --text-dark: #333;
             --text-light: #666;
             --white: #fff;
+            --success-color: #28a745;
+            --error-color: #dc3545;
             --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
@@ -64,22 +66,22 @@
             padding: 0 20px;
         }
 
-        .header-content h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            color: #FFE15D;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            font-family: 'Cairo', sans-serif;
-        }
+            .header-content h1 {
+                font-size: 4rem;
+                font-weight: 900;
+                margin-bottom: 1rem;
+                color: #FFE15D;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                font-family: 'Cairo', sans-serif;
+            }
 
-        .header-content .subtitle {
-            font-size: 1.5rem;
-            color: white;
-            margin: 0;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-            font-weight: 600;
-        }
+            .header-content .subtitle {
+                font-size: 1.5rem;
+                color: white;
+                margin: 0;
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                font-weight: 600;
+            }
 
         .contact-section {
             padding: 60px 0;
@@ -116,10 +118,10 @@
             transition: var(--transition);
         }
 
-        .info-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
+            .info-item:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--shadow-md);
+            }
 
         .info-icon {
             width: 60px;
@@ -163,12 +165,12 @@
             margin-bottom: 25px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-dark);
-            font-weight: 500;
-        }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: var(--text-dark);
+                font-weight: 500;
+            }
 
         .form-control {
             width: 100%;
@@ -180,12 +182,12 @@
             background: #f8f9fa;
         }
 
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(24, 106, 48, 0.1);
-            outline: none;
-            background: var(--white);
-        }
+            .form-control:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(24, 106, 48, 0.1);
+                outline: none;
+                background: var(--white);
+            }
 
         textarea.form-control {
             resize: vertical;
@@ -209,15 +211,15 @@
             font-weight: 600;
         }
 
-        .submit-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
+            .submit-btn:hover {
+                background: var(--primary-dark);
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-md);
+            }
 
-        .submit-btn i {
-            font-size: 1.2rem;
-        }
+            .submit-btn i {
+                font-size: 1.2rem;
+            }
 
         .text-danger {
             color: #dc3545;
@@ -226,40 +228,160 @@
             display: block;
         }
 
-        @@media (max-width: 992px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
+        /* Alert Messages Styles */
+        .alert-container {
+            margin-bottom: 30px;
+        }
+
+        .alert {
+            padding: 20px 25px;
+            border-radius: 12px;
+            border: none;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            animation: slideIn 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .alert::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 5px;
+                height: 100%;
+                background: currentColor;
             }
 
-            .header-content h1 {
-                font-size: 3rem;
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: var(--success-color);
+            border-left: 5px solid var(--success-color);
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: var(--error-color);
+            border-left: 5px solid var(--error-color);
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: currentColor;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+            opacity: 0.7;
+        }
+
+            .alert-close:hover {
+                opacity: 1;
+                background: rgba(0, 0, 0, 0.1);
             }
+
+        @@keyframes slideIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        @@keyframes fadeOut {
+            from
+
+        {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        }
+
+        .alert.fade-out {
+            animation: fadeOut 0.3s ease-in forwards;
+        }
+
+        @@media (max-width: 992px) {
+            .contact-grid
+
+        {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .header-content h1 {
+            font-size: 3rem;
+        }
+
         }
 
         @@media (max-width: 768px) {
-            .modern-header {
-                height: 200px;
-            }
+            .modern-header
 
-            .header-content h1 {
-                font-size: 2.5rem;
-            }
+        {
+            height: 200px;
+        }
 
-            .header-content .subtitle {
-                font-size: 1.2rem;
-            }
+        .header-content h1 {
+            font-size: 2.5rem;
+        }
 
-            .contact-info,
-            .contact-form {
-                padding: 30px;
-            }
+        .header-content .subtitle {
+            font-size: 1.2rem;
+        }
 
-            .info-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
+        .contact-info,
+        .contact-form {
+            padding: 30px;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            font-size: 0.9rem;
+        }
+
         }
     </style>
 </head>
@@ -278,6 +400,38 @@
     <!-- Contact Section -->
     <section class="contact-section">
         <div class="container">
+            <!-- Alert Messages -->
+            <div class="alert-container">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success" id="successAlert">
+                        <i class="fas fa-check-circle alert-icon"></i>
+                        <div class="alert-content">
+                            @TempData["SuccessMessage"]
+                        </div>
+                        <button type="button" class="alert-close" onclick="closeAlert('successAlert')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                }
+
+                @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+                {
+                    <div class="alert alert-error" id="errorAlert">
+                        <i class="fas fa-exclamation-circle alert-icon"></i>
+                        <div class="alert-content">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <div>@error.ErrorMessage</div>
+                            }
+                        </div>
+                        <button type="button" class="alert-close" onclick="closeAlert('errorAlert')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                }
+            </div>
+
             <div class="contact-grid">
                 <!-- معلومات الاتصال -->
                 <div class="contact-info">
@@ -368,9 +522,41 @@
         </div>
     </section>
 
+    <script>
+        // إغلاق التنبيهات
+        function closeAlert(alertId) {
+            const alert = document.getElementById(alertId);
+            if (alert) {
+                alert.classList.add('fade-out');
+                setTimeout(() => {
+                    alert.remove();
+                }, 300);
+            }
+        }
+
+        // إغلاق التنبيهات تلقائياً بعد 5 ثوان
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    if (alert && alert.parentNode) {
+                        alert.classList.add('fade-out');
+                        setTimeout(() => {
+                            if (alert.parentNode) {
+                                alert.remove();
+                            }
+                        }, 300);
+                    }
+                }, 5000);
+            });
+        });
+    </script>
+
     @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
     }
 
 </body>
-</html> 
+</html>
