@@ -19,6 +19,8 @@ public partial class CourseApplication
 
     public DateTime? SubmittedAt { get; set; }
 
+    public string? RejectionReason { get; set; }
+
     public virtual Course Course { get; set; } = null!;
 
     public virtual User? User { get; set; }

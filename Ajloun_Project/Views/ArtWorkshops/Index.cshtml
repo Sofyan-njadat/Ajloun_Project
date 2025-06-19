@@ -1,0 +1,287 @@
+﻿@model List<Ajloun_Project.Models.ArtWorkshop>
+@{
+    ViewData["Title"] = "إدارة ورش معهد التدريب والفنون";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+
+<style>
+   
+    
+    .workshop-table {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .table-header {
+        background-color: #2c3e50;
+        color: white;
+    }
+    
+    .table th {
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .workshop-img {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    
+    .action-btns {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+    
+    .btn-edit {
+        background-color: #3498db;
+        border: none;
+    }
+    
+    .btn-hide {
+        background-color: #e74c3c;
+        border: none;
+    }
+    
+    .add-btn {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        border: none;
+    }
+    
+    .registrations-btn {
+        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        border: none;
+    }
+    
+    .age-range {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+</style>
+
+
+
+ <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">معهد التدريب والفنون</h1>
+                <p class="mb-0">إدارة الورش الفنية والتدريبية</p>
+            </div>
+        </div>
+    </div>
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <button class="btn btn-primary add-btn" data-bs-toggle="modal" data-bs-target="#addModal">
+                <i class="fas fa-plus me-2"></i> إضافة ورشة جديدة
+            </button>
+        </div>
+        <div>
+            <a href="@Url.Action("ManageRegistrations", "ArtWorkshops")" class="btn btn-success registrations-btn">
+                <i class="fas fa-list me-2"></i> عرض الحجوزات
+            </a>
+        </div>
+    </div>
+
+    <!-- Workshops Table -->
+    <div class="workshop-table">
+        <table class="table table-hover table-bordered">
+            <thead class="table-header">
+                <tr>
+                    <th>الصورة</th>
+                    <th>العنوان</th>
+                    <th>الفئة</th>
+                    <th>الفترة</th>
+                    <th>نطاق العمر</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" class="workshop-img" />
+                            }
+                            else
+                            {
+                                <i class="fas fa-image fa-2x text-muted"></i>
+                            }
+                        </td>
+                        <td>@item.Title</td>
+                        <td>@item.Category</td>
+                        <td>
+                            @item.StartDate.ToString("yyyy-MM-dd") <br>
+                            إلى <br>
+                            @item.EndDate.ToString("yyyy-MM-dd")
+                        </td>
+                        <td class="age-range">
+                            @item.MinAge - @item.MaxAge سنة
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#editModal@item.Id">
+                                    <i class="fas fa-edit"></i> تعديل
+                                </button>
+                                <form asp-action="Hide" asp-controller="ArtWorkshops" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-sm btn-hide">
+                                        <i class="fas fa-eye-slash"></i> إخفاء
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editModal@item.Id" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form asp-action="Edit" asp-controller="ArtWorkshops" method="post" enctype="multipart/form-data">
+                                    <div class="modal-header bg-primary text-white">
+                                        <h5 class="modal-title">تعديل ورشة</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="Id" value="@item.Id" />
+                                        <div class="mb-3">
+                                            <label class="form-label">العنوان</label>
+                                            <input class="form-control" name="Title" value="@item.Title" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">الوصف</label>
+                                            <textarea class="form-control" name="Description" rows="3">@item.Description</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">الفئة</label>
+                                            <input class="form-control" name="Category" value="@item.Category" />
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">تاريخ البدء</label>
+                                                <input type="date" class="form-control" name="StartDate" value="@item.StartDate.ToString("yyyy-MM-dd")" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">تاريخ الانتهاء</label>
+                                                <input type="date" class="form-control" name="EndDate" value="@item.EndDate.ToString("yyyy-MM-dd")" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">العمر الأدنى</label>
+                                                <input class="form-control" type="number" name="MinAge" value="@item.MinAge" min="1" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">العمر الأقصى</label>
+                                                <input class="form-control" type="number" name="MaxAge" value="@item.MaxAge" min="1" />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">الصورة</label>
+                                            <input type="file" name="imageFile" class="form-control" />
+                                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                            {
+                                                <small class="text-muted">الصورة الحالية: <a href="@item.ImageUrl" target="_blank">عرض</a></small>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> حفظ</button>
+                                        <button class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> إلغاء</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" asp-controller="ArtWorkshops" method="post" enctype="multipart/form-data">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">إضافة ورشة جديدة</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">العنوان</label>
+                        <input class="form-control" name="Title" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الوصف</label>
+                        <textarea class="form-control" name="Description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الفئة</label>
+                        <input class="form-control" name="Category" />
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">تاريخ البدء</label>
+                            <input type="date" class="form-control" name="StartDate" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">تاريخ الانتهاء</label>
+                            <input type="date" class="form-control" name="EndDate" required />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">العمر الأدنى</label>
+                            <input class="form-control" type="number" name="MinAge" min="1" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">العمر الأقصى</label>
+                            <input class="form-control" type="number" name="MaxAge" min="1" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الصورة</label>
+                        <input type="file" name="imageFile" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="submit"><i class="fas fa-plus"></i> إضافة</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (TempData["AlertMessage"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon: '@TempData["AlertType"]',
+                    title: '@TempData["AlertMessage"]',
+                    confirmButtonText: 'تم',
+                    timer: 3000
+                });
+            </text>
+        }
+    </script>
+}

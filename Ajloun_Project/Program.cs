@@ -21,7 +21,10 @@ builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 
 // إضافة خدمة البريد الإلكتروني
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IContactEmailService, ContactEmailService>();
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+
+builder.Services.AddScoped<IBookingNotificationService, BookingNotificationService>();
 
 // ✅ Add Session service with configuration
 builder.Services.AddDistributedMemoryCache(); // Required for session storage

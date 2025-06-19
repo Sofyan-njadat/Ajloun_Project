@@ -1,0 +1,224 @@
+﻿@model List<Ajloun_Project.Models.WorkshopRegistration>
+@inject Ajloun_Project.Models.MyDbContext _context
+
+@{
+    Layout = "~/Views/Shared/_LayoutUserProfile.cshtml";
+    ViewData["Title"] = "حجوزات الورشات";
+
+    int userId = Context.Session.GetInt32("userId") ?? 1;
+    var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+}
+
+@section Styles {
+    <style>
+        :root {
+            --primary: #2C6E49;
+            --primary-light: #4c956c;
+            --accent: #D4AF37;
+            --accent-light: #f5d76e;
+            --text-dark: #1B1B2F;
+            --text-light: #4a4a6a;
+        }
+
+        .workshops-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .workshop-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 16px;
+            border-right: 4px solid var(--accent);
+            transition: all 0.2s ease;
+        }
+
+            .workshop-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            }
+
+        .workshop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .workshop-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+
+            .status-badge i {
+                margin-left: 6px;
+            }
+
+        .status-pending {
+            background-color: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-accepted {
+            background-color: #D4EDDA;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background-color: #F8D7DA;
+            color: #721c24;
+        }
+
+        .workshop-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+            .meta-item i {
+                margin-left: 6px;
+                color: var(--primary-light);
+            }
+
+        .empty-state {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: var(--primary-light);
+            margin-bottom: 12px;
+        }
+
+        .certificate-link {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: var(--primary-light);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+            .certificate-link:hover {
+                background-color: var(--primary);
+                color: white;
+                transform: translateY(-1px);
+            }
+
+        .rejection-reason {
+            margin-top: 12px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-right: 3px solid #dc3545;
+        }
+
+            .rejection-reason i {
+                color: #dc3545;
+                margin-left: 6px;
+            }
+    </style>
+}
+
+<h2 class="page-title">حجوزاتي في الورشات</h2>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-tools"></i>
+        </div>
+        <p>لا يوجد أي حجوزات للورشات حالياً</p>
+    </div>
+}
+else
+{
+    foreach (var item in Model)
+    {
+        <div class="workshop-card">
+            <div class="workshop-header">
+                <h3 class="workshop-title">@item.Workshop?.Title</h3>
+                <div class="status-badge @(item.Status switch {
+                    "Accepted" => "status-accepted",
+                    "Rejected" => "status-rejected",
+                    _ => "status-pending"
+                })">
+                    @switch (item.Status)
+                    {
+                        case "Pending":
+                            <i class="fas fa-clock"></i>
+                            break;
+                        case "Accepted":
+                            <i class="fas fa-check-circle"></i>
+                            break;
+                        case "Rejected":
+                            <i class="fas fa-times-circle"></i>
+                            break;
+                    }
+                    @(item.Status == "Pending" ? "قيد المراجعة" : 
+                      item.Status == "Accepted" ? "مقبول" : "مرفوض")
+                </div>
+            </div>
+            <div class="workshop-meta">
+                <div class="meta-item">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>التاريخ: @item.Workshop?.StartDate.ToString("dd/MM/yyyy") - @item.Workshop?.EndDate.ToString("dd/MM/yyyy")</span>
+                </div>
+                
+            </div>
+            
+            @if (!string.IsNullOrEmpty(item.BirthCertificateImage))
+            {
+                <div class="meta-item">
+                    <i class="fas fa-file-image"></i>
+                    <a href="@item.BirthCertificateImage" target="_blank" class="certificate-link">
+                        عرض صورة شهادة الميلاد
+                    </a>
+                </div>
+            }
+            
+            @if (item.Status == "Rejected" && !string.IsNullOrWhiteSpace(item.RejectionReason))
+            {
+                <div class="rejection-reason">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>سبب الرفض:</strong> @item.RejectionReason
+                </div>
+            }
+        </div>
+    }
+}

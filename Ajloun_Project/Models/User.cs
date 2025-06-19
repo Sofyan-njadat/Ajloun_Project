@@ -41,5 +41,9 @@ public partial class User
 
     public virtual ICollection<FestivalReservation> FestivalReservations { get; set; } = new List<FestivalReservation>();
 
+    public virtual ICollection<HallBooking> HallBookings { get; set; } = new List<HallBooking>();
+
     public virtual ICollection<UserPost> UserPosts { get; set; } = new List<UserPost>();
+
+    public virtual ICollection<WorkshopRegistration> WorkshopRegistrations { get; set; } = new List<WorkshopRegistration>();
 }

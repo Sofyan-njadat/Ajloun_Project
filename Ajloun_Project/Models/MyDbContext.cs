@@ -17,6 +17,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<Admin> Admins { get; set; }
 
+    public virtual DbSet<ArtWorkshop> ArtWorkshops { get; set; }
+
     public virtual DbSet<Article> Articles { get; set; }
 
     public virtual DbSet<Artwork> Artworks { get; set; }
@@ -63,12 +65,16 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<UserPost> UserPosts { get; set; }
 
+    public virtual DbSet<WorkshopRegistration> WorkshopRegistrations { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-HBCC5GE; Database=AjlounCultureDB; Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=AjlounCultureDB;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
         modelBuilder.Entity<Admin>(entity =>
         {
             entity.HasKey(e => e.AdminId).HasName("PK__Admins__719FE488DC652FC8");
@@ -84,6 +90,15 @@ public partial class MyDbContext : DbContext
                 .HasMaxLength(20)
                 .HasDefaultValue("Admin");
             entity.Property(e => e.Username).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<ArtWorkshop>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ArtWorks__3214EC07F429006A");
+
+            entity.Property(e => e.Category).HasMaxLength(100);
+            entity.Property(e => e.ImageUrl).HasMaxLength(300);
+            entity.Property(e => e.Title).HasMaxLength(200);
         });
 
         modelBuilder.Entity<Article>(entity =>
@@ -228,6 +243,7 @@ public partial class MyDbContext : DbContext
 
             entity.Property(e => e.AgeRange).HasMaxLength(50);
             entity.Property(e => e.Courseimg).HasMaxLength(500);
+            entity.Property(e => e.IsVisible).HasDefaultValue(true);
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
@@ -351,7 +367,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<GalleryImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__GalleryI__3214EC07D72E5B90");
+            entity.HasKey(e => e.Id).HasName("PK__GalleryI__3214EC071F27D28E");
 
             entity.Property(e => e.Category).HasMaxLength(100);
             entity.Property(e => e.Title).HasMaxLength(200);
@@ -361,17 +377,26 @@ public partial class MyDbContext : DbContext
         {
             entity.HasKey(e => e.BookingId).HasName("PK__HallBook__73951AEDD43995BE");
 
+            entity.Property(e => e.AttachmentPath).HasMaxLength(500);
+            entity.Property(e => e.ContactPhone).HasMaxLength(20);
             entity.Property(e => e.CoordinatorName).HasMaxLength(100);
             entity.Property(e => e.EventTitle).HasMaxLength(200);
             entity.Property(e => e.EventType).HasMaxLength(100);
             entity.Property(e => e.GuestOfHonor).HasMaxLength(200);
             entity.Property(e => e.HallType).HasMaxLength(50);
             entity.Property(e => e.NeedsPconStage).HasColumnName("NeedsPCOnStage");
-            entity.Property(e => e.RequestingParty).HasMaxLength(200);
             entity.Property(e => e.ResponsibleName).HasMaxLength(100);
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
                 .HasDefaultValue("Pending");
+
+            entity.HasOne(d => d.CultureOrg).WithMany(p => p.HallBookings)
+                .HasForeignKey(d => d.CultureOrgId)
+                .HasConstraintName("FK_HallBookings_Associations");
+
+            entity.HasOne(d => d.User).WithMany(p => p.HallBookings)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_HallBookings_Users");
         });
 
         modelBuilder.Entity<Handicraft>(entity =>
@@ -421,7 +446,7 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<UserPost>(entity =>
         {
-            entity.HasKey(e => e.PostId).HasName("PK__UserPost__AA1260188EED575B");
+            entity.HasKey(e => e.PostId).HasName("PK__UserPost__AA12601821D6885E");
 
             entity.Property(e => e.Category).HasMaxLength(100);
             entity.Property(e => e.CreatedAt)
@@ -439,6 +464,30 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__UserPosts__UserI__17F790F9");
+        });
+
+        modelBuilder.Entity<WorkshopRegistration>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Workshop__3214EC07E8CD5DC1");
+
+            entity.Property(e => e.BirthCertificateImage).HasMaxLength(300);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.RejectionReason).HasMaxLength(500);
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .HasDefaultValue("Pending");
+
+            entity.HasOne(d => d.User).WithMany(p => p.WorkshopRegistrations)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__WorkshopR__UserI__4D5F7D71");
+
+            entity.HasOne(d => d.Workshop).WithMany(p => p.WorkshopRegistrations)
+                .HasForeignKey(d => d.WorkshopId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__WorkshopR__Works__4E53A1AA");
         });
 
         OnModelCreatingPartial(modelBuilder);

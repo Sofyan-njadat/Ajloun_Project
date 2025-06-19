@@ -37,9 +37,13 @@ namespace Ajloun_Project.Controllers
         // عرض قائمة الدورات للإدارة
         public async Task<IActionResult> ManageCourses()
         {
-            var courses = await _context.Courses.ToListAsync();
+            var courses = await _context.Courses
+                .Where(c => c.IsVisible == true)
+                .ToListAsync();
+
             return View(courses);
         }
+
 
         // عرض صفحة إنشاء دورة جديدة
         public IActionResult CreateCourse()
@@ -150,7 +154,6 @@ namespace Ajloun_Project.Controllers
             return _context.Courses.Any(e => e.CourseId == id);
         }
 
-        // حذف الدورة
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteCourse(int id)
@@ -161,17 +164,11 @@ namespace Ajloun_Project.Controllers
                 return NotFound();
             }
 
-            // التحقق من عدم وجود طلبات تسجيل مرتبطة بالدورة
-            var hasApplications = await _context.CourseApplications.AnyAsync(a => a.CourseId == id);
-            if (hasApplications)
-            {
-                TempData["ErrorMessage"] = "لا يمكن حذف الدورة لأنها تحتوي على طلبات تسجيل";
-                return RedirectToAction(nameof(ManageCourses));
-            }
-
-            _context.Courses.Remove(course);
+            // نخفي الدورة مباشرة بغض النظر عن وجود طلبات تسجيل
+            course.IsVisible = false;
             await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "تم حذف الدورة بنجاح";
+
+            TempData["SuccessMessage"] = "تم إخفاء الدورة بنجاح (أصبحت غير متاحة)";
             return RedirectToAction(nameof(ManageCourses));
         }
 
@@ -187,9 +184,10 @@ namespace Ajloun_Project.Controllers
         }
 
         // تحديث حالة طلب التسجيل
+        // تحديث حالة طلب التسجيل
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateApplicationStatus(int id, string status)
+        public async Task<IActionResult> UpdateApplicationStatus(int id, string status, string? rejectionReason)
         {
             var application = await _context.CourseApplications.FindAsync(id);
             if (application == null)
@@ -198,9 +196,20 @@ namespace Ajloun_Project.Controllers
             }
 
             application.Status = status;
+
+            if (status == "Rejected")
+            {
+                application.RejectionReason = rejectionReason;
+            }
+            else
+            {
+                application.RejectionReason = null; // امسح السبب لو تم قبول الطلب أو تغييره
+            }
+
             await _context.SaveChangesAsync();
             TempData["SuccessMessage"] = "تم تحديث حالة الطلب بنجاح";
             return RedirectToAction(nameof(CourseApplications));
         }
+
     }
 } 

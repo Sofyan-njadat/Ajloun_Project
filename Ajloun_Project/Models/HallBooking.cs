@@ -9,8 +9,6 @@ public partial class HallBooking
 
     public string? HallType { get; set; }
 
-    public string? RequestingParty { get; set; }
-
     public DateOnly? EventDate { get; set; }
 
     public TimeOnly? StartTime { get; set; }
@@ -25,19 +23,19 @@ public partial class HallBooking
 
     public string? AccompanyingActivities { get; set; }
 
-    public bool? NeedsScreens { get; set; }
+    public bool NeedsScreens { get; set; }
 
-    public bool? NeedsProjector { get; set; }
+    public bool NeedsProjector { get; set; }
 
-    public bool? NeedsAudienceInteraction { get; set; }
+    public bool NeedsAudienceInteraction { get; set; }
 
     public int? GuestCount { get; set; }
 
-    public bool? NeedsFilm { get; set; }
+    public bool NeedsFilm { get; set; }
 
-    public bool? NeedsPconStage { get; set; }
+    public bool NeedsPconStage { get; set; }
 
-    public bool? NeedsDocumentation { get; set; }
+    public bool NeedsDocumentation { get; set; }
 
     public string? OtherTechnicalNeeds { get; set; }
 
@@ -48,4 +46,16 @@ public partial class HallBooking
     public DateOnly? RequestDate { get; set; }
 
     public string? Status { get; set; }
+
+    public int? UserId { get; set; }
+
+    public int? CultureOrgId { get; set; }
+
+    public string? ContactPhone { get; set; }
+
+    public string? AttachmentPath { get; set; }
+
+    public virtual CulturalAssociation? CultureOrg { get; set; }
+
+    public virtual User? User { get; set; }
 }

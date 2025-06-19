@@ -15,5 +15,7 @@ public partial class Course
 
     public string? Courseimg { get; set; }
 
+    public bool? IsVisible { get; set; }
+
     public virtual ICollection<CourseApplication> CourseApplications { get; set; } = new List<CourseApplication>();
 }

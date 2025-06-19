@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using Ajloun_Project.Services;
+using Ajloun_Project.Services;
 
 namespace Ajloun_Project.Controllers
 {
@@ -11,9 +12,9 @@ namespace Ajloun_Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly MyDbContext _context; // ? ??? DbContext
-        private readonly IEmailService _emailService;
+        private readonly IContactEmailService _emailService;
 
-        public HomeController(ILogger<HomeController> logger, MyDbContext context, IEmailService emailService)
+        public HomeController(ILogger<HomeController> logger, MyDbContext context, IContactEmailService emailService)
         {
             _logger = logger;
             _context = context;
@@ -121,15 +122,15 @@ namespace Ajloun_Project.Controllers
             }
 
             var emailBody = $@"
-                <h3>رسالة جديدة من نموذج الاتصال</h3>
-                <p><strong>الاسم:</strong> {model.Name}</p>
-                <p><strong>البريد الإلكتروني:</strong> {model.Email}</p>
-                <p><strong>رقم الهاتف:</strong> {model.Phone}</p>
-                <p><strong>الموضوع:</strong> {model.Subject}</p>
-                <p><strong>الرسالة:</strong></p>
-                <p>{model.Message}</p>";
+        <h3>رسالة جديدة من نموذج الاتصال</h3>
+        <p><strong>الاسم:</strong> {model.Name}</p>
+        <p><strong>البريد الإلكتروني:</strong> {model.Email}</p>
+        <p><strong>رقم الهاتف:</strong> {model.Phone}</p>
+        <p><strong>الموضوع:</strong> {model.Subject}</p>
+        <p><strong>الرسالة:</strong></p>
+        <p>{model.Message}</p>";
 
-            var success = await _emailService.SendEmailAsync(
+            var success = await _emailService.SendContactEmailAsync(
                 $"رسالة جديدة: {model.Subject}",
                 emailBody,
                 model.Email,

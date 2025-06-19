@@ -168,6 +168,13 @@ else
                     <i class="fas fa-users"></i>
                     <span>الفئة العمرية: @item.Course?.AgeRange </span>
                 </div>
+@if (item.Status == "Rejected" && !string.IsNullOrWhiteSpace(item.RejectionReason))
+{
+    <div class="mt-3 text-danger fw-bold">
+        <i class="fas fa-info-circle"></i> سبب الرفض: @item.RejectionReason
+    </div>
+}
+
                 <div class="meta-item">
                     <i class="far fa-calendar-alt"></i>
                     <span>تاريخ التقديم: @(item.SubmittedAt?.ToString("dd/MM/yyyy")) </span>

@@ -175,10 +175,12 @@
                 <a href="#">المكتبة و الدورات</a>
                 <div class="dropdown-content">
                     <a asp-controller="Library" asp-action="Index">المكتبة العامة</a>
-                    <a asp-controller="Category" asp-action="Index">الورشات التدريبية</a>
+                    <a asp-controller="Category" asp-action="Index">الدورات التدريبية</a>
                     <a asp-controller="UserProfile" asp-action="UserCourseApplications">دوراتي</a>
 
                 </div>
+            <a asp-controller="ArtWorkshops" asp-action="Explore"> معهد الفنون  </a>
+
             </div>
 
             <div class="dropdown">
@@ -188,6 +190,8 @@
                     <a asp-controller="Events" asp-action="Events">الفعاليات</a>
                     <a asp-controller="Handicrafts" asp-action="Index">الصناعات الثقافية</a>
                     <a asp-controller="ArtWorks" asp-action="ArtWorks">الأعمال الفنية</a>
+                    <a asp-controller="ArtWorks" asp-action="Create">اضافة عمل فني </a>
+
                     <a asp-controller="UserPosts" asp-action="PublicLibrary"> المشاركات الثقافية</a>
                 </div>
             </div>
@@ -198,6 +202,8 @@
                     <a asp-controller="News" asp-action="Index">الإعلانات الثقافية</a>
                     <a asp-controller="Home" asp-action="Articles">المجلة</a>
                     <a asp-controller="Association" asp-action="AllAssociation">الهيئات الثقافية</a>
+                    <a asp-controller="HallBooking" asp-action="Create">حجز القاعات والمسرح</a>
+
                     <a asp-controller="Gallery" asp-action="Gallery">معرض الصور</a>
                 </div>
             </div>

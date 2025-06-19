@@ -32,4 +32,6 @@ public partial class CulturalAssociation
     public virtual ICollection<AssociationJoinRequest> AssociationJoinRequests { get; set; } = new List<AssociationJoinRequest>();
 
     public virtual AssociationCategory? Category { get; set; }
+
+    public virtual ICollection<HallBooking> HallBookings { get; set; } = new List<HallBooking>();
 }

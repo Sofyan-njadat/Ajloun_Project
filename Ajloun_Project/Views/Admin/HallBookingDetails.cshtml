@@ -1,0 +1,281 @@
+﻿@model Ajloun_Project.Models.HallBooking
+@{
+    ViewData["Title"] = "تفاصيل طلب الحجز";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+
+<style>
+  
+    
+    .detail-card {
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        border: none;
+    }
+    
+    .detail-card .card-body {
+        padding: 2rem;
+    }
+    
+    .detail-item {
+        margin-bottom: 1.2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .detail-item:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.3rem;
+    }
+    
+    .detail-value {
+        font-size: 1.05rem;
+    }
+    
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .badge-pending {
+        background-color: #f39c12;
+        color: white;
+    }
+    
+    .badge-approved {
+        background-color: #2ecc71;
+        color: white;
+    }
+    
+    .badge-rejected {
+        background-color: #e74c3c;
+        color: white;
+    }
+    
+    .needs-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .needs-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px dashed #eee;
+    }
+    
+    .needs-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .needs-list li i {
+        margin-left: 8px;
+        color: #3498db;
+    }
+    
+    .user-info-box {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .back-btn {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        border: none;
+        padding: 0.5rem 1.5rem;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <!-- Hero Section -->
+
+ <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">تفاصيل طلب الحجز</h1>
+                <p class="mb-0">مديرية ثقافة عجلون - نظام حجز القاعات</p>
+            </div>
+        </div>
+    </div>
+
+
+ 
+    <!-- Detail Card -->
+    <div class="card detail-card">
+        <div class="card-body">
+            <div class="row">
+                <!-- Basic Information -->
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">رقم الطلب</div>
+                        <div class="detail-value">@Model.BookingId</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">نوع القاعة</div>
+                        <div class="detail-value">@Model.HallType</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">تاريخ المناسبة</div>
+                        <div class="detail-value">@Model.EventDate?.ToString("yyyy-MM-dd")</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">وقت المناسبة</div>
+                        <div class="detail-value">من @Model.StartTime إلى @Model.EndTime</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">نوع المناسبة</div>
+                        <div class="detail-value">@Model.EventType</div>
+                    </div>
+                </div>
+                
+                <!-- Event Details -->
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">عنوان المناسبة</div>
+                        <div class="detail-value">@Model.EventTitle</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">الراعي الرسمي</div>
+                        <div class="detail-value">@Model.GuestOfHonor</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">عدد الحضور</div>
+                        <div class="detail-value">@Model.GuestCount</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">اسم المسئول</div>
+                        <div class="detail-value">@Model.CoordinatorName</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">رقم التواصل</div>
+                        <div class="detail-value">@Model.ContactPhone</div>
+                    </div>
+                </div>
+                
+                <!-- Status Section -->
+                <div class="col-md-12">
+                    <div class="detail-item">
+                        <div class="detail-label">حالة الطلب</div>
+                        <div class="detail-value">
+                            @switch (Model.Status)
+                            {
+                                case "Pending":
+                                    <span class="status-badge badge-pending">
+                                        <i class="fas fa-clock me-1"></i> بانتظار الموافقة
+                                    </span>
+                                    break;
+                                case "Approved":
+                                    <span class="status-badge badge-approved">
+                                        <i class="fas fa-check-circle me-1"></i> تمت الموافقة
+                                    </span>
+                                    break;
+                                case "Rejected":
+                                    <span class="status-badge badge-rejected">
+                                        <i class="fas fa-times-circle me-1"></i> مرفوض
+                                    </span>
+                                    break;
+                                default:
+                                    <span class="status-badge bg-secondary">
+                                        <i class="fas fa-question-circle me-1"></i> غير معروف
+                                    </span>
+                                    break;
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Technical Needs -->
+                <div class="col-md-12">
+                    <div class="detail-item">
+                        <div class="detail-label">الاحتياجات الفنية</div>
+                        <div class="detail-value">
+                            <ul class="needs-list">
+                                @if (Model.NeedsScreens == true) { <li><i class="fas fa-tv"></i> شاشات عرض</li> }
+                                @if (Model.NeedsProjector == true) { <li><i class="fas fa-video"></i> بروجكتور</li> }
+                                @if (Model.NeedsAudienceInteraction == true) { <li><i class="fas fa-users"></i> تفاعل الجمهور</li> }
+                                @if (Model.NeedsFilm == true) { <li><i class="fas fa-film"></i> عرض فيلم</li> }
+                                @if (Model.NeedsPconStage == true) { <li><i class="fas fa-laptop"></i> حاسوب على المسرح</li> }
+                                @if (Model.NeedsDocumentation == true) { <li><i class="fas fa-camera"></i> توثيق فوتوغرافي</li> }
+                                @if (!string.IsNullOrEmpty(Model.OtherTechnicalNeeds)) { <li><i class="fas fa-ellipsis-h"></i> @Model.OtherTechnicalNeeds</li> }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Attachment -->
+                @if (!string.IsNullOrEmpty(Model.AttachmentPath))
+                {
+                    <div class="col-md-12">
+                        <div class="detail-item">
+                            <div class="detail-label">الملف المرفق</div>
+                            <div class="detail-value">
+                                <a href="@Model.AttachmentPath" target="_blank" class="btn btn-outline-primary">
+                                    <i class="fas fa-download me-2"></i> تحميل المرفق
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                <!-- User Information -->
+                @if (Model.User != null)
+                {
+                    <div class="col-md-12">
+                        <div class="user-info-box">
+                            <h5 class="mb-3"><i class="fas fa-user-circle me-2"></i> معلومات المستخدم</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="detail-item">
+                                        <div class="detail-label">الاسم الكامل</div>
+                                        <div class="detail-value">@Model.User.FullName</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-item">
+                                        <div class="detail-label">البريد الإلكتروني</div>
+                                        <div class="detail-value">@Model.User.Email</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-item">
+                                        <div class="detail-label">رقم الهاتف</div>
+                                        <div class="detail-value">@Model.User.Phone</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                <!-- Back Button -->
+                <div class="col-md-12 text-center mt-4">
+                    <a asp-action="HallBookingsRequests" class="btn back-btn text-white">
+                        <i class="fas fa-arrow-left me-2"></i> العودة إلى قائمة الطلبات
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

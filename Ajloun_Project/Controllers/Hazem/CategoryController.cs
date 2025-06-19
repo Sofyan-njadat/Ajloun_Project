@@ -19,9 +19,13 @@ namespace Ajloun_Project.Controllers.Hazem
         // GET: /Category
         public async Task<IActionResult> Index()
         {
-            var courses = await _context.Courses.ToListAsync();
+            var courses = await _context.Courses
+                .Where(c => c.IsVisible == true)
+                .ToListAsync();
+
             return View(courses);
         }
+
 
         // GET: /Category/ManageCategories
         // [Authorize(Roles = "Admin")]

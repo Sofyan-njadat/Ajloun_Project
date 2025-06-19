@@ -1,0 +1,142 @@
+﻿@model IEnumerable<Ajloun_Project.Models.WorkshopRegistration>
+@{
+    ViewData["Title"] = "إدارة حجوزات الورش";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true">
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">إدارة حجوزات الورش</h1>
+                <p class="mb-0">مديرية ثقافة عجلون</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>اسم المستخدم</th>
+                            <th>رقم الهاتف</th>
+                            <th>الورشة</th>
+                            <th>شهادة الميلاد</th>
+                            <th>الحالة</th>
+                            <th>السبب (إن وُجد)</th>
+                            <th>تاريخ التسجيل</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var reg in Model)
+                        {
+                            <tr>
+                                <td>@reg.Id</td>
+                                <td>@reg.User.FullName</td>
+                                <td>@reg.User.Phone</td>
+                                <td>@reg.Workshop.Title</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(reg.BirthCertificateImage))
+                                    {
+                                        <a href="@reg.BirthCertificateImage" target="_blank" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> عرض
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">لا يوجد</span>
+                                    }
+                                </td>
+                                <td>
+                                    @switch (reg.Status)
+                                    {
+                                        case "Pending":
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fas fa-clock"></i> بانتظار
+                                            </span>
+                                            break;
+                                        case "Accepted":
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> مقبول
+                                            </span>
+                                            break;
+                                        case "Rejected":
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times"></i> مرفوض
+                                            </span>
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    @if (reg.Status == "Rejected")
+                                    {
+                                        @reg.RejectionReason
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
+                                <td>@reg.CreatedAt.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    @if (reg.Status == "Pending")
+                                    {
+                                        <!-- قبول -->
+                                        <form asp-action="AcceptRegistration" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@reg.Id" />
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="fas fa-check"></i> قبول
+                                            </button>
+                                        </form>
+
+                                        <!-- رفض -->
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal@reg.Id">
+                                            <i class="fas fa-times"></i> رفض
+                                        </button>
+
+                                        <!-- مودال رفض -->
+                                        <div class="modal fade" id="rejectModal@reg.Id" tabindex="-1" aria-labelledby="rejectLabel@reg.Id" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form asp-action="RejectRegistration" method="post">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">سبب الرفض</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="id" value="@reg.Id" />
+                                                            <textarea name="reason" class="form-control" required placeholder="أدخل سبب الرفض..."></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fas fa-times"></i> رفض
+                                                            </button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                <i class="fas fa-ban"></i> إلغاء
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            <i class="fas fa-check-double"></i> تمت المعالجة
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

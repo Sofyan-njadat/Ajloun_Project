@@ -334,7 +334,6 @@ public partial class AjlounCultureDbContext : DbContext
             entity.Property(e => e.GuestOfHonor).HasMaxLength(200);
             entity.Property(e => e.HallType).HasMaxLength(50);
             entity.Property(e => e.NeedsPconStage).HasColumnName("NeedsPCOnStage");
-            entity.Property(e => e.RequestingParty).HasMaxLength(200);
             entity.Property(e => e.ResponsibleName).HasMaxLength(100);
             entity.Property(e => e.Status)
                 .HasMaxLength(20)

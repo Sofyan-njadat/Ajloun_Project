@@ -135,15 +135,19 @@
                                                 </form>
                                             }
                                             @if (application.Status != "Rejected")
-                                            {
-                                                <form asp-action="UpdateApplicationStatus" asp-controller="Course" method="post">
-                                                    <input type="hidden" name="id" value="@application.ApplicationId" />
-                                                    <input type="hidden" name="status" value="Rejected" />
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-times"></i> رفض
-                                                    </button>
-                                                </form>
-                                            }
+{
+    <form asp-action="UpdateApplicationStatus" asp-controller="Course" method="post" onsubmit="return confirmRejection(this);">
+        <input type="hidden" name="id" value="@application.ApplicationId" />
+        <input type="hidden" name="status" value="Rejected" />
+
+        <textarea name="rejectionReason" class="form-control mb-2" placeholder="سبب الرفض..." required></textarea>
+
+        <button type="submit" class="btn btn-danger btn-sm w-100">
+            <i class="fas fa-times"></i> رفض
+        </button>
+    </form>
+}
+
                                         </div>
                                     </td>
                                 </tr>
@@ -160,4 +164,15 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
+<script>
+    function confirmRejection(form) {
+        const reason = form.querySelector("textarea[name='rejectionReason']").value.trim();
+        if (reason === "") {
+            alert("يرجى كتابة سبب الرفض.");
+            return false;
+        }
+        return confirm("هل أنت متأكد من رفض الطلب؟ سيتم إرسال السبب للمستخدم.");
+    }
+</script>
+ 

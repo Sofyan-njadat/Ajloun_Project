@@ -224,7 +224,10 @@ namespace Ajloun_Project.Controllers
         [HttpPost]
         public IActionResult UpdateHallBookingStatus(int id, string status)
         {
-            var booking = _context.HallBookings.Find(id);
+            var booking = _context.HallBookings
+                .Include(b => b.CultureOrg) // تحميل بيانات الهيئة المرتبطة
+                .FirstOrDefault(b => b.BookingId == id);
+
             if (booking == null)
             {
                 return NotFound();
@@ -233,9 +236,8 @@ namespace Ajloun_Project.Controllers
             booking.Status = status;
             _context.SaveChanges();
 
-            // نحاول نجيب الهيئة الثقافية باستخدام RequestingParty (اسم الهيئة)
-            var assoc = _context.CulturalAssociations
-                .FirstOrDefault(a => a.Name == booking.RequestingParty);
+            // الوصول إلى الهيئة الثقافية من العلاقة الملاحيّة
+            var assoc = booking.CultureOrg;
 
             if (assoc != null && !string.IsNullOrEmpty(assoc.Email))
             {
@@ -757,5 +759,19 @@ namespace Ajloun_Project.Controllers
 
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Users.xlsx");
         }
+        public IActionResult HallBookingDetails(int id)
+        {
+            var booking = _context.HallBookings
+                .Include(b => b.User)
+                .FirstOrDefault(b => b.BookingId == id);
+
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            return View("HallBookingDetails", booking); // لازم تنشئ View بهذا الاسم
+        }
+
     }
 }

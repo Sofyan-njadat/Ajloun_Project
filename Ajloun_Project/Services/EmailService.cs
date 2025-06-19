@@ -1,139 +1,68 @@
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Ajloun_Project.Services
 {
-    public interface IEmailService
+    public interface IContactEmailService
     {
-        Task<bool> SendEmailAsync(string subject, string body, string fromEmail, string fromName);
+        Task<bool> SendContactEmailAsync(string subject, string body, string fromEmail, string fromName);
     }
 
-    public class EmailService : IEmailService
+    public class ContactEmailService : IContactEmailService
     {
         private readonly IConfiguration _configuration;
-        private readonly ILogger<EmailService> _logger;
+        private readonly ILogger<ContactEmailService> _logger;
 
-        public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
+        public ContactEmailService(IConfiguration configuration, ILogger<ContactEmailService> logger)
         {
             _configuration = configuration;
             _logger = logger;
         }
 
-        public async Task<bool> SendEmailAsync(string subject, string body, string fromEmail, string fromName)
+        public async Task<bool> SendContactEmailAsync(string subject, string body, string fromEmail, string fromName)
         {
             try
             {
-                var smtpSettings = _configuration.GetSection("SmtpSettings");
-
-                // التحقق من وجود جميع الإعدادات المطلوبة
-                if (string.IsNullOrEmpty(smtpSettings["Server"]) ||
-                    string.IsNullOrEmpty(smtpSettings["Username"]) ||
-                    string.IsNullOrEmpty(smtpSettings["Password"]))
-                {
-                    _logger.LogError("SMTP settings are incomplete. Please check appsettings.json");
-                    return false;
-                }
-
-                var smtpServer = smtpSettings["Server"];
-                var smtpPort = int.Parse(smtpSettings["Port"] ?? "587");
-                var smtpUsername = smtpSettings["Username"]; // يجب أن يكون البريد الكامل
-                var smtpPassword = smtpSettings["Password"];
-                var enableSsl = bool.Parse(smtpSettings["EnableSsl"] ?? "true");
-                var adminEmail = smtpSettings["FromEmail"]; // البريد الذي ستصل إليه الرسائل
-                var displayName = smtpSettings["FromName"];
-
-                _logger.LogInformation("Preparing to send email using SMTP server: {Server}:{Port}", smtpServer, smtpPort);
-                _logger.LogInformation("SMTP Username: {Username}", smtpUsername);
+                var smtp = _configuration.GetSection("SmtpSettings");
+                var server = smtp["Server"];
+                var port = int.Parse(smtp["Port"] ?? "587");
+                var username = smtp["Username"];
+                var password = smtp["Password"];
+                var toEmail = smtp["FromEmail"]; // ثابت: بريد الإدارة
+                var displayName = smtp["FromName"];
+                var enableSsl = bool.Parse(smtp["EnableSsl"] ?? "true");
 
                 var message = new MailMessage
                 {
-                    From = new MailAddress(smtpUsername, displayName),
+                    From = new MailAddress(username, displayName),
                     Subject = subject,
                     Body = body,
-                    IsBodyHtml = true,
-                    Priority = MailPriority.Normal
+                    IsBodyHtml = true
                 };
 
-                // إرسال الرسالة إلى الإدارة
-                message.To.Add(adminEmail);
+                message.To.Add(toEmail);
 
-                // إضافة المرسل الأصلي في Reply-To إذا كان موجوداً
-                if (!string.IsNullOrEmpty(fromEmail) && IsValidEmail(fromEmail))
+                // لإمكانية الرد على المرسل
+                if (!string.IsNullOrEmpty(fromEmail))
                 {
-                    message.ReplyToList.Add(new MailAddress(fromEmail, fromName ?? ""));
+                    message.ReplyToList.Add(new MailAddress(fromEmail, fromName));
                 }
 
-                using var client = new SmtpClient(smtpServer, smtpPort)
+                using var client = new SmtpClient(server, port)
                 {
-                    Credentials = new NetworkCredential(smtpUsername, smtpPassword),
+                    Credentials = new NetworkCredential(username, password),
                     EnableSsl = enableSsl,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Timeout = 30000 // زيادة timeout إلى 30 ثانية
+                    Timeout = 30000
                 };
-
-                _logger.LogInformation("Attempting to send email to {ToEmail} from {FromEmail}", adminEmail, smtpUsername);
 
                 await client.SendMailAsync(message);
-                _logger.LogInformation("Email sent successfully to {ToEmail}", adminEmail);
                 return true;
-            }
-            catch (SmtpException smtpEx)
-            {
-                _logger.LogError(smtpEx, "SMTP Error: {StatusCode} - {Message}", smtpEx.StatusCode, smtpEx.Message);
-
-                // تحليل مفصل لأخطاء SMTP
-                switch (smtpEx.StatusCode)
-                {
-                    case SmtpStatusCode.GeneralFailure:
-                        _logger.LogError("General SMTP failure. Check server settings.");
-                        break;
-                    case SmtpStatusCode.InsufficientStorage:
-                        _logger.LogError("Insufficient storage on the server.");
-                        break;
-                    case SmtpStatusCode.ClientNotPermitted:
-                        _logger.LogError("Client not permitted to send email.");
-                        break;
-                    case SmtpStatusCode.MustIssueStartTlsFirst:
-                        _logger.LogError("Must enable SSL/TLS first.");
-                        break;
-                    default:
-                        if (smtpEx.Message.Contains("authentication", StringComparison.OrdinalIgnoreCase) ||
-                            smtpEx.Message.Contains("535") ||
-                            smtpEx.Message.Contains("Username and Password not accepted"))
-                        {
-                            _logger.LogError("Authentication failed. Check Gmail App Password and username.");
-                        }
-                        else if (smtpEx.Message.Contains("timeout", StringComparison.OrdinalIgnoreCase))
-                        {
-                            _logger.LogError("Connection timeout. Check network connection.");
-                        }
-                        else
-                        {
-                            _logger.LogError("SMTP error: {Message}", smtpEx.Message);
-                        }
-                        break;
-                }
-                return false;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected error while sending email: {Message}", ex.Message);
-                return false;
-            }
-        }
-
-        private bool IsValidEmail(string email)
-        {
-            try
-            {
-                var addr = new MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
+                _logger.LogError(ex, "فشل إرسال الإيميل من صفحة Contact");
                 return false;
             }
         }
