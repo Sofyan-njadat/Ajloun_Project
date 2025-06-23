@@ -131,7 +131,13 @@
 				max-width: 500px;
 				margin: 0 auto;
 			}
+.container {
+		padding-right: 15px;
+		padding-left: 15px;
+	}
 		}
+
+
 
 
 		.dropdown-content {
@@ -144,6 +150,8 @@
 			z-index: 10000 !important;
 			position: relative;
 		}
+
+
 	</style>
 
 </head>
@@ -594,28 +602,7 @@
 				});
 			});
 
-			// Animate about section
-			gsap.from('.about-image', {
-				scrollTrigger: {
-					trigger: '.about',
-					start: 'top 70%',
-					toggleActions: 'play none none none'
-				},
-				x: -100,
-				opacity: 0,
-				duration: 1
-			});
-
-			gsap.from('.about-text', {
-				scrollTrigger: {
-					trigger: '.about',
-					start: 'top 70%',
-					toggleActions: 'play none none none'
-				},
-				x: 100,
-				opacity: 0,
-				duration: 1
-			});
+			
 
 			// Initialize counters when stats section is in view
 			ScrollTrigger.create({

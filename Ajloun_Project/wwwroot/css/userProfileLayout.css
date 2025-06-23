@@ -245,6 +245,13 @@ body.user-profile-layout {
     .user-profile-overlay {
         display: none !important;
     }
+    .btn:focus,
+    .btn:focus-visible,
+    .btn-outline-primary:focus {
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
 }
 
 /* ??????? ?????? */

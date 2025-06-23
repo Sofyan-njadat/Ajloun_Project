@@ -160,6 +160,268 @@
             position: relative;
         }
 
+
+.login-text-responsive .mobile-text {
+    display: none;
+}
+
+.login-text-responsive .desktop-icon {
+    display: inline-block;
+}
+@@media (max-width: 768px) {
+
+    header {
+        padding: 10px;
+        background-color: #2E3A2A;
+    }
+
+    .burger {
+        font-size: 26px;
+        color: white;
+        cursor: pointer;
+        display: block;
+        float: left;
+        margin-left: 10px;
+    }
+
+    nav#main-nav {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        background-color: #2E3A2A;
+        padding: 10px;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        z-index: 999;
+    }
+
+    nav#main-nav.show {
+        display: flex;
+    }
+
+    nav#main-nav a {
+        color: white;
+        padding: 10px;
+        display: block;
+        width: 100%;
+        text-align: right;
+        border-bottom: 1px solid #444;
+    }
+
+    .dropdown-content {
+        position: relative;
+        background-color: #2E3A2A;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    .dropdown-content a {
+        padding: 10px 15px;
+        border: none;
+        font-size: 15px;
+    }
+
+    .mobile-auth {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    footer {
+        padding: 20px 10px;
+        text-align: center;
+    }
+
+    .footer-columns {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .footer-col {
+        width: 100%;
+    }
+
+    .translate-box {
+        width: 100%;
+        margin: 10px 0;
+    }
+nav#main-nav a {
+    padding: 14px 20px;
+    border-bottom: 1px solid #444;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+nav#main-nav a:hover {
+    background-color: #3a4a36;
+    color: #fff;
+}
+.mobile-auth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.translate-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.translate-box {
+    width: auto;
+    min-width: 120px;
+    max-width: 160px;
+    height: 36px;
+    text-align: center;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.auth-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ .login-text-responsive .mobile-text {
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+    }
+
+    .login-text-responsive .desktop-icon {
+        display: none;
+    }
+
+    .auth-btn.login-btn {
+        width: auto;
+        height: auto;
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: 1px solid white;
+        background-color: transparent;
+    }
+.mobile-auth {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .auth-buttons {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .auth-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+    }
+
+    .profile-btn {
+        background-color: #FFD600;
+        color: #000;
+    }
+
+    .logout-btn {
+        background-color: #f14d21;
+        color: white;
+    }
+
+    .translate-box {
+        margin-bottom: 10px;
+    }
+
+    /* إخفاء "تدعمـه" */
+    .goog-te-gadget span {
+        display: none !important;
+    }
+
+}
+@@media (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 75%; /* ✅ قلل العرض من 100% إلى 75% */
+        max-width: 280px;
+        height: 100vh;
+        background-color: #1e2f23;
+        padding: 20px 15px;
+        overflow-y: auto;
+        z-index: 9999;
+        box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
+        transition: right 0.3s ease-in-out;
+    }
+
+    .nav-links li {
+        padding: 10px 0;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: right;
+    }
+
+    .nav-links li:last-child {
+        border-bottom: none;
+    }
+
+    .language-selector,
+    .login-btn {
+        margin: 15px auto 0;
+        display: block;
+        width: 90%;
+        max-width: 220px;
+        font-size: 0.95rem;
+    }
+
+    .login-btn {
+        padding: 8px 20px;
+        border-radius: 30px;
+        border: 2px solid white;
+        background: transparent;
+        color: white;
+        cursor: pointer;
+    }
+
+    .login-btn:hover {
+        background: #355E3B;
+        color: #fff;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
+
+
     </style>
 </head>
 <body>
@@ -216,9 +478,11 @@
                 <div class="auth-buttons">
                     @if (userId == null)
                     {
-                        <a href="/User/SignIn" class="auth-btn login-btn" title="تسجيل الدخول">
-                            <i class="fas fa-sign-in-alt"></i>
-                        </a>
+<a href="/User/SignIn" class="auth-btn login-btn login-text-responsive" title="تسجيل الدخول">
+    <i class="fas fa-sign-in-alt desktop-icon"></i>
+    <span class="mobile-text">تسجيل الدخول</span>
+</a>
+
                     }
                     else
                     {

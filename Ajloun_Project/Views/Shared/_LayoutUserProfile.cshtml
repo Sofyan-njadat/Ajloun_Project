@@ -10,8 +10,8 @@
 <link rel="stylesheet" href="~/css/userProfileLayout.css" />
     @RenderSection("Styles", required: false)
 
-  
 </head>
+
 <body class="user-profile-layout">
     <!-- شريط الهاتف -->
     <div class="user-profile-mobile-nav">
@@ -40,7 +40,7 @@
                 <a href="@Url.Action("UserCourseApplications", "UserProfile")">
                     <i class="fas fa-book-open"></i> طلبات الدورات
                 </a>
-<a href="@Url.Action("MyRegistrations", "ArtWorkshops")" class="btn btn-outline-primary">
+<a href="@Url.Action("MyRegistrations", "ArtWorkshops")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "MyRegistrations" ? "active" : "")">
     <i class="fas fa-book-open"></i> طلباتي للورش
 </a>
 

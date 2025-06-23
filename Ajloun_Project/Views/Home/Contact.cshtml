@@ -1,23 +1,20 @@
+
 @model ContactViewModel
 @{
     ViewData["Title"] = "تواصل معنا";
 }
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مديرية ثقافة عجلون | تواصل معنا</title>
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
-
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
             --primary-color: #186a30;
@@ -34,7 +31,6 @@
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
             --transition: all 0.3s ease;
         }
-
         .modern-header {
             background: linear-gradient(135deg, #1E2F23 0%, #355E3B 50%, #4f9d69 100%);
             background-size: cover;
@@ -50,7 +46,6 @@
             border-bottom: 25px solid #1E2F23;
             font-family: 'Cairo', sans-serif;
         }
-
         .overlay {
             width: 100%;
             height: 100%;
@@ -59,55 +54,47 @@
             justify-content: center;
             background: rgba(53, 94, 59, 0.8);
         }
-
         .header-content {
             color: white;
             z-index: 1;
             padding: 0 20px;
         }
-
-            .header-content h1 {
-                font-size: 4rem;
-                font-weight: 900;
-                margin-bottom: 1rem;
-                color: #FFE15D;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-                font-family: 'Cairo', sans-serif;
-            }
-
-            .header-content .subtitle {
-                font-size: 1.5rem;
-                color: white;
-                margin: 0;
-                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-                font-weight: 600;
-            }
-
+        .header-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #FFE15D;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Cairo', sans-serif;
+        }
+        .header-content .subtitle {
+            font-size: 1.5rem;
+            color: white;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-weight: 600;
+        }
         .contact-section {
             padding: 60px 0;
             background: #f8f9fa;
         }
-
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
             margin-top: 40px;
         }
-
         .contact-info {
             background: var(--white);
             padding: 40px;
             border-radius: 15px;
             box-shadow: var(--shadow-md);
         }
-
         .info-items {
             display: grid;
             gap: 30px;
             margin-top: 30px;
         }
-
         .info-item {
             display: flex;
             align-items: center;
@@ -117,12 +104,10 @@
             border-radius: 10px;
             transition: var(--transition);
         }
-
-            .info-item:hover {
-                transform: translateY(-5px);
-                box-shadow: var(--shadow-md);
-            }
-
+        .info-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
         .info-icon {
             width: 60px;
             height: 60px;
@@ -135,43 +120,36 @@
             font-size: 24px;
             transition: var(--transition);
         }
-
         .info-item:hover .info-icon {
             background: var(--primary-dark);
             transform: scale(1.1);
         }
-
         .info-content h3 {
             margin: 0;
             font-size: 1.2rem;
             color: var(--primary-dark);
             font-weight: 600;
         }
-
         .info-content p {
             margin: 5px 0 0;
             color: var(--text-light);
             line-height: 1.6;
         }
-
         .contact-form {
             background: var(--white);
             padding: 40px;
             border-radius: 15px;
             box-shadow: var(--shadow-md);
         }
-
         .form-group {
             margin-bottom: 25px;
         }
-
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                color: var(--text-dark);
-                font-weight: 500;
-            }
-
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
         .form-control {
             width: 100%;
             padding: 12px 15px;
@@ -181,19 +159,16 @@
             transition: var(--transition);
             background: #f8f9fa;
         }
-
-            .form-control:focus {
-                border-color: var(--primary-color);
-                box-shadow: 0 0 0 3px rgba(24, 106, 48, 0.1);
-                outline: none;
-                background: var(--white);
-            }
-
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(24, 106, 48, 0.1);
+            outline: none;
+            background: var(--white);
+        }
         textarea.form-control {
             resize: vertical;
             min-height: 150px;
         }
-
         .submit-btn {
             background: var(--primary-color);
             color: var(--white);
@@ -210,29 +185,24 @@
             justify-content: center;
             font-weight: 600;
         }
-
-            .submit-btn:hover {
-                background: var(--primary-dark);
-                transform: translateY(-2px);
-                box-shadow: var(--shadow-md);
-            }
-
-            .submit-btn i {
-                font-size: 1.2rem;
-            }
-
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .submit-btn i {
+            font-size: 1.2rem;
+        }
         .text-danger {
             color: #dc3545;
             font-size: 0.9rem;
             margin-top: 5px;
             display: block;
         }
-
         /* Alert Messages Styles */
         .alert-container {
             margin-bottom: 30px;
         }
-
         .alert {
             padding: 20px 25px;
             border-radius: 12px;
@@ -248,39 +218,33 @@
             position: relative;
             overflow: hidden;
         }
-
-            .alert::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 5px;
-                height: 100%;
-                background: currentColor;
-            }
-
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: currentColor;
+        }
         .alert-success {
             background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             color: var(--success-color);
             border-left: 5px solid var(--success-color);
         }
-
         .alert-error {
             background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
             color: var(--error-color);
             border-left: 5px solid var(--error-color);
         }
-
         .alert-icon {
             font-size: 1.5rem;
             flex-shrink: 0;
         }
-
         .alert-content {
             flex: 1;
             line-height: 1.5;
         }
-
         .alert-close {
             background: none;
             border: none;
@@ -297,96 +261,74 @@
             transition: var(--transition);
             opacity: 0.7;
         }
-
-            .alert-close:hover {
-                opacity: 1;
-                background: rgba(0, 0, 0, 0.1);
-            }
-
+        .alert-close:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.1);
+        }
         @@keyframes slideIn {
-            from
-
-        {
-            opacity: 0;
-            transform: translateY(-20px);
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        }
-
         @@keyframes fadeOut {
-            from
-
-        {
-            opacity: 1;
-            transform: translateY(0);
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
         }
-
-        to {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        }
-
         .alert.fade-out {
             animation: fadeOut 0.3s ease-in forwards;
         }
 
+        /* Media Queries - Responsive Fixes */
         @@media (max-width: 992px) {
-            .contact-grid
-
-        {
-            grid-template-columns: 1fr;
-            gap: 30px;
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .header-content h1 {
+                font-size: 3rem;
+            }
         }
-
-        .header-content h1 {
-            font-size: 3rem;
-        }
-
-        }
-
         @@media (max-width: 768px) {
-            .modern-header
-
-        {
-            height: 200px;
+            .modern-header {
+                height: 200px;
+            }
+            .header-content h1 {
+                font-size: 2.5rem;
+            }
+            .header-content .subtitle {
+                font-size: 1.2rem;
+            }
+            .contact-info,
+            .contact-form {
+                padding: 25px;
+            }
+            .info-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            .form-control,
+            .submit-btn {
+                width: 100%;
+            }
+            .alert {
+                padding: 15px 20px;
+                font-size: 0.9rem;
+            }
         }
 
-        .header-content h1 {
-            font-size: 2.5rem;
-        }
-
-        .header-content .subtitle {
-            font-size: 1.2rem;
-        }
-
-        .contact-info,
-        .contact-form {
-            padding: 30px;
-        }
-
-        .info-icon {
-            width: 50px;
-            height: 50px;
-            font-size: 20px;
-        }
-
-        .alert {
-            padding: 15px 20px;
-            font-size: 0.9rem;
-        }
-
-        }
+@@media (max-width: 768px) {
+    .contact-info, .contact-form {
+        padding: 14px;
+        margin-left: 81px;
+    }
+.container {
+    padding: 1rem;
+    min-height: calc(100vh - 200px);
+}
+}
     </style>
 </head>
 <body class="lang-ar">
-
     <!-- Hero Section -->
     <section class="modern-header">
         <div class="overlay">
@@ -396,7 +338,6 @@
             </div>
         </div>
     </section>
-
     <!-- Contact Section -->
     <section class="contact-section">
         <div class="container">
@@ -414,7 +355,6 @@
                         </button>
                     </div>
                 }
-
                 @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
                 {
                     <div class="alert alert-error" id="errorAlert">
@@ -431,7 +371,6 @@
                     </div>
                 }
             </div>
-
             <div class="contact-grid">
                 <!-- معلومات الاتصال -->
                 <div class="contact-info">
@@ -451,8 +390,8 @@
                                 <i class="fas fa-phone"></i>
                             </div>
                             <div class="info-content">
-                                <h3>الهاتف</h3>
-                                <p>02-6421234</p>
+                                <h3>رقم الهاتف</h3>
+                                <p>02-6456789</p>
                             </div>
                         </div>
                         <div class="info-item">
@@ -475,43 +414,36 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- نموذج الاتصال -->
                 <div class="contact-form">
                     <h2 class="section-title">أرسل لنا رسالة</h2>
                     <form asp-action="Contact" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
                         <div class="form-group">
                             <label asp-for="Name">الاسم</label>
                             <input asp-for="Name" class="form-control" placeholder="أدخل اسمك الكامل" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
-
                         <div class="form-group">
                             <label asp-for="Email">البريد الإلكتروني</label>
                             <input asp-for="Email" class="form-control" placeholder="أدخل بريدك الإلكتروني" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
-
                         <div class="form-group">
                             <label asp-for="Phone">رقم الهاتف</label>
                             <input asp-for="Phone" class="form-control" placeholder="أدخل رقم هاتفك" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
-
                         <div class="form-group">
                             <label asp-for="Subject">الموضوع</label>
                             <input asp-for="Subject" class="form-control" placeholder="أدخل موضوع الرسالة" />
                             <span asp-validation-for="Subject" class="text-danger"></span>
                         </div>
-
                         <div class="form-group">
                             <label asp-for="Message">الرسالة</label>
                             <textarea asp-for="Message" class="form-control" rows="5" placeholder="أدخل رسالتك"></textarea>
                             <span asp-validation-for="Message" class="text-danger"></span>
                         </div>
-
                         <button type="submit" class="submit-btn">
                             <i class="fas fa-paper-plane"></i>
                             إرسال الرسالة
@@ -521,7 +453,6 @@
             </div>
         </div>
     </section>
-
     <script>
         // إغلاق التنبيهات
         function closeAlert(alertId) {
@@ -533,9 +464,8 @@
                 }, 300);
             }
         }
-
         // إغلاق التنبيهات تلقائياً بعد 5 ثوان
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 setTimeout(() => {
@@ -551,12 +481,10 @@
             });
         });
     </script>
-
     @section Scripts {
         @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");
         }
     }
-
 </body>
 </html>
